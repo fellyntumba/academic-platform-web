@@ -1,0 +1,173 @@
+.suivi-recours-container {
+  width: 100%;
+  max-width: 1100px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.suivi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.suivi-header h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0072ff;
+}
+
+.table-wrapper {
+  max-height: 420px;
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+.recours-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.recours-table th,
+.recours-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.recours-table th {
+  background: #f5f7fa;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+
+.recours-table tr:hover {
+  background: #f0f6ff;
+}
+
+/* ===== STATUS ===== */
+
+.status.open {
+  color: #1e8449;
+  font-weight: 600;
+}
+
+.status.closed {
+  color: #c62828;
+  font-weight: 600;
+}
+
+/* ===== RECOURS COUNT ===== */
+
+.recours-count {
+  background: #eef4ff;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* ===== BOUTONS ===== */
+
+.recours-btn {
+  padding: 7px 15px;
+  border-radius: 20px;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+/* ouvrir */
+.recours-btn.launch {
+  background: #e8f8f1;
+  color: #1e8449;
+}
+
+.recours-btn.launch:hover {
+  background: #d5f5e3;
+}
+
+/* fermer */
+.recours-btn.close {
+  background: #fdecea;
+  color: #c62828;
+}
+
+.recours-btn.close:hover {
+  background: #fadbd8;
+}
+
+/* animation */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s forwards;
+}
+
+
+.filters-box {
+  display: flex;
+  gap: 12px;
+  margin: 15px 0 25px 0;
+  flex-wrap: wrap;
+}
+
+.filters-box select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d0d7de;
+  outline: none;
+  font-weight: 500;
+  background: white;
+  transition: 0.2s;
+}
+
+.filters-box select:focus {
+  border-color: #0072ff;
+  box-shadow: 0 0 0 3px rgba(0,114,255,0.15);
+}
+
+/* ===== FILTRES ===== */
+.filters-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.filters-bar select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d0d7e2;
+  outline: none;
+  background: #fff;
+  font-weight: 500;
+}
+
+/* ===== ENSEIGNANT CELL ===== */
+.teacher-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.teacher-name {
+  font-weight: 600;
+  color: #222;
+}
+
+.teacher-phone {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

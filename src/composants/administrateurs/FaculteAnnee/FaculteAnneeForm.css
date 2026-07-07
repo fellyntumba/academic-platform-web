@@ -1,0 +1,100 @@
+.faculte-annee-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.faculte-annee-wrapper h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #0072ff;
+}
+
+.faculte-annee-top-row {
+  display: flex;
+  gap: 20px;
+}
+
+.faculte-annee-card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.faculte-annee-card h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.faculte-annee-card input,
+.faculte-annee-card select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.faculte-annee-card input:focus,
+.faculte-annee-card select:focus {
+  border-color: #0072ff;
+  outline: none;
+}
+
+.faculte-annee-card button {
+  background: linear-gradient(90deg, #00e6ff, #0072ff);
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.faculte-annee-card button:hover {
+  transform: translateY(-2px);
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 25px;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+  z-index: 1000;
+}
+
+.notification.success {
+  background: linear-gradient(90deg, #00c853, #00e676);
+}
+
+.notification.error {
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+}
+
+@media (max-width: 768px) {
+  .faculte-annee-top-row {
+    flex-direction: column;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

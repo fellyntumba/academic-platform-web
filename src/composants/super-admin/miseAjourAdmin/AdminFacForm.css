@@ -1,0 +1,121 @@
+.admin-fac-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* ✅ Carte élargie */
+.admin-fac-form-container {
+  background: white;
+  padding: 35px;
+  border-radius: 16px;
+  width: 90%;           /* prend plus d’espace */
+  max-width: 720px;     /* plus large qu’avant (520px → 720px) */
+  min-width: 400px;     /* reste lisible */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  animation: fadeIn 0.4s ease-in-out;
+  box-sizing: border-box;
+  margin: 0 auto;       /* centrage horizontal */
+}
+
+.admin-fac-form-container h2 {
+  text-align: center;
+  color: #0072ff;
+  margin-bottom: 20px;
+}
+
+.mode-switch {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.mode-switch button {
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #e0e0e0;
+  font-weight: 600;
+}
+
+.mode-switch button.active {
+  background: linear-gradient(90deg, #4facfe, #0072ff);
+  color: white;
+}
+
+/* ✅ Inputs prennent toute la largeur */
+.admin-fac-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-fac-form input,
+.admin-fac-form select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.admin-fac-form button {
+  margin-top: 10px;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #00e6ff, #0072ff);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mode-switch .danger-btn {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.mode-switch .danger-btn.active {
+  background: linear-gradient(90deg, #ff4b2b, #ff416c);
+  color: white;
+}
+
+.danger-submit {
+  background: linear-gradient(90deg, #ff4b2b, #ff416c) !important;
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 25px;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+  z-index: 1000;
+}
+
+.notification.success {
+  background: linear-gradient(90deg, #00c853, #00e676);
+}
+
+.notification.error {
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,118 @@
+.promotions-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.promotions-wrapper h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #0072ff;
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 25px;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+  z-index: 1000;
+}
+
+.notification.success {
+  background: linear-gradient(90deg, #00c853, #00e676);
+}
+
+.notification.error {
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Ligne du haut */
+.top-row {
+  display: flex;
+  gap: 20px;
+}
+
+.top-row .promotion-card {
+  flex: 1;
+}
+
+/* Carte */
+.promotion-card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.promotion-card h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.promotion-card select,
+.promotion-card input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.promotion-card select:focus,
+.promotion-card input:focus {
+  border-color: #0072ff;
+  outline: none;
+}
+
+.promotion-card button {
+  background: linear-gradient(90deg, #00e6ff, #0072ff);
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.promotion-card button:hover {
+  transform: translateY(-2px);
+}
+
+/* Carte bas pleine largeur */
+.full-width {
+  width: 100%;
+}
+
+/* Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .top-row {
+    flex-direction: column;
+  }
+}

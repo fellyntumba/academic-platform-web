@@ -1,0 +1,348 @@
+.notes-container {
+  padding: 30px;
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  background: #f5f7fa;
+  color: #1f2937;
+}
+
+/* ================= SESSION ================= */
+
+.card-session {
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  padding: 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+}
+   
+.title-session {
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0072ff;
+}
+
+.options-session {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-session {
+  padding: 14px 28px;
+  border-radius: 30px;
+  border: 2px solid #0072ff;
+  background: white;
+  color: #0072ff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 240px;
+}
+
+.btn-session:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,114,255,0.2);
+}
+
+.btn-session.active {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: white;
+  border: none;
+  box-shadow: 0 12px 30px rgba(0,114,255,0.35);
+}
+
+.warning-session {
+  margin-top: 15px;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* ================= BLOQUAGE ================= */
+
+.disabled-area {
+  opacity: 0.4;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+/* ================= CARDS ================= */
+
+.card-cote {
+  background: white;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.top-line,
+.second-line,
+.bottom-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* ================= INPUTS ================= */
+
+select,
+input {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  min-width: 190px;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+  border-color: #0072ff;
+  box-shadow: 0 0 0 3px rgba(0,114,255,0.15);
+  background: white;
+}
+
+/* ================= STAT BOX ================= */
+
+.stat-box {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+  border-radius: 10px;
+  font-weight: 600;
+  color: #0072ff;
+}
+
+/* ================= BOUTONS ================= */
+
+.btn-valid,
+.btn-send,
+.btn-fiche,
+.btn-modifier {
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 160px;
+  transition: all 0.3s ease;
+}
+
+.btn-valid,
+.btn-send,
+.btn-fiche {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+.btn-valid:hover,  
+.btn-send:hover,
+.btn-fiche:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,114,255,0.3);
+}
+
+button:disabled {
+  background: #d1d5db !important;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-modifier {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+  color: white;
+}
+
+/* ================= TABLE ================= */
+
+.notes-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.notes-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.notes-list th,
+.notes-list td {
+  padding: 6px 10px;
+  text-align: center;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 14px;
+}
+
+.notes-list .btn-modifier {
+  padding: 5px 12px;
+  min-width: auto;
+  font-size: 13px;
+}
+.notes-list .btn-send {
+  display: block;
+  margin: 20px auto 0 auto;
+}
+
+.notes-list tr:hover {
+  background: #f3f8ff;
+}
+
+.empty {
+  text-align: center;
+  color: #9ca3af;
+  padding: 20px;
+}
+/* Conteneur du mini formulaire pour modifier la cote */
+.cote-card {
+  display: flex;
+  justify-content: center; /* centre le formulaire horizontalement */
+  margin-top: 5px;
+}
+
+.cote-edit {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* espace entre l'input et les boutons */
+}
+
+/* Input de modification plus compact */
+.cote-edit input {
+  padding: 6px 10px;
+  font-size: 13px;
+  width: 80px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Boutons OK / Annuler petits et harmonieux */
+.cote-edit button {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  min-width: 60px;
+  cursor: pointer;
+  border: none;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+/* Bouton OK bleu */
+.cote-edit .btn-ok {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+}
+
+/* Bouton Annuler rouge */
+.cote-edit .btn-cancel {
+  background: #ef4444;
+}
+
+/* Hover léger pour les deux */
+.cote-edit .btn-ok:hover,
+.cote-edit .btn-cancel:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+/* ================= STAT ================= */
+
+.summary-left {
+  padding: 20px;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.summary-left img {
+  width: 350px;
+  max-width: 100%;
+}
+
+.summary-center {
+  padding: 20px;
+  border-radius: 16px;
+  background: #f9fafb;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  min-width: 220px;
+}
+
+/* ================= DEROGATION ================= */
+
+.derogation-box {
+  flex: 1;
+  min-width: 300px;
+  max-width: 380px;
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg,#fff7ed,#fff);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.derogation-box h4 {
+  color: #ea580c;
+  font-weight: 700;
+}
+
+.derogation-box textarea {
+  resize: none;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+
+.derogation-box textarea:focus {
+  outline: none;
+  border-color: #ea580c;
+  box-shadow: 0 0 0 3px rgba(234,88,12,0.15);
+}
+
+.btn-derogation {
+  background: linear-gradient(90deg,#f97316,#ea580c);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-derogation:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(234,88,12,0.3);
+}
+
+.saisir-notification { 
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 22px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  animation: slideUp 0.3s ease;
+} 
+
+.saisir-notification.success {
+  background: linear-gradient(90deg, #00c853, #00e676);
+}
+
+.saisir-notification.error {
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+}

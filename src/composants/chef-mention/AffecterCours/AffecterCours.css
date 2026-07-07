@@ -1,0 +1,95 @@
+.affecter-container {
+  max-width: 650px; /* anciennement 500px, élargissement */
+  width: 90%;       /* laisse un peu d’espace sur les côtés, flexible */
+  margin: 0 auto;   /* centrage horizontal */
+  background: #ffffff;
+  padding: 30px 35px; /* padding légèrement augmenté pour plus d'air */
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.affecter-container h2 {
+  color: #0072ff;
+  margin-bottom: 25px; /* un peu plus d'espace au-dessus du formulaire */
+}
+
+.form-group {
+  margin-bottom: 18px; /* espace légèrement augmenté entre les champs */
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px; /* petit ajustement pour mieux respirer */
+}
+
+.form-group select {
+  padding: 10px 12px; /* plus confortable à la lecture */
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.affecter-btn {
+  margin-top: 20px;
+  padding: 12px 28px; /* bouton plus large */
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #00e6ff, #0072ff);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.affecter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 25px;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+  z-index: 1000;
+}
+
+.notification.success {
+  background: linear-gradient(90deg, #00c853, #00e676);
+}
+
+.notification.error {
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+}
+
+/* Animation fade-in */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .affecter-container {
+    width: 95%; /* s'adapte aux écrans plus petits */
+    padding: 25px 20px;
+  }
+}

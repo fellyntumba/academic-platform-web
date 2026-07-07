@@ -1,0 +1,74 @@
+.stats-container {
+  max-width: 900px;       /* carte plus large */
+  min-width: 500px;       /* reste lisible sur écrans moyens */
+  width: 90%;             /* s'adapte à l'espace disponible */
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  text-align: center;
+  margin: 0 auto;         /* centre horizontalement */
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.stats-container h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0072ff;
+  margin-bottom: 20px;
+}
+
+.stats-table {
+  width: 100%;           /* table s'étend avec la carte */
+  border-collapse: collapse;
+}
+
+.stats-table th,
+.stats-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.stats-table th {
+  background: #f5f7fa;
+  font-weight: 600;
+}
+
+.stats-table tr:hover {
+  background: #f0f6ff;
+}
+
+.bar-container {
+  display: flex;
+  height: 20px;
+  width: 100%;           /* barre s'étend avec la carte */
+  max-width: 400px;      /* garde une limite raisonnable */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e0e0e0;
+  margin: 0 auto;
+}
+
+.success-bar {
+  background: #1b8a3c;
+  height: 100%;
+}
+
+.failure-bar {
+  background: #c62828;
+  height: 100%;
+}
+
+/* Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

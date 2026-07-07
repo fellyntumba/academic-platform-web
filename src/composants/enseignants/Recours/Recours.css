@@ -1,0 +1,342 @@
+/* ============================= */
+/* CONTAINER PRINCIPAL */
+/* ============================= */
+
+.recours-container {
+  display: flex;
+  height: 100vh;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: #f4f7fb;
+  color: #1f2937;
+}
+
+/* ============================= */
+/* LISTE GAUCHE */
+/* ============================= */
+
+.recours-list {
+  width: 28%;
+  min-width: 280px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 25px 20px;
+  overflow-y: auto;
+}
+
+.recours-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.recours-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.recours {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #2563eb;
+  text-align: left;
+}
+
+/* Carte recours */
+
+.recours-item {
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  background: #f3f6fb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid transparent;
+}
+
+.recours-item:hover {
+  background: #e8f0ff;
+  transform: translateY(-3px);
+  border: 1px solid #dbeafe;
+}
+
+.recours-item.active {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* Petit badge statut */
+
+.status-small {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* ============================= */
+/* SEPARATEUR */
+/* ============================= */
+
+.separator {
+  width: 1px;
+  background: #e5e7eb;
+}
+
+/* ============================= */
+/* DETAILS DROITE */
+/* ============================= */
+
+.recours-details {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.details-wrapper {
+  width: 100%;
+  max-width: 900px;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+/* ============================= */
+/* CARTE DETAIL */
+/* ============================= */
+
+.card-detail {
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+  margin-bottom: 25px;
+}
+
+.card-detail h2 {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 25px;
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+.card-detail p {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+/* ============================= */
+/* STATUT */
+/* ============================= */
+
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-accepted {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-pending {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+/* ============================= */
+/* SECTION REPONDRE */
+/* ============================= */
+
+.repondre-box {
+  margin-top: 20px;
+  padding: 25px;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.repondre-box h3 {
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+/* Boutons premium */
+
+.btn-accept,
+.btn-reject,
+.btn-save {
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Accepter */
+
+.btn-accept {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: white;
+}
+
+.btn-accept:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+}
+
+/* Rejeter */
+
+.btn-reject {
+  background: linear-gradient(90deg, #ef4444, #b91c1c);
+  color: white;
+}
+
+.btn-reject:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+}
+
+/* ============================= */
+/* SECTION COTE */
+/* ============================= */
+
+.cote-section {
+  margin-top: 15px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cote-section label {
+  font-weight: 600;
+}
+
+.cote-section input {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  width: 90px;
+  transition: 0.2s ease;
+}
+
+.cote-section input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* Save */
+
+.btn-save {
+  background: linear-gradient(90deg, #2563eb, #1e40af);
+  color: white;
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* ============================= */
+/* CONSIGNE SI VIDE */
+/* ============================= */
+
+.recours-card-consign {
+  margin: auto;
+  padding: 40px;
+  max-width: 500px;
+  text-align: center;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  color: #6b7280;
+}
+
+.recours-card-consign h3 {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: #2563eb;
+}
+
+.recours-notification {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 22px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  animation: slideUp 0.3s ease;
+}
+
+.recours-notification.success {
+  background: linear-gradient(90deg, #00c853, #00e676);
+}
+
+.recours-notification.error {
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+}
+
+/* ============================= */
+/* ANIMATION */
+/* ============================= */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+
+@media (max-width: 1024px) {
+  .recours-container {
+    flex-direction: column;
+  }
+
+  .recours-list {
+    width: 100%;
+    height: 250px;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .separator {
+    display: none;
+  }
+
+  .recours-details {
+    padding: 25px;
+  }
+}

@@ -1,0 +1,324 @@
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.4s ease;
+}
+
+.success-box {
+  background: #ffffff;
+  padding: 40px 50px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  animation: scaleUp 0.5s ease;
+}
+
+.success-box h3 {
+  color: #43e97b;
+  margin-top: 20px;
+  font-size: 1.3rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ddd;
+  border-top: 6px solid #43e97b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+/* Select facultés avec déroulement */
+.faculte-select {
+  width: 100%;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+
+
+
+
+
+
+/* Container principal */
+.wizard-container {
+  max-width: 650px;
+  width: 90%;
+  margin: 50px auto;
+  font-family: 'Poppins', sans-serif;
+  background: #fff;
+  border-radius: 15px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+/* Titre dynamique */
+.wizard-title {
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  color: #0072ff;
+  margin-bottom: 30px;
+}
+
+/* Progress bar */
+.step-indicator {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  flex-wrap: wrap; /* Responsive pour petits écrans */
+  gap: 10px;
+}
+
+.step {
+  text-align: center;
+  flex: 1 1 50px; /* largeur flexible et minimum */
+  position: relative;
+}
+
+.step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  right: -50%;
+  width: 100%;
+  height: 4px;
+  background: #ddd;
+  z-index: -1;
+}
+
+.step.completed:not(:last-child)::after {
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+}
+
+.step-number {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+.step.active .step-number {
+  background: linear-gradient(90deg, #fe4f4f, #fe1e00);
+}
+
+.step.completed .step-number {
+  background: linear-gradient(90deg, #43e97b, #38f9d7);
+}
+
+.step-label {
+  margin-top: 6px;
+  font-size: 12px;
+  word-wrap: break-word;
+}
+
+/* Formulaire */
+.step-content {
+  min-height: 250px;
+}
+
+.step-form input,
+.step-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Boutons Ajouter / Suivant */
+/* Style commun */
+.step-form form button,
+.buttons button,
+.next-btn {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.step-form form button:hover,
+.buttons button:hover,
+.next-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Bouton CRÉER */
+.step-form form button {
+  width: auto;
+  min-width: 120px;
+  padding: 10px 22px;
+  margin-top: 5px;
+  margin-bottom: 25px; /* espace avec Suivant */
+}
+
+/* Container boutons */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;  
+  margin-top: 10px;
+}
+
+.buttons button {
+  flex: 1 1 calc(50% - 5px);
+}
+/* Bouton SUIVANT */
+.next-btn {
+  width: 100%;
+  margin-top: 10px;
+}
+/* Listes des éléments ajoutés */
+.list-items {
+  margin-bottom: 20px;
+  padding-left: 20px;
+}
+
+.list-items li {
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+/* Écran final */
+.final-screen {
+  text-align: center;
+}
+
+/* Cartes */
+.cards-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px;
+  gap: 20px;
+  flex-wrap: wrap; /* Responsive */
+}
+
+.card {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  color: white;
+  padding: 30px 20px;
+  border-radius: 15px;
+  width: 150px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  font-weight: bold;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Facultés list */
+.facultes-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px 24px;
+  padding: 0;
+  list-style: disc;
+  list-style-position: inside;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .wizard-container {
+    padding: 30px 20px;
+    margin: 30px auto;
+  }
+
+  .wizard-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .step-indicator {
+    margin-bottom: 25px;
+    gap: 5px;
+  }
+
+  .step-label {
+    font-size: 10px;
+  }
+
+  .cards-container {
+    gap: 15px;
+  }
+
+  .card {
+    width: 120px;
+    padding: 25px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wizard-container {
+    padding: 20px 15px;
+    margin: 20px auto;
+  }
+
+  .wizard-title {
+    font-size: 20px;
+  }
+
+  .step-form input,
+  .step-form select {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .buttons button,
+  .step-form form button {
+    padding: 10px;
+  }
+
+  .card {
+    width: 100px;
+    padding: 20px 10px;
+    font-size: 12px;
+  }
+
+  .facultes-list {
+    gap: 10px 12px;
+  }
+}

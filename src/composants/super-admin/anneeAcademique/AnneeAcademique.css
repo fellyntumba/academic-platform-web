@@ -1,0 +1,75 @@
+.annee-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 90%;            /* prend plus d’espace */
+  max-width: 720px;      /* élargi (520px → 720px) */
+  min-width: 400px;      /* reste lisible */
+  margin: 0 auto;        /* centrage horizontal */
+  animation: fadeIn 0.4s ease-in-out;
+  box-sizing: border-box;
+}
+
+.annee-card {
+  background: #ffffff;
+  padding: 35px;         /* un peu plus aéré */
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.annee-card h3 {
+  color: #0072ff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.annee-card button {
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #00e6ff, #0072ff);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;           /* bouton prend toute la largeur */
+}
+
+.annee-card.danger h3 {
+  color: #d32f2f;
+}
+
+.annee-card.danger button {
+  background: linear-gradient(90deg, #ff4b2b, #ff416c);
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 25px;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+  z-index: 1000;
+}
+
+.notification.success {
+  background: linear-gradient(90deg, #00c853, #00e676);
+}
+
+.notification.error {
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,142 @@
+.promotion-annee-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.promotion-annee-wrapper h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #0072ff;
+}
+
+/* Zone sélection code parcours */
+.promotion-annee-select-zone {
+  width: 100%;
+}
+
+.promotion-annee-select-zone select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.promotion-annee-select-zone select:focus {
+  border-color: #0072ff;
+  outline: none;
+}
+
+/* =========================
+   🔹 Cartes
+========================= */
+.promotion-annee-top-row {
+  display: flex;
+  gap: 20px;
+}
+
+.promotion-annee-top-row .promotion-annee-card {
+  flex: 1;
+}
+
+.promotion-annee-card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.promotion-annee-card h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.promotion-annee-card input,
+.promotion-annee-card select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.promotion-annee-card input:focus,
+.promotion-annee-card select:focus {
+  border-color: #0072ff;
+  outline: none;
+}
+
+.promotion-annee-card button {
+  background: linear-gradient(90deg, #00e6ff, #0072ff);
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.promotion-annee-card button:hover {
+  transform: translateY(-2px);
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 25px;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+  z-index: 1000;
+}
+
+.notification.success {
+  background: linear-gradient(90deg, #00c853, #00e676);
+}
+
+.notification.error {
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+}
+
+/* =========================
+   🔹 Animations
+========================= */
+.fade-in {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   📱 Responsive
+========================= */
+@media (max-width: 768px) {
+  .promotion-annee-top-row {
+    flex-direction: column;
+  }
+}

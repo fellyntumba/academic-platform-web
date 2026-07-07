@@ -1,0 +1,183 @@
+.suivi-notes-container {
+  width: 100%;
+  max-width: 1100px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.suivi-header {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* espace entre le titre et le select */
+  margin-bottom: 20px;
+}
+
+.suivi-header h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0072ff;
+}
+
+.table-wrapper {
+  max-height: 420px; /* 🔥 scroll interne */
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+.notes-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.notes-table th,
+.notes-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  vertical-align: top;
+}
+
+.notes-table th {
+  background: #f5f7fa;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+
+.notes-table tr:hover {
+  background: #f0f6ff;
+}
+
+.status {
+  font-weight: 600;
+}
+.suivi-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0072ff;
+  margin-bottom: 15px;
+}
+.status.sent {
+  color: #1b8a3c;
+}
+
+.status.not-sent {
+  color: #c62828;
+}
+.date-select {
+  width: 180px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+.date-select:focus {
+  outline: none;
+  border-color: #0072ff;
+}
+.stats {
+  font-size: 0.85rem;
+  margin-top: 4px;
+  font-weight: 500;
+  color: #444;
+}
+
+/* Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s forwards;
+}
+.semestre-select {
+  width: 180px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+.semestre-select:focus {
+  outline: none;
+  border-color: #0072ff;
+}
+
+.suivi-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* 🔥 pour éviter que ça casse */
+}
+
+/* ===== BOUTONS VALIDATION ===== */
+
+.validation-btn {
+  min-width: 130px;
+  padding: 8px 16px;
+  border-radius: 25px;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
+}
+
+/* 🔶 Non validées */
+.validation-btn.not-validated {
+  background: #fff4e5;
+  color: #e67e22;
+  border: 1px solid #f5cba7;
+}
+
+.validation-btn.not-validated:hover {
+  background: #fbe5d6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(230, 126, 34, 0.2);
+}
+
+/* 🟢 Validées */
+.validation-btn.validated {
+  background: #e8f8f1;
+  color: #1e8449;
+  border: 1px solid #a9dfbf;
+}
+
+.validation-btn.validated:hover {
+  background: #d5f5e3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(30, 132, 73, 0.2);
+}
+
+/* 🚫 Désactivé */
+.validation-btn:disabled {
+  background: #f0f0f0;
+  color: #9e9e9e;
+  border: 1px solid #e0e0e0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+.promotion-select {
+  width: 180px; /* largeur contrôlée */
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+.promotion-select:focus {
+  outline: none;
+  border-color: #0072ff;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

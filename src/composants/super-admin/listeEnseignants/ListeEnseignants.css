@@ -1,0 +1,106 @@
+.liste-enseignants-container {
+  width: 100%;
+  max-width: 1100px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.liste-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.liste-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.liste-header p {
+  margin-top: 3px;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.download-btn {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.download-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.liste-scrollable {
+  max-height: 350px;  /* 🔹 scroll interne */
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+}
+
+.liste-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.liste-scrollable::-webkit-scrollbar-thumb {
+  background: #0072ff;
+  border-radius: 4px;
+}
+
+.enseignants-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.enseignants-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.enseignants-table th,
+.enseignants-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eef2f7;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.enseignants-table th {
+  background: #f5f7fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.enseignants-table tr:hover {
+  background: #f0f6ff;
+}
+
+/* Animation fade-in */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

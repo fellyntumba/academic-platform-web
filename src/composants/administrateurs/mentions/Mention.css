@@ -1,0 +1,144 @@
+.mentions-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.mentions-wrapper h2 {
+  text-align: center;
+  font-size: 1.9rem;
+  color: #0072ff;
+}
+
+/* =========================================
+   TOP ROW
+========================================= */
+
+.top-row {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.top-row .mention-card {
+  flex: 1;
+  min-height: 260px;
+}
+
+/* =========================================
+   CARD
+========================================= */
+
+.mention-card {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  justify-content: center;
+}
+
+.mention-card h3 {
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.mention-card input,
+.mention-card select {
+  padding: 13px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mention-card input:focus,
+.mention-card select:focus {
+  border-color: #0072ff;
+  outline: none;
+}
+
+.mention-card button {
+  background: linear-gradient(90deg, #00e6ff, #0072ff);
+  border: none;
+  color: white;
+
+  padding: 12px;
+
+  border-radius: 24px;
+
+  font-weight: 600;
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.mention-card button:hover {
+  transform: translateY(-2px);
+}
+
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 25px;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+  z-index: 1000;
+}
+
+.notification.success {
+  background: linear-gradient(90deg, #00c853, #00e676);
+}
+
+.notification.error {
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .top-row {
+    flex-direction: column;
+  }
+
+  .top-row .mention-card {
+    min-height: auto;
+  }
+}
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
