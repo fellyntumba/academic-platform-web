@@ -80,7 +80,7 @@ const Step2 = ({ onNext }) => {
 
             {Data_fac.facultes.map((fac) => (
               <option key={fac.code} value={fac.code}>
-                {fac.code} - {fac.name}
+                {fac.code} - {fac.nom}
               </option>
             ))}
 

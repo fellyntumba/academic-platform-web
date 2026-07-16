@@ -143,7 +143,7 @@ const Promotions = ({ code_mention }) => {
             <option value="">-- Sélectionner un code-parcours --</option>
             {codeParcours.map((c) => (
               <option key={c.id_parcours} value={c.code_parcours}>
-                {c.code_parcours}
+                {c.code_parcours} 
               </option>
             ))}
           </select>
@@ -175,3 +175,5 @@ const Promotions = ({ code_mention }) => {
 };
 
 export default Promotions;
+
+//test

@@ -1,145 +1,126 @@
 {
   "facultes": [
     {
-      "code": "PLY",
-      "name": "Polytechnique",
+      "code": "INF",
+      "nom": "Informatique",
       "mentions": [
         {
-          "code": "CIV",
-          "name": "Génie civil",
+          "code": "GI",
+          "nom": "Génie Informatique",
           "parcours": [
-            {"code": "BAT", "name": "Bâtiment"},
-            {"code": "TRA", "name": "Travaux publics"},
-            {"code": "HYD", "name": "Hydraulique"},
-            {"code": "GEO", "name": "Géotechnique"} 
-          ]
-        },
-        {
-          "code": "MEC",
-          "name": "Génie mécanique",
-          "parcours": [
-            {"code": "AUT", "name": "Automatique"},
-            {"code": "ROB", "name": "Robotique"},
-            {"code": "THR", "name": "Thermique"},
-            {"code": "MNT", "name": "Maintenance industrielle"}
-          ]
-        },
-        {
-          "code": "ELE",
-          "name": "Génie électrique",
-          "parcours": [
-            {"code": "ELE", "name": "Electrotechnique"},
-            {"code": "TEL", "name": "Télécommunications"},
-            {"code": "ENE", "name": "Énergies renouvelables"}
-          ]
-        },
-        {
-          "code": "IND",
-          "name": "Génie industriel",
-          "parcours": [
-            {"code": "LOG", "name": "Logistique"},
-            {"code": "QSE", "name": "Qualité sécurité environnement"},
-            {"code": "PRO", "name": "Production industrielle"}
+            {
+              "code": "GI",
+              "nom": "Licence Génie Informatique",
+              "niveaux": [
+                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
+                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
+                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
+                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+              ]
+            },
+            {
+              "code": "IA",
+              "nom": "Master Intelligence Artificielle",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            },
+            {
+              "code": "GL",
+              "nom": "Master Génie Logiciel",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            },
+            {
+              "code": "RS",
+              "nom": "Master Réseaux et Sécurité",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            },
+            {
+              "code": "DS",
+              "nom": "Master Data Science",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            }
           ]
         }
       ]
     },
-    { 
+
+    {
       "code": "SCI",
-      "name": "Sciences",
+      "nom": "Sciences",
       "mentions": [
         {
-          "code": "MATH-INFO",
-          "name": "Mathématiques et Informatique",
+          "code": "MAT",
+          "nom": "Mathématiques",
           "parcours": [
-            {"code": "INFO", "name": "Informatique"},
-            {"code": "MATH", "name": "Mathématiques"}
+            {
+              "code": "MAT",
+              "nom": "Licence Mathématiques",
+              "niveaux": [
+                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
+                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
+                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
+                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+              ]
+            },
+            {
+              "code": "STA",
+              "nom": "Master Statistiques",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            },
+            {
+              "code": "ACT",
+              "nom": "Master Actuariat",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            }
           ]
         },
         {
           "code": "PHY",
-          "name": "Physique",
+          "nom": "Physique",
           "parcours": [
-            {"code": "MEC", "name": "Mécanique"},
-            {"code": "ELE", "name": "Électronique"},
-            {"code": "NRG", "name": "Énergies"}
-          ]
-        },
-        {
-          "code": "CHM",
-          "name": "Chimie",
-          "parcours": [
-            {"code": "ORG", "name": "Chimie organique"},
-            {"code": "IND", "name": "Chimie industrielle"},
-            {"code": "ENV", "name": "Chimie environnementale"}
-          ]
-        }
-      ]
-    },
-
-    {
-      "code": "INF",
-      "name": "Informatique",
-      "mentions": [
-        {
-          "code": "GEN",
-          "name": "Génie Informatique",
-          "parcours": [
-            {"code": "DEV", "name": "Développement logiciel"},
-            {"code": "WEB", "name": "Développement Web"},
-            {"code": "MOB", "name": "Développement Mobile"}
-          ]
-        },
-        {
-          "code": "IAI",
-          "name": "Intelligence Artificielle",
-          "parcours": [
-            {"code": "MLA", "name": "Machine Learning"},
-            {"code": "DTS", "name": "Data Science"},
-            {"code": "ROB", "name": "Robotique"}
-          ]
-        },
-        {
-          "code": "RES",
-          "name": "Réseaux",
-          "parcours": [
-            {"code": "TEL", "name": "Télécommunications"},
-            {"code": "SEC", "name": "Cybersécurité"},
-            {"code": "ADM", "name": "Administration systèmes"}
-          ]
-        }
-      ]
-    },
-
-    {
-      "code": "MED",
-      "name": "Médecine",
-      "mentions": [
-        {
-          "code": "MED",
-          "name": "Médecine Générale",
-          "parcours": [
-            {"code": "CLN", "name": "Clinique"},
-            {"code": "URG", "name": "Urgences"},
-            {"code": "SAN", "name": "Santé publique"}
-          ]
-        },
-        {
-          "code": "PHA",
-          "name": "Pharmacie",
-          "parcours": [
-            {"code": "PHC", "name": "Pharmacie clinique"},
-            {"code": "PHI", "name": "Pharmacie industrielle"},
-            {"code": "PHB", "name": "Pharmacologie"}
-          ]
-        },
-        {
-          "code": "DEN",
-          "name": "Médecine Dentaire",
-          "parcours": [
-            {"code": "ORT", "name": "Orthodontie"},
-            {"code": "PRO", "name": "Prothèse dentaire"},
-            {"code": "CHI", "name": "Chirurgie dentaire"}
+            {
+              "code": "PHY",
+              "nom": "Licence Physique",
+              "niveaux": [
+                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
+                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
+                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
+                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+              ]
+            },
+            {
+              "code": "ENE",
+              "nom": "Master Énergies Renouvelables",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            },
+            {
+              "code": "ELE",
+              "nom": "Master Électronique",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            }
           ]
         }
       ]
@@ -147,141 +128,82 @@
 
     {
       "code": "ECO",
-      "name": "Sciences Économiques",
+      "nom": "Sciences Économiques et de Gestion",
       "mentions": [
         {
           "code": "ECO",
-          "name": "Économie",
+          "nom": "Économie",
           "parcours": [
-            {"code": "DEV", "name": "Économie du développement"},
-            {"code": "INT", "name": "Économie internationale"},
-            {"code": "PUB", "name": "Économie publique"}
+            {
+              "code": "ECO",
+              "nom": "Licence Économie",
+              "niveaux": [
+                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
+                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
+                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
+                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+              ]
+            },
+            {
+              "code": "FIN",
+              "nom": "Master Finance",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            },
+            {
+              "code": "DEV",
+              "nom": "Master Économie du Développement",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            }
           ]
         },
         {
-          "code": "FIN",
-          "name": "Finance",
+          "code": "GES",
+          "nom": "Gestion",
           "parcours": [
-            {"code": "BNK", "name": "Banque"},
-            {"code": "MRK", "name": "Marchés financiers"},
-            {"code": "INS", "name": "Assurance"}
-          ]
-        }
-      ]
-    },
-
-    {
-      "code": "GES",
-      "name": "Gestion",
-      "mentions": [
-        {
-          "code": "MGT",
-          "name": "Management",
-          "parcours": [
-            {"code": "ENT", "name": "Entrepreneuriat"},
-            {"code": "STR", "name": "Stratégie"},
-            {"code": "PRJ", "name": "Gestion de projet"}
-          ]
-        },
-        {
-          "code": "COM",
-          "name": "Comptabilité",
-          "parcours": [
-            {"code": "CCA", "name": "Comptabilité contrôle audit"},
-            {"code": "FIS", "name": "Fiscalité"},
-            {"code": "AUD", "name": "Audit"}
-          ]
-        }
-      ]
-    },
-
-    {
-      "code": "DRT",
-      "name": "Droit",
-      "mentions": [
-        {
-          "code": "DPR",
-          "name": "Droit Privé",
-          "parcours": [
-            {"code": "AFF", "name": "Droit des affaires"},
-            {"code": "CIV", "name": "Droit civil"},
-            {"code": "SOC", "name": "Droit social"}
-          ]
-        },
-        {
-          "code": "DPB",
-          "name": "Droit Public",
-          "parcours": [
-            {"code": "ADM", "name": "Droit administratif"},
-            {"code": "INT", "name": "Droit international"},
-            {"code": "CON", "name": "Droit constitutionnel"}
-          ]
-        }
-      ]
-    },
-
-    {
-      "code": "POL",
-      "name": "Sciences Politiques",
-      "mentions": [
-        {
-          "code": "POL",
-          "name": "Science Politique",
-          "parcours": [
-            {"code": "REL", "name": "Relations internationales"},
-            {"code": "GOU", "name": "Gouvernance"},
-            {"code": "DIP", "name": "Diplomatie"}
-          ]
-        }
-      ]
-    },
-
-    {
-      "code": "LET",
-      "name": "Lettres",
-      "mentions": [
-        {
-          "code": "LFR",
-          "name": "Lettres Françaises",
-          "parcours": [
-            {"code": "LIT", "name": "Littérature"},
-            {"code": "LIN", "name": "Linguistique"},
-            {"code": "CRI", "name": "Critique littéraire"}
-          ]
-        }
-      ]
-    },
-
-    {
-      "code": "EDU",
-      "name": "Sciences de l'Éducation",
-      "mentions": [
-        {
-          "code": "PED",
-          "name": "Pédagogie",
-          "parcours": [
-            {"code": "ENS", "name": "Enseignement"},
-            {"code": "TEC", "name": "Technologies éducatives"},
-            {"code": "ADM", "name": "Administration scolaire"}
-          ]
-        }
-      ]
-    },
-
-    {
-      "code": "AGR",
-      "name": "Agronomie",
-      "mentions": [
-        {
-          "code": "AGR",
-          "name": "Agronomie",
-          "parcours": [
-            {"code": "PRO", "name": "Production végétale"},
-            {"code": "ANI", "name": "Production animale"},
-            {"code": "SOL", "name": "Science du sol"}
+            {
+              "code": "GES",
+              "nom": "Licence Gestion",
+              "niveaux": [
+                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
+                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
+                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
+                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+              ]
+            },
+            {
+              "code": "MGT",
+              "nom": "Master Management",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            },
+            {
+              "code": "AUD",
+              "nom": "Master Audit",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            },
+            {
+              "code": "RH",
+              "nom": "Master Gestion des Ressources Humaines",
+              "niveaux": [
+                { "niveau": 4, "code": "M1", "nom": "Master 1" },
+                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+              ]
+            }
           ]
         }
       ]
     }
   ]
 }
+

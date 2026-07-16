@@ -299,7 +299,7 @@ const PromotionAnnee = ({ code_mention }) => {
             {promotionsAnneePassee.map((p, index) => (
               <option
                 key={index}
-                value={p.nom_promotion}
+                value={p.nom_promotion} 
               />
             ))}
           </datalist>

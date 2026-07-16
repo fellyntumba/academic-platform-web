@@ -192,7 +192,7 @@ const Mention = ({ nomFaculte }) => {
                   key={m.code}
                   value={m.code}
                 >
-                  {m.code} - {m.name}
+                  {m.code} - {m.nom}
                 </option>
 
               ))}
