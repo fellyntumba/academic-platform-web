@@ -625,7 +625,7 @@ const CreateUE = ({ code_mention }) => {
                   value={c.credit}
                   onChange={(e) => updateCours(i, "credit", Number(e.target.value))}
                 >
-                  {Array.from({ length: 10 }, (_, i) => i + 1).map(cr => (
+                  {Array.from({ length: 20 }, (_, i) => i + 1).map(cr => (
                     <option key={cr} value={cr}>{cr}</option>
                   ))}
                 </select>

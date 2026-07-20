@@ -310,7 +310,7 @@ const ChefMention = () => {
           {activeView === "sessions" && <CreateSession code_mention={infoUser?.code_mention}/>}
           {activeView === "unites-ens" && <CreateUE code_mention={infoUser?.code_mention} />}
           {activeView === "affecter-cours" && <AffecterCours code_mention={infoUser?.code_mention}/>}
-          {activeView === "liste-cours-enseignants" && <ListeCoursEnseignants />}
+          {activeView === "liste-cours-enseignants" && <ListeCoursEnseignants code_mention={infoUser?.code_mention}/>}
           {activeView === "enregistrer-etudiants-inscrits" && <EtudiantsInscrits code_mention={infoUser?.code_mention} />}
           {activeView === "enregistrer-etudiants-ordres" && <EtudiantsOrdres />}
           {activeView === "suivi-notes" && <SuiviEnvoiNotes code_mention={infoUser?.code_mention}/>}

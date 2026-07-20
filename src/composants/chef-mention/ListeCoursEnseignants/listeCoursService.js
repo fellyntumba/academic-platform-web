@@ -1,26 +1,50 @@
 import { apiFetch } from "../apiService";
 
-export const getCoursFaculteAnneeActiveService = async (nomFaculte) => {
+const BASE_URL = "/administration";
+
+/* =========================
+   Récupérer les affectations des cours d'une mention
+========================= */
+export async function getAffectationsCoursByMention({code_mention}) {
   try {
-    const response = await apiFetch("/administration/cours/faculte/annee-active",
+
+    const res = await apiFetch(
+      `${BASE_URL}/list-cours-enseign-by-mention/get`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nomFaculte }),
+        body: JSON.stringify({
+          code_mention,
+        }),
       }
     );
 
-    const data = await response.json();
+    const data = await res.json();
 
-    if (!response.ok) {
-      throw new Error(data.message || "Erreur lors du chargement des cours.");
+    if (!res.ok) {
+      return {
+        success: false,
+        message:
+          data.message ||
+          "Erreur lors de la récupération des affectations.",
+        data: [],
+      };
     }
 
-    return data.data;
+    return {
+        success: true,
+        annee_academique: data.annee_academique,
+        data: data.data
+    };
 
   } catch (error) {
-    throw error;
+
+    console.error(error);
+
+    return {
+      success: false,
+      message: "Erreur réseau",
+      data: [],
+    };
+
   }
-};
+}
