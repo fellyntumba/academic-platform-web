@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./AffecterCours.css";
+
 import {
   getActiveEnseignantsService,
   affecterCoursService,
   getCoursByMentionService
 } from "./affecterService";  
+
 
 const AffecterCours = ({ code_mention }) => {
 
@@ -13,13 +15,14 @@ const AffecterCours = ({ code_mention }) => {
 
   const [selectedMatricule, setSelectedMatricule] = useState("");
   const [selectedCoursID, setSelectedCoursID] = useState("");
-  const [semestre, setSemestre] = useState("");
+  const [idSemestre, setIdSemestre] = useState("");
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); 
 
+
   /* =========================
-     Notification comme Parcours
+     Notification
   ========================= */
 
   const showMessage = (msg, type = "success") => {
@@ -34,6 +37,7 @@ const AffecterCours = ({ code_mention }) => {
 
   };
 
+
   /* =========================
      Charger données
   ========================= */
@@ -45,24 +49,38 @@ const AffecterCours = ({ code_mention }) => {
       try {
 
         const enseignantsData = await getActiveEnseignantsService();
+
         setEnseignants(enseignantsData);
 
-        const coursData = await getCoursByMentionService({ code_mention });
+
+        const coursData = await getCoursByMentionService({ 
+          code_mention 
+        });
+
         const coursList = coursData.data || coursData;
 
         setCours(coursList);
 
+
       } catch (error) {
 
-        showMessage("Erreur chargement des données", "error");
+        showMessage(
+          "Erreur chargement des données",
+          "error"
+        );
 
       }
 
     };
 
-    loadData();
+
+    if(code_mention){
+      loadData();
+    }
+
 
   }, [code_mention]);
+
 
 
   /* =========================
@@ -71,111 +89,259 @@ const AffecterCours = ({ code_mention }) => {
 
   const handleAffecter = async () => {
 
-    if (!selectedMatricule || !selectedCoursID) {
-      return showMessage("Veuillez sélectionner un enseignant et un cours.", "error");
+
+    if (
+      !selectedMatricule || 
+      !selectedCoursID ||
+      !idSemestre
+    ) {
+
+      return showMessage(
+        "Veuillez sélectionner un enseignant et un cours.",
+        "error"
+      );
+
     }
+
 
     try {
 
+
       const res = await affecterCoursService({
+
         selectedMatricule,
-        id_cours: selectedCoursID,
-        semestre
+
+        id_cours: Number(selectedCoursID),
+
+        id_semestre: Number(idSemestre)
+
       });
 
-      showMessage(res.message, "success");
+
+
+      showMessage(
+        res.message || "Cours affecté avec succès.",
+        "success"
+      );
+
 
       setSelectedCoursID("");
+
       setSelectedMatricule("");
 
-    } catch (error) {
+      setIdSemestre("");
 
-      showMessage(error.message, "error");
+
+    } catch(error) {
+
+
+      showMessage(
+        error.message,
+        "error"
+      );
 
     }
 
+
   };
+
+
+
+  // console.log("Cours disponibles :", cours);
+
+
 
   return (
 
     <div className="affecter-container fade-in">
 
-      <h2>Affecter un cours à un enseignant</h2>
+
+      <h2>
+        Affecter un cours à un enseignant
+      </h2>
+
 
       {message && (
+
         <div className={`notification ${messageType}`}>
+
           {message}
+
         </div>
+
       )}
+
+
+
 
       {/* Enseignant */}
 
       <div className="form-group">
 
-        <label>Choisir l'enseignant :</label>
+
+        <label>
+          Choisir l'enseignant :
+        </label>
+
 
         <select
+
           value={selectedMatricule}
-          onChange={(e) => setSelectedMatricule(e.target.value)}
+
+          onChange={(e)=>setSelectedMatricule(e.target.value)}
+
         >
 
-          <option value="">-- Sélectionner un enseignant--</option>
+          <option value="">
+            -- Sélectionner un enseignant --
+          </option>
 
-          {enseignants.map((e) => (
-            <option key={e.id_enseignant} value={e.matricule}>
-              {e.nom} ({e.matricule})
+
+          {enseignants.map((e)=>(
+
+            <option
+
+              key={e.id_enseignant}
+
+              value={e.matricule}
+
+            >
+
+              {e.titre} {e.nom} ({e.matricule})
+
+
             </option>
+
+
           ))}
+
 
         </select>
 
+
       </div>
+
+
+
 
 
       {/* Cours */}
 
       <div className="form-group">
 
-        <label>Choisir le cours :</label>
+
+        <label>
+          Choisir le cours :
+        </label>
+
 
         <select
+
+
           value={selectedCoursID}
-          onChange={(e) => {
+
+
+          onChange={(e)=>{
+
 
             const idCoursSelectionne = e.target.value;
+
+
             setSelectedCoursID(idCoursSelectionne);
 
+
+
             const coursSelectionne = cours.find(
-              (c) => c.id_cours === Number(idCoursSelectionne)
+
+              (c)=>
+
+                c.id_cours === Number(idCoursSelectionne)
+
             );
 
-            if (coursSelectionne) {
-              setSemestre(coursSelectionne.semestre);
+
+
+            if(coursSelectionne){
+
+
+              setIdSemestre(
+                coursSelectionne.id_semestre
+              );
+
+
             }
 
+
+
           }}
+
+
         >
 
-          <option value="">-- Sélectionner un cours--</option>
 
-          {cours.map((c) => (
-            <option key={c.id_cours} value={c.id_cours}>
-              {c.nom_cours} | {c.nom_promotion} | {c.semestre}
+          <option value="">
+
+            -- Sélectionner un cours --
+
+          </option>
+
+
+
+
+          {cours.map((c)=>(
+
+
+            <option
+
+              key={c.id_cours}
+
+              value={c.id_cours}
+
+            >
+
+              {c.nom_cours} 
+              {" | "}
+              {c.nom_promotion}
+              {" | "}
+              {c.semestre}
+
+
             </option>
+
+
           ))}
+
+
 
         </select>
 
+
       </div>
 
-      <button className="affecter-btn" onClick={handleAffecter}>
+
+
+
+
+      <button
+
+        className="affecter-btn"
+
+        onClick={handleAffecter}
+
+      >
+
         Affecter le cours
+
       </button>
 
+
+
     </div>
+
 
   );
 
 };
+
 
 export default AffecterCours;

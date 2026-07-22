@@ -395,7 +395,7 @@ const handleEnvoyerCotes = async () => {
 const handleValider = (e) => {
 
       e.preventDefault();
-
+ 
       if (!selectMatPromo) return;
 
       // chercher l'étudiant sélectionné

@@ -43,7 +43,7 @@ export const getCoursByMentionService = async ({code_mention}) => {
 export const affecterCoursService = async ({
   selectedMatricule,
   id_cours,
-  semestre
+  id_semestre
 }) => {
 
   const response = await apiFetch("/administration/affecter-cours", {
@@ -54,7 +54,7 @@ export const affecterCoursService = async ({
     body: JSON.stringify({
       selectedMatricule,
       id_cours,
-      semestre
+      id_semestre
     })
   });
 
