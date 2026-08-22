@@ -9,7 +9,7 @@ export async function getContext() {
     }
 
     const data = await res.json();
-
+     
     return data;
 
   } catch (error) {

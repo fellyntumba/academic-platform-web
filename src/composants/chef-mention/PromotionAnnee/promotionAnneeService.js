@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiService"; // ton utilitaire fetch
+import { apiFetch } from "../../accueils/apiService"; // ton utilitaire fetch
 
 const BASE_URL = "/administration";
 
@@ -19,7 +19,7 @@ export async function getParcours({code_mention}) {
     console.error(error);
     return { success: false, message: "Erreur réseau" };
   }
-}
+} 
 
 // Récupérer les niveaux
 export const getNiveauxParCodeParcours = async ({code_parcours}) => {
@@ -99,7 +99,7 @@ export const getPromotionVersionByCodeService = async ({ code_parcours }) => {
 ========================= */
 export const getPromotionVersionByCodeAnneePasseeService = async ({ code_parcours }) => {
   try {
-
+ 
     const response = await apiFetch(`${BASE_URL}/promo-version/code-parcours/annee-passee`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -120,7 +120,7 @@ export const getPromotionVersionByCodeAnneePasseeService = async ({ code_parcour
       data: []
     };
   }
-};
+}; 
 
 
 /* =========================
@@ -156,3 +156,8 @@ export const updatePromotionVersionNameService = async ({
     };
   }
 };
+
+
+
+
+ 

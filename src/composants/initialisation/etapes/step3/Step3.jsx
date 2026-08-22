@@ -1,5 +1,7 @@
+
 import React, { useEffect, useState } from "react";
 import { getCodeFac, createAdminFac } from "./service";
+import { isAuthenticated, logout } from "../../../accueils/serviceAuth";
 // import "./Step5.css"; // on ajoutera le CSS pour l'animation
 
 const Step3 = ({ onFinish }) => {
@@ -11,13 +13,13 @@ const Step3 = ({ onFinish }) => {
   const [showSuccess, setShowSuccess] = useState(false); // 🌟 état pour succès
 
   useEffect(() => {
-    const load = async () => {
+    const load = async () => { 
       const result = await getCodeFac();
       if (result.success) setFacultes(result.data);
       else showMessage(result.message, "error");
       };
     load();
-  }, []);
+  }, []); 
 
   // 🔹 BOUTON 1 : AJOUTER
   const handleAddAdmin = async (e) => {
@@ -45,11 +47,16 @@ const Step3 = ({ onFinish }) => {
     // 🌟 Afficher le message de succès
     setShowSuccess(true);
 
+    //Deconnecter le S. Admin
+    await logout();
+    
+
     // Simuler un petit délai de 2,5 s avant de rediriger
     setTimeout(async () => {
       await onFinish();
     }, 2500);
   }; 
+
 
   return (
     <div className="step-form">
@@ -87,7 +94,7 @@ const Step3 = ({ onFinish }) => {
           <li key={a.id_admin}>
             {a.nom} — {a.email}
           </li>
-        ))}
+        ))} 
       </ul>
 
       <div className="buttons">
@@ -109,4 +116,5 @@ const Step3 = ({ onFinish }) => {
   );
 };
 
-export default Step3;
+export default Step3
+

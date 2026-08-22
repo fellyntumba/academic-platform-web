@@ -1,4 +1,4 @@
-import { apiFetch } from "./authentification/apiService";
+import { apiFetch } from "../accueils/apiService";
 
 
 // Récupérer l'année académique en cours
@@ -13,6 +13,8 @@ export const getAnneeAcademiqueEnCoursService = async () => {
     );
 
     const data = await response.json();
+  
+    
 
     if (!response.ok) {
       throw new Error(data.message || "Erreur lors de la récupération de l'année académique.");

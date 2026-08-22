@@ -1,4 +1,4 @@
-import { apiFetch } from "../../authentification/apiService"; // ton fichier avec apiFetch
+import { apiFetch } from "../../../accueils/apiService"; // ton fichier avec apiFetch
 
 
 export const createAdminFac = async ({ code_fac, nom, email }) => {
@@ -16,7 +16,7 @@ export const createAdminFac = async ({ code_fac, nom, email }) => {
   return res.json(); 
 };
 
- 
+  
 /* =========================
    Récupérer toutes les facultés
 ========================= */

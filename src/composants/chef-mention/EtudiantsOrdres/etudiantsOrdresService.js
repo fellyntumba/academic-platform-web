@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiService";
+import { apiFetch } from "../../accueils/apiService";
 
 /**
  * Envoyer un fichier Excel pour importer les étudiants
@@ -11,7 +11,7 @@ export const importEtudiantsOrdres = async (file) => {
 
     // Créer un FormData pour envoyer le fichier
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", file); 
 
     // Appel API
     const response = await apiFetch("/administration/situation-financiere/import", {
@@ -33,3 +33,43 @@ export const importEtudiantsOrdres = async (file) => {
   }
 };
 
+
+
+// Enregistrer la situation financière d'un étudiant
+export const enregistrerSituationFinanciereService = async ({
+  matricule,
+}) => {
+
+  try {
+
+    const response = await apiFetch(
+      "/administration/situation-financiere",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          matricule: matricule.trim().toUpperCase(),
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+        "Erreur lors de l'enregistrement de la situation financière."
+      );
+    }
+
+    return data;
+
+  } catch (error) {
+
+    throw error;
+
+  }
+
+};

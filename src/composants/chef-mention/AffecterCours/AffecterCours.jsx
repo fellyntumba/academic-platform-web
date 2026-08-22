@@ -4,8 +4,10 @@ import "./AffecterCours.css";
 import {
   getActiveEnseignantsService,
   affecterCoursService,
-  getCoursByMentionService
+  getCoursByMentionService,
+  reconduireAffectationsService
 } from "./affecterService";  
+import { data } from "react-router-dom";
 
 
 const AffecterCours = ({ code_mention }) => {
@@ -140,12 +142,59 @@ const AffecterCours = ({ code_mention }) => {
         "error"
       );
 
-    }
+    } 
 
 
   };
 
 
+  /* =========================
+    Reconduire affectations
+  ========================= */
+  const handleReconduireAffectations = async () => {
+    if (!code_mention) {
+
+      return showMessage(
+        "Code mention introuvable.",
+        "error"
+      );
+
+    }
+
+    const confirmation = window.confirm(
+      "Voulez-vous vraiment reconduire les affectations de l'année passée pour cette mention ?"
+    );
+
+    if (!confirmation) {
+      return;
+    }
+
+    try {
+
+      const res = await reconduireAffectationsService({
+        code_mention
+      });
+
+      showMessage(
+        `Reconduction terminée :
+
+        ${res.data.inserts || 0} affectation(s) maintenue(s),
+        ${res.data.updates || 0} affectation(s) mise(s) à jour,
+        ${res.data.ignores || 0} affectation(s) ignorée(s).
+        `,
+
+        "success"
+
+      );
+
+    } catch(error) {
+      showMessage(
+        error.message ||
+        "Erreur lors de la reconduction des affectations.",
+        "error"
+      );
+    }
+  };
 
   // console.log("Cours disponibles :", cours);
 
@@ -157,7 +206,7 @@ const AffecterCours = ({ code_mention }) => {
 
 
       <h2>
-        Affecter un cours à un enseignant
+        Gestion des affectations des cours aux enseignants
       </h2>
 
 
@@ -285,11 +334,7 @@ const AffecterCours = ({ code_mention }) => {
 
           </option>
 
-
-
-
           {cours.map((c)=>(
-
 
             <option
 
@@ -304,35 +349,23 @@ const AffecterCours = ({ code_mention }) => {
               {c.nom_promotion}
               {" | "}
               {c.semestre}
-
-
             </option>
-
-
           ))}
-
-
 
         </select>
 
 
       </div>
 
+      <div className="actions-buttons">
+        <button className="affecter-btn" onClick={handleAffecter}>
+          Affecter le cours
+        </button>
 
-
-
-
-      <button
-
-        className="affecter-btn"
-
-        onClick={handleAffecter}
-
-      >
-
-        Affecter le cours
-
-      </button>
+        <button className="reconduire-btn" onClick={handleReconduireAffectations}>
+          Reconduire les affectations de l'année passée
+        </button>
+      </div>
 
 
 

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./Promotions.css";
 import {
   getParcours,
-  creerNiveauPromotion
+  creerNiveauPromotion,
+  getNiveauxParcoursConfig
 } from "./promotionservice"; 
 
 const Promotions = ({ code_mention }) => {
@@ -13,12 +14,13 @@ const Promotions = ({ code_mention }) => {
   const [codeParcours, setCodeParcours] = useState([]);
   const [parcour, setParcour] = useState("");
   const [niveauCreate, setNiveauCreate] = useState("");
+  const [niveaux, setNiveaux] = useState([]);
 
   // 🔹 Désactivation
   const [selectedIdDeactivate, setSelectedIdDeactivate] = useState("");
   const [niveauDeactivate, setNiveauDeactivate] = useState("");
-
-  /* =====================================================
+ 
+  /* ====================================================
       🔹 Charger les codes parcours
   ====================================================== */
   useEffect(() => {
@@ -35,7 +37,38 @@ const Promotions = ({ code_mention }) => {
     if (code_mention) fetchParcours();
   }, [code_mention]);
 
-  const niveaux = Array.from({ length: 11 }, (_, i) => i); // 0 à 10
+
+  // Récupérer les niveaux d'un parcours configurés pour une université
+  useEffect(() => {
+    const loadParcoursConfig = async () => {
+      try {
+        const data = await getNiveauxParcoursConfig({
+          code_parcours: parcour
+        });
+
+        setNiveaux(Array.isArray(data) ? data : []);
+
+      } catch (error) {
+        console.error("Erreur chargement configuration :", error);
+
+        setNiveaux([]);
+
+        alert(
+          "Erreur chargement configuration : " +
+          error.message
+        );
+      }
+    };
+
+    if (parcour) {
+      loadParcoursConfig();
+    } else {
+      setNiveaux([]);
+    }
+
+  }, [parcour]);
+
+
 
   /* =========================
      🔔 Notification
@@ -117,8 +150,8 @@ const Promotions = ({ code_mention }) => {
           >
             <option value="">-- Sélectionner un niveau --</option>
             {niveaux.map((n) => (
-              <option key={n} value={n}>
-                {n}
+              <option key={n.niveau} value={n.niveau}>
+                {n.niveau} | {n.nom}
               </option>
             ))}
           </select>

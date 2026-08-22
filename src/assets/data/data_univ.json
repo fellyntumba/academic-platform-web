@@ -1,203 +1,615 @@
 {
   "facultes": [
     {
-      "code": "INF",
       "nom": "Informatique",
+      "code": "INF",
       "mentions": [
         {
-          "code": "GI",
           "nom": "Génie Informatique",
+          "code": "GI",
+          "frais": [
+            {
+              "type_tarif": "FRAIS_ACADEMIQUES",
+              "libelle": "Frais académiques"
+            },
+            {
+              "type_tarif": "FRAIS_INSCRIPTION",
+              "libelle": "Frais d'inscription"
+            },
+            {
+              "type_tarif": "FRAIS_REINSCRIPTION",
+              "libelle": "Frais de réinscription"
+            },
+            {
+              "type_tarif": "FRAIS_ENROLEMENT",
+              "libelle": "Frais d'enrôlement"
+            },
+            {
+              "type_tarif": "FRAIS_EXAMEN",
+              "libelle": "Frais d'examen"
+            },
+            {
+              "type_tarif": "FRAIS_STAGE",
+              "libelle": "Frais de stage"
+            },
+            {
+              "type_tarif": "FRAIS_MEMOIRE",
+              "libelle": "Frais de mémoire"
+            },
+            {
+              "type_tarif": "FRAIS_ATTESTATION_REUSSITE",
+              "libelle": "Frais d'attestation de réussite"
+            },
+            {
+              "type_tarif": "FRAIS_RELEVE",
+              "libelle": "Frais de relevé de notes"
+            },
+            {
+              "type_tarif": "FRAIS_DIPLOME",
+              "libelle": "Frais de diplôme"
+            },
+            {
+              "type_tarif": "AUTRES",
+              "libelle": "Autres frais"
+            }
+          ],
           "parcours": [
             {
-              "code": "GI",
               "nom": "Licence Génie Informatique",
+              "code": "LGI",
               "niveaux": [
-                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
-                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
-                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
-                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+                {
+                  "nom": "Préparatoire",
+                  "code": "PREPA",
+                  "niveau": 0
+                },
+                {
+                  "nom": "Licence 1",
+                  "code": "L1",
+                  "niveau": 1
+                },
+                {
+                  "nom": "Licence 2",
+                  "code": "L2",
+                  "niveau": 2
+                },
+                {
+                  "nom": "Licence 3",
+                  "code": "L3",
+                  "niveau": 3
+                }
               ]
             },
             {
-              "code": "IA",
               "nom": "Master Intelligence Artificielle",
+              "code": "MIA",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             },
             {
-              "code": "GL",
               "nom": "Master Génie Logiciel",
+              "code": "MGL",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             },
             {
-              "code": "RS",
               "nom": "Master Réseaux et Sécurité",
+              "code": "MRS",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             },
             {
-              "code": "DS",
               "nom": "Master Data Science",
+              "code": "MDS",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             }
           ]
         }
       ]
     },
-
     {
-      "code": "SCI",
       "nom": "Sciences",
+      "code": "SCI",
       "mentions": [
         {
-          "code": "MAT",
           "nom": "Mathématiques",
+          "code": "MAT",
+          "frais": [
+            {
+              "type_tarif": "FRAIS_ACADEMIQUES",
+              "libelle": "Frais académiques"
+            },
+            {
+              "type_tarif": "FRAIS_INSCRIPTION",
+              "libelle": "Frais d'inscription"
+            },
+            {
+              "type_tarif": "FRAIS_REINSCRIPTION",
+              "libelle": "Frais de réinscription"
+            },
+            {
+              "type_tarif": "FRAIS_ENROLEMENT",
+              "libelle": "Frais d'enrôlement"
+            },
+            {
+              "type_tarif": "FRAIS_EXAMEN",
+              "libelle": "Frais d'examen"
+            },
+            {
+              "type_tarif": "FRAIS_STAGE",
+              "libelle": "Frais de stage"
+            },
+            {
+              "type_tarif": "FRAIS_MEMOIRE",
+              "libelle": "Frais de mémoire"
+            },
+            {
+              "type_tarif": "FRAIS_ATTESTATION_REUSSITE",
+              "libelle": "Frais d'attestation de réussite"
+            },
+            {
+              "type_tarif": "FRAIS_RELEVE",
+              "libelle": "Frais de relevé de notes"
+            },
+            {
+              "type_tarif": "FRAIS_DIPLOME",
+              "libelle": "Frais de diplôme"
+            },
+            {
+              "type_tarif": "AUTRES",
+              "libelle": "Autres frais"
+            }
+          ],
           "parcours": [
             {
-              "code": "MAT",
               "nom": "Licence Mathématiques",
+              "code": "LMAT",
               "niveaux": [
-                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
-                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
-                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
-                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+                {
+                  "nom": "Préparatoire",
+                  "code": "PREPA",
+                  "niveau": 0
+                },
+                {
+                  "nom": "Licence 1",
+                  "code": "L1",
+                  "niveau": 1
+                },
+                {
+                  "nom": "Licence 2",
+                  "code": "L2",
+                  "niveau": 2
+                },
+                {
+                  "nom": "Licence 3",
+                  "code": "L3",
+                  "niveau": 3
+                }
               ]
             },
             {
-              "code": "STA",
               "nom": "Master Statistiques",
+              "code": "LSTA",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             },
             {
-              "code": "ACT",
               "nom": "Master Actuariat",
+              "code": "MACT",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             }
           ]
         },
         {
-          "code": "PHY",
           "nom": "Physique",
+          "code": "PHY",
+          "frais": [
+            {
+              "type_tarif": "FRAIS_ACADEMIQUES",
+              "libelle": "Frais académiques"
+            },
+            {
+              "type_tarif": "FRAIS_INSCRIPTION",
+              "libelle": "Frais d'inscription"
+            },
+            {
+              "type_tarif": "FRAIS_REINSCRIPTION",
+              "libelle": "Frais de réinscription"
+            },
+            {
+              "type_tarif": "FRAIS_ENROLEMENT",
+              "libelle": "Frais d'enrôlement"
+            },
+            {
+              "type_tarif": "FRAIS_EXAMEN",
+              "libelle": "Frais d'examen"
+            },
+            {
+              "type_tarif": "FRAIS_STAGE",
+              "libelle": "Frais de stage"
+            },
+            {
+              "type_tarif": "FRAIS_MEMOIRE",
+              "libelle": "Frais de mémoire"
+            },
+            {
+              "type_tarif": "FRAIS_ATTESTATION_REUSSITE",
+              "libelle": "Frais d'attestation de réussite"
+            },
+            {
+              "type_tarif": "FRAIS_RELEVE",
+              "libelle": "Frais de relevé de notes"
+            },
+            {
+              "type_tarif": "FRAIS_DIPLOME",
+              "libelle": "Frais de diplôme"
+            },
+            {
+              "type_tarif": "AUTRES",
+              "libelle": "Autres frais"
+            }
+          ],
           "parcours": [
             {
-              "code": "PHY",
               "nom": "Licence Physique",
+              "code": "LPHY",
               "niveaux": [
-                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
-                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
-                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
-                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+                {
+                  "nom": "Préparatoire",
+                  "code": "PREPA",
+                  "niveau": 0
+                },
+                {
+                  "nom": "Licence 1",
+                  "code": "L1",
+                  "niveau": 1
+                },
+                {
+                  "nom": "Licence 2",
+                  "code": "L2",
+                  "niveau": 2
+                },
+                {
+                  "nom": "Licence 3",
+                  "code": "L3",
+                  "niveau": 3
+                }
               ]
             },
             {
-              "code": "ENE",
               "nom": "Master Énergies Renouvelables",
+              "code": "MENE",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             },
             {
-              "code": "ELE",
               "nom": "Master Électronique",
+              "code": "MELE",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             }
           ]
         }
       ]
     },
-
     {
-      "code": "ECO",
       "nom": "Sciences Économiques et de Gestion",
+      "code": "ECO",
       "mentions": [
         {
-          "code": "ECO",
           "nom": "Économie",
+          "code": "ECO",
+          "frais": [
+            {
+              "type_tarif": "FRAIS_ACADEMIQUES",
+              "libelle": "Frais académiques"
+            },
+            {
+              "type_tarif": "FRAIS_INSCRIPTION",
+              "libelle": "Frais d'inscription"
+            },
+            {
+              "type_tarif": "FRAIS_REINSCRIPTION",
+              "libelle": "Frais de réinscription"
+            },
+            {
+              "type_tarif": "FRAIS_ENROLEMENT",
+              "libelle": "Frais d'enrôlement"
+            },
+            {
+              "type_tarif": "FRAIS_EXAMEN",
+              "libelle": "Frais d'examen"
+            },
+            {
+              "type_tarif": "FRAIS_STAGE",
+              "libelle": "Frais de stage"
+            },
+            {
+              "type_tarif": "FRAIS_MEMOIRE",
+              "libelle": "Frais de mémoire"
+            },
+            {
+              "type_tarif": "FRAIS_ATTESTATION_REUSSITE",
+              "libelle": "Frais d'attestation de réussite"
+            },
+            {
+              "type_tarif": "FRAIS_RELEVE",
+              "libelle": "Frais de relevé de notes"
+            },
+            {
+              "type_tarif": "FRAIS_DIPLOME",
+              "libelle": "Frais de diplôme"
+            },
+            {
+              "type_tarif": "AUTRES",
+              "libelle": "Autres frais"
+            }
+          ],
           "parcours": [
             {
-              "code": "ECO",
               "nom": "Licence Économie",
+              "code": "LECO",
               "niveaux": [
-                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
-                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
-                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
-                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+                {
+                  "nom": "Préparatoire",
+                  "code": "PREPA",
+                  "niveau": 0
+                },
+                {
+                  "nom": "Licence 1",
+                  "code": "L1",
+                  "niveau": 1
+                },
+                {
+                  "nom": "Licence 2",
+                  "code": "L2",
+                  "niveau": 2
+                },
+                {
+                  "nom": "Licence 3",
+                  "code": "L3",
+                  "niveau": 3
+                }
               ]
             },
             {
-              "code": "FIN",
               "nom": "Master Finance",
+              "code": "MFIN",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             },
             {
-              "code": "DEV",
               "nom": "Master Économie du Développement",
+              "code": "MDEV",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             }
           ]
         },
         {
-          "code": "GES",
           "nom": "Gestion",
+          "code": "GES",
+          "frais": [
+            {
+              "type_tarif": "FRAIS_ACADEMIQUES",
+              "libelle": "Frais académiques"
+            },
+            {
+              "type_tarif": "FRAIS_INSCRIPTION",
+              "libelle": "Frais d'inscription"
+            },
+            {
+              "type_tarif": "FRAIS_REINSCRIPTION",
+              "libelle": "Frais de réinscription"
+            },
+            {
+              "type_tarif": "FRAIS_ENROLEMENT",
+              "libelle": "Frais d'enrôlement"
+            },
+            {
+              "type_tarif": "FRAIS_EXAMEN",
+              "libelle": "Frais d'examen"
+            },
+            {
+              "type_tarif": "FRAIS_STAGE",
+              "libelle": "Frais de stage"
+            },
+            {
+              "type_tarif": "FRAIS_MEMOIRE",
+              "libelle": "Frais de mémoire"
+            },
+            {
+              "type_tarif": "FRAIS_ATTESTATION_REUSSITE",
+              "libelle": "Frais d'attestation de réussite"
+            },
+            {
+              "type_tarif": "FRAIS_RELEVE",
+              "libelle": "Frais de relevé de notes"
+            },
+            {
+              "type_tarif": "FRAIS_DIPLOME",
+              "libelle": "Frais de diplôme"
+            },
+            {
+              "type_tarif": "AUTRES",
+              "libelle": "Autres frais"
+            }
+          ],
           "parcours": [
             {
-              "code": "GES",
               "nom": "Licence Gestion",
+              "code": "LGES",
               "niveaux": [
-                { "niveau": 0, "code": "PREPA", "nom": "Préparatoire" },
-                { "niveau": 1, "code": "L1", "nom": "Licence 1" },
-                { "niveau": 2, "code": "L2", "nom": "Licence 2" },
-                { "niveau": 3, "code": "L3", "nom": "Licence 3" }
+                {
+                  "nom": "Préparatoire",
+                  "code": "PREPA",
+                  "niveau": 0
+                },
+                {
+                  "nom": "Licence 1",
+                  "code": "L1",
+                  "niveau": 1
+                },
+                {
+                  "nom": "Licence 2",
+                  "code": "L2",
+                  "niveau": 2
+                },
+                {
+                  "nom": "Licence 3",
+                  "code": "L3",
+                  "niveau": 3
+                }
               ]
             },
             {
-              "code": "MGT",
               "nom": "Master Management",
+              "code": "MMGT",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             },
             {
-              "code": "AUD",
               "nom": "Master Audit",
+              "code": "MAUD",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             },
             {
-              "code": "RH",
               "nom": "Master Gestion des Ressources Humaines",
+              "code": "MRH",
               "niveaux": [
-                { "niveau": 4, "code": "M1", "nom": "Master 1" },
-                { "niveau": 5, "code": "M2", "nom": "Master 2" }
+                {
+                  "nom": "Master 1",
+                  "code": "M1",
+                  "niveau": 4
+                },
+                {
+                  "nom": "Master 2",
+                  "code": "M2",
+                  "niveau": 5
+                }
               ]
             }
           ]
@@ -206,4 +618,3 @@
     }
   ]
 }
-

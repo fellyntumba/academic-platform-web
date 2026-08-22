@@ -2,14 +2,14 @@ const BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000/
 
 
 // API pour creer le  du S A
-export const createSuperAdmin = async ({ name, email }) => {
+export const createSga = async ({ name, email, telephone, titre }) => {
   try {
-    const response = await fetch(`${BASE_URL}/administration/super-admin/create`, {
+    const response = await fetch(`${BASE_URL}/administration/sga/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, email }),
+      body: JSON.stringify({ name, email, telephone, titre }),
     });
  
     if (!response.ok) {

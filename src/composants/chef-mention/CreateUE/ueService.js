@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiService";
+import { apiFetch } from "../../accueils/apiService";
 
 
 
@@ -153,7 +153,7 @@ export const getUEService = async ({
 
   const response = await apiFetch("/administration/ue-get", {
     method: "POST",
-    headers: {
+    headers: { 
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -240,3 +240,33 @@ export const deleteUEService = async ({ ue_id }) => {
     throw error;
   }
 };
+
+
+// =============================
+// CLONER LES UE ET COURS
+// DE L'ANNÉE PRÉCÉDENTE
+// =============================
+export const cloneUEAndCoursService = async ({ code_mention }) => {
+
+  const response = await apiFetch("/administration/clone-ue-cours", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      code_mention
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message ||
+      "Erreur lors du clonage des UE et cours."
+    );
+  }
+
+  return data;
+};
+

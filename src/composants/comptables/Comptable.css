@@ -1,0 +1,893 @@
+/* ============================================================
+   COMPTABLE DASHBOARD
+============================================================ */
+
+.comptable-dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  background: #f5f7fa;
+  color: #111;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.comptable-dashboard .home-header {
+  height: 75px;
+  min-height: 75px;
+  padding: 0 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.04);
+
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   BLOC GAUCHE DU HEADER
+============================================================ */
+
+.comptable-dashboard .header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+
+/* ============================================================
+   LOGO
+============================================================ */
+
+.comptable-dashboard .logo {
+  width: 45px;
+  height: 45px;
+
+  object-fit: contain;
+
+  border-radius: 8px;
+
+  background: #f5f5f5;
+
+  padding: 5px;
+
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   INFORMATIONS UNIVERSITÉ
+============================================================ */
+
+.comptable-dashboard .university-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+
+.comptable-dashboard .university-info h1 {
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  color: #1f2937;
+
+  margin: 0;
+}
+
+
+.comptable-dashboard .subtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+
+/* ============================================================
+   BOUTON QUITTER
+============================================================ */
+
+.comptable-dashboard .quit-btn {
+  margin-left: auto;
+
+  padding: 8px 20px;
+
+  border-radius: 20px;
+
+  border: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ff4d4d,
+      #c70000
+    );
+
+  color: #ffffff;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    all 0.3s ease;
+}
+
+
+.comptable-dashboard .quit-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+
+.comptable-dashboard .quit-btn:active {
+  transform: scale(0.97);
+}
+
+
+/* ============================================================
+   MENU CARD
+============================================================ */
+
+.comptable-dashboard .menu-card {
+  width: 100%;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  padding: 15px;
+
+  margin: 0 0 20px 0;
+
+  border: 1px solid #e5e7eb;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.05);
+
+  box-sizing: border-box;
+
+  /*
+   * LA CARTE SUIT UNIQUEMENT SON CONTENU.
+   */
+
+  height: auto;
+
+  min-height: 0;
+
+  max-height: none;
+
+  overflow: visible;
+
+  /*
+   * SURTOUT PAS :
+   *
+   * flex: 1;
+   * height: 100%;
+   * overflow-y: auto;
+   */
+}
+
+/* ============================================================
+   TITRE DE LA CARTE
+============================================================ */
+
+.comptable-dashboard .menu-card-header {
+  font-size: 0.95rem;
+
+  font-weight: 700;
+
+  color: #0072ff;
+
+  margin-bottom: 5px;
+
+  line-height: 1.4;
+}
+
+
+/* ============================================================
+   DESCRIPTION DE LA CARTE
+============================================================ */
+
+.comptable-dashboard .menu-card-desc {
+  font-size: 0.75rem;
+
+  color: #666;
+
+  margin-bottom: 12px;
+
+  line-height: 1.4;
+}
+
+
+/* ============================================================
+   MENU
+============================================================ */
+
+.comptable-dashboard .menu-item {
+  width: 100%;
+
+  margin-bottom: 8px;
+
+  box-sizing: border-box;
+}
+
+
+.comptable-dashboard .menu-item:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ============================================================
+   TITRE DU MENU
+============================================================ */
+
+.comptable-dashboard .menu-title {
+  width: 100%;
+
+  font-weight: 600;
+
+  font-size: 0.9rem;
+
+  cursor: pointer;
+
+  padding: 10px;
+
+  border-radius: 8px;
+
+  color: #1f2937;
+
+  box-sizing: border-box;
+
+  transition:
+    all 0.3s ease;
+
+  /*
+   * Le texte peut revenir à la ligne.
+   */
+
+  white-space: normal;
+
+  overflow-wrap: break-word;
+}
+
+
+.comptable-dashboard .menu-title:hover {
+  background:
+    linear-gradient(
+      90deg,
+      #4facfe,
+      #00f2fe
+    );
+
+  color: #ffffff;
+}
+
+
+.comptable-dashboard .menu-title:active {
+  transform: scale(0.99);
+}
+
+
+/* ============================================================
+   SOUS-MENU
+============================================================ */
+
+.comptable-dashboard .sub-menu {
+  list-style: none;
+
+  padding-left: 15px;
+
+  margin-top: 5px;
+
+  margin-bottom: 0;
+
+  box-sizing: border-box;
+
+  /*
+   * Aucun scroll.
+   *
+   * Le sous-menu augmente naturellement
+   * la hauteur de la carte.
+   */
+
+  overflow: visible;
+}
+
+
+/* ============================================================
+   ÉLÉMENT SOUS-MENU
+============================================================ */
+
+.comptable-dashboard .sub-menu-item {
+  width: 100%;
+
+  padding: 6px 10px;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition:
+    all 0.2s ease;
+
+  box-sizing: border-box;
+
+  font-size: 0.84rem;
+
+  line-height: 1.4;
+
+  color: #374151;
+
+  white-space: normal;
+
+  overflow-wrap: break-word;
+}
+
+
+.comptable-dashboard .sub-menu-item:hover {
+  background: #0072ff;
+
+  color: #ffffff;
+}
+
+
+/* ============================================================
+   CONTENU PRINCIPAL
+============================================================ */
+
+.comptable-dashboard .dashboard-content {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-align: center;
+
+  padding: 40px;
+
+  background: #f8fafc;
+
+  box-sizing: border-box;
+
+  /*
+   * Le contenu principal peut rester
+   * suffisamment grand sans imposer une
+   * hauteur à la carte de gauche.
+   */
+
+  min-height: 500px;
+}
+
+
+.comptable-dashboard .dashboard-content h2 {
+  font-size: 2rem;
+
+  font-weight: 700;
+
+  color: #0072ff;
+
+  margin:
+    0 0 12px;
+}
+
+
+.comptable-dashboard .dashboard-content p {
+  font-size: 1rem;
+
+  color: #555;
+
+  max-width: 420px;
+
+  line-height: 1.6;
+
+  margin: 0;
+}
+
+
+/* ============================================================
+   COMING SOON
+============================================================ */
+
+.comptable-dashboard .coming-soon {
+  width: 100%;
+
+  max-width: 700px;
+
+  padding: 40px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  border: 1px solid #e5e7eb;
+
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+.comptable-dashboard .coming-soon h3 {
+  margin:
+    0 0 12px;
+
+  color: #0072ff;
+
+  font-size: 1.5rem;
+}
+
+
+.comptable-dashboard .coming-soon p {
+  margin: 0 auto;
+
+  color: #6b7280;
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.comptable-dashboard .dashboard-footer {
+  min-height: 90px;
+
+  background: #ffffff;
+
+  border-top: 1px solid #e5e7eb;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  position: relative;
+
+  padding: 10px 25px;
+
+  box-sizing: border-box;
+
+  flex-shrink: 0;
+}
+
+
+.comptable-dashboard .footer-center {
+  font-size: 0.95rem;
+
+  color: #666;
+
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   FOOTER USER CARD
+============================================================ */
+
+.comptable-dashboard .footer-user-card {
+  position: absolute;
+
+  right: 25px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 8px 14px;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  border: 1px solid #e5e7eb;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08);
+
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   AVATAR
+============================================================ */
+
+.comptable-dashboard .footer-avatar {
+  width: 42px;
+
+  height: 42px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0072ff,
+      #00c6ff
+    );
+
+  color: #ffffff;
+
+  font-weight: 700;
+
+  font-size: 0.9rem;
+}
+
+
+/* ============================================================
+   INFORMATIONS UTILISATEUR
+============================================================ */
+
+.comptable-dashboard .footer-user-info {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 3px;
+
+  min-width: 160px;
+}
+
+
+/* ============================================================
+   NOM
+============================================================ */
+
+.comptable-dashboard .footer-user-name {
+  font-weight: 700;
+
+  color: #1f2937;
+
+  font-size: 0.9rem;
+}
+
+
+/* ============================================================
+   FACULTÉ / MENTION
+============================================================ */
+
+.comptable-dashboard .footer-user-detail {
+  font-size: 0.75rem;
+
+  color: #6b7280;
+
+  margin-top: 3px;
+}
+
+
+/* ============================================================
+   PROFIL
+============================================================ */
+
+.comptable-dashboard .footer-role-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 4px;
+}
+
+
+.comptable-dashboard .role-label {
+  font-size: 0.75rem;
+
+  color: #6b7280;
+}
+
+
+.comptable-dashboard .footer-role-row select {
+  width: 170px;
+
+  height: 26px;
+
+  border-radius: 14px;
+
+  border: 1px solid #d1d5db;
+
+  padding: 3px 8px;
+
+  font-size: 0.72rem;
+
+  font-weight: 600;
+
+  background: #f8fafc;
+
+  cursor: pointer;
+
+  color: #0072ff;
+}
+
+
+.comptable-dashboard .footer-role-row select:hover {
+  border-color: #0072ff;
+}
+
+
+.comptable-dashboard .footer-role-row select:focus {
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(0, 114, 255, 0.15);
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLETTE
+============================================================ */
+
+@media (max-width: 900px) {
+
+  .comptable-dashboard .sidebar {
+    width: 250px;
+
+    padding: 15px;
+  }
+
+
+  .comptable-dashboard .menu-card {
+    padding: 15px;
+  }
+
+
+  .comptable-dashboard .menu-title {
+    font-size: 0.88rem;
+  }
+
+
+  .comptable-dashboard .sub-menu-item {
+    font-size: 0.8rem;
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+============================================================ */
+
+@media (max-width: 768px) {
+
+  .comptable-dashboard .dashboard-body {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+
+  .comptable-dashboard .sidebar {
+    width: 100%;
+
+    padding: 15px;
+
+    border-right: none;
+
+    border-bottom: 1px solid #e0e0e0;
+
+    box-sizing: border-box;
+  }
+
+
+  .comptable-dashboard .menu-card {
+    width: 100%;
+
+    height: auto;
+
+    min-height: 0;
+
+    max-height: none;
+
+    overflow: visible;
+
+    margin-bottom: 0;
+  }
+
+
+  .comptable-dashboard .dashboard-content {
+    width: 100%;
+
+    min-height: 400px;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+  }
+
+
+  .comptable-dashboard .footer-user-card {
+    position: static;
+
+    transform: none;
+
+    margin-top: 10px;
+  }
+
+
+  .comptable-dashboard .dashboard-footer {
+    height: auto;
+
+    min-height: 90px;
+
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — PETITS ÉCRANS
+============================================================ */
+
+@media (max-width: 480px) {
+
+  .comptable-dashboard .home-header {
+    height: auto;
+
+    min-height: 75px;
+
+    padding: 12px 15px;
+  }
+
+
+  .comptable-dashboard .header-left {
+    gap: 10px;
+
+    min-width: 0;
+  }
+
+
+  .comptable-dashboard .logo {
+    width: 40px;
+
+    height: 40px;
+  }
+
+
+  .comptable-dashboard .university-info {
+    min-width: 0;
+  }
+
+
+  .comptable-dashboard .university-info h1 {
+    font-size: 1rem;
+  }
+
+
+  .comptable-dashboard .subtitle {
+    font-size: 0.68rem;
+  }
+
+
+  .comptable-dashboard .quit-btn {
+    padding: 7px 14px;
+
+    font-size: 0.8rem;
+  }
+
+
+  .comptable-dashboard .sidebar {
+    padding: 10px;
+  }
+
+
+  .comptable-dashboard .menu-card {
+    padding: 15px;
+
+    border-radius: 12px;
+  }
+
+
+  .comptable-dashboard .menu-card-header {
+    font-size: 0.9rem;
+  }
+
+
+  .comptable-dashboard .menu-card-desc {
+    font-size: 0.7rem;
+  }
+
+
+  .comptable-dashboard .menu-title {
+    font-size: 0.88rem;
+
+    padding: 9px;
+  }
+
+
+  .comptable-dashboard .sub-menu {
+    padding-left: 10px;
+  }
+
+
+  .comptable-dashboard .sub-menu-item {
+    font-size: 0.78rem;
+
+    padding: 8px;
+  }
+
+
+  .comptable-dashboard .dashboard-content {
+    padding: 15px;
+  }
+
+
+  .comptable-dashboard .dashboard-content h2 {
+    font-size: 1.5rem;
+  }
+
+
+  .comptable-dashboard .footer-user-card {
+    position: static;
+
+    width: calc(100% - 20px);
+
+    height: auto;
+
+    min-height: 70px;
+
+    margin-left: auto;
+
+    margin-right: auto;
+  }
+
+
+  .comptable-dashboard .footer-user-info {
+    min-width: 0;
+
+    flex: 1;
+  }
+
+
+  .comptable-dashboard .footer-role-row {
+    flex-wrap: wrap;
+  }
+
+
+  .comptable-dashboard .footer-role-row select {
+    width: 150px;
+  }
+
+}

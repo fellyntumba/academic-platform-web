@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiService";
+import { apiFetch } from "../../accueils/apiService";
 
 const BASE_URL = "/administration";
 

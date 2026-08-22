@@ -1,4 +1,4 @@
-import {apiFetch} from "../apiService"; 
+import {apiFetch} from "../../accueils/apiService"; 
 
 
 // Créer une mention-année (version mention)
@@ -8,10 +8,10 @@ export const createMentionAnneeService = async ({code_mention, nom_mention_versi
       method: "POST",
       body: JSON.stringify({
         code_mention,
-        nom_mention_version
-      })
+        nom_mention_version 
+      }) 
     });
-
+ 
     // Lire le JSON
     const data = await response.json();
     return data; // ✅ Maintenant data.message et data.success existent
@@ -59,3 +59,33 @@ export const modifyMentionVersionService = async ({ code_mention, id_version, no
     return { success: false, message: error.message || "Erreur lors de la modification de la version." };
   }
 };
+
+
+/* =========================
+   Récupérer la mention version pour annee passee
+========================= */
+export const getMentionVersionByCodeAnneePasseeService = async ({ code_mention }) => {
+  try {
+ 
+    const response = await apiFetch("/administration/mention-version/code_mention/annee-passee", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code_mention }) 
+    });
+
+    const data = await response.json();
+
+    return data; // { success, message, data }
+
+  } catch (error) {
+
+    console.error("Erreur récupération mention versions :", error);
+
+    return {
+      success: false,
+      message: "Erreur réseau lors de la récupération de la mention",
+      data: []
+    };
+  }
+};
+

@@ -1,0 +1,430 @@
+.admin-fac-dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  background: #f5f7fa;
+  color: #111;
+}
+
+.home-header {
+  height: 75px;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Bloc gauche */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Logo */
+.logo {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f5f5f5;
+  padding: 5px;
+}
+
+/* Infos université */
+.university-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.university-info h1 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.quit-btn {
+  margin-left: auto;
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(90deg, #ff4d4d, #c70000);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+.quit-btn:active {
+  transform: scale(0.97);
+}
+.back-btn {
+  background: linear-gradient(90deg, #00e6ff, #0072ff);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.dashboard-body {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 250px;
+  background: #fff;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px;
+}
+
+.menu-item {
+  margin-bottom: 15px;
+}
+
+.menu-title {
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.menu-title:hover {
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  color: white;
+}
+
+.sub-menu {
+  list-style: none;
+  padding-left: 15px;
+  margin-top: 5px;
+}
+
+.sub-menu-item {
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sub-menu-item:hover {
+  background: #0072ff;
+  color: white;
+}
+
+.dashboard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* centrage vertical */
+  align-items: center;       /* centrage horizontal */
+  text-align: center;
+  padding: 40px;
+  background: #f8fafc;       /* léger gris très moderne */
+}
+
+.dashboard-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0072ff;
+  margin-bottom: 12px;
+}
+
+.dashboard-content p {
+  font-size: 1rem;
+  color: #555;
+  max-width: 420px;
+  line-height: 1.6;
+}
+
+.dashboard-footer{
+
+    min-height:90px;
+
+    background:#fff;
+
+    border-top:1px solid #e5e7eb;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
+
+    padding:10px 25px;
+
+    box-sizing:border-box;
+
+}
+
+.footer-center{
+    font-size:.95rem;
+    color:#666;
+    font-weight:500;
+}
+
+/* ================================
+   FOOTER USER CARD
+================================ */
+
+.footer-user-card {
+
+    position:absolute;
+
+    right:25px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+
+    height:70px;
+
+
+    display:flex;
+
+    align-items:center;
+
+
+    gap:12px;
+
+    padding:8px 14px;
+
+
+    background:#ffffff;
+
+    border-radius:16px;
+
+    border:1px solid #e5e7eb;
+
+
+    box-shadow:
+    0 4px 12px rgba(0,0,0,.08);
+
+
+    box-sizing:border-box;
+
+}
+
+
+
+/* Avatar */
+
+.footer-avatar {
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+    linear-gradient(
+        135deg,
+        #0072ff,
+        #00c6ff
+    );
+
+    color:white;
+
+    font-weight:700;
+
+    font-size:.9rem;
+
+}
+
+
+
+/* Bloc texte */
+
+.footer-user-info {
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    gap:3px;
+
+    min-width:160px;
+
+}
+
+
+
+/* Nom */
+
+.footer-user-name {
+
+    font-weight:700;
+
+    color:#1f2937;
+
+    font-size:.9rem;
+
+}
+
+
+
+/* Faculté */
+
+.footer-user-detail {
+
+    font-size:.75rem;
+
+    color:#6b7280;
+
+    margin-top:3px;
+
+}
+
+
+
+/* Profil */
+
+.footer-role-row {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    margin-top:4px;
+
+}
+
+
+.role-label {
+
+    font-size:.75rem;
+
+    color:#6b7280;
+
+}
+
+
+
+.footer-role-row select {
+
+    width:170px;
+
+    height:26px;
+
+    border-radius:14px;
+
+    border:1px solid #d1d5db;
+
+    padding:3px 8px;
+
+    font-size:.72rem;
+
+    font-weight:600;
+
+    background:#f8fafc;
+
+    cursor:pointer;
+
+    color:#0072ff;
+
+}
+
+
+
+.footer-role-row select:hover {
+
+    border-color:#0072ff;
+
+}
+
+
+.footer-role-row select:focus {
+
+    outline:none;
+
+    box-shadow:
+    0 0 0 3px rgba(0,114,255,.15);
+
+}
+
+
+.menu-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+  /* scroll de la carte */
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.menu-card-header {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #0072ff;
+  margin-bottom: 6px;
+}
+
+.menu-card-desc {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .dashboard-content {
+    padding: 20px;
+  }
+}
+

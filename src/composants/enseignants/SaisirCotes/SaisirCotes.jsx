@@ -10,7 +10,7 @@ import {
   getFicheCotesService,
   obtenirStatistiquesCotesCours
 } from './saisirCoteService';
- 
+  
 
 const SaisirCotes = ({id_enseignant, annee}) =>{
 

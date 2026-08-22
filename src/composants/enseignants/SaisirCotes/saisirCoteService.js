@@ -1,4 +1,4 @@
-import { apiFetch } from "../authentification/apiService";
+import { apiFetch } from "../../accueils/apiService";
 
 
 // ===============================
@@ -169,7 +169,7 @@ export const getCoursDettesEnseignantService = async ({
   }
 
 };
-
+ 
 // Récupérer les situations des étudiants ayant des dettes
 export const getEtudiantsDettesParCoursService = async ({
   coursNom,

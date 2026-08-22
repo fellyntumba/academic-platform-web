@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./EtudiantsOrdres.css";
-import { importEtudiantsOrdres } from "./etudiantsOrdresService";
+import {
+  importEtudiantsOrdres,
+  enregistrerSituationFinanciereService
+} from "./etudiantsOrdresService";
 
 const EtudiantsOrdres = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -8,8 +11,9 @@ const EtudiantsOrdres = () => {
   const [messageType, setMessageType] = useState("");
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [matricule, setMatricule] = useState("");
 
-  /* ============================= */
+  /* ============================= */ 
   /* 🔹 Notification 4s */
   /* ============================= */
   const showMessage = (msg, type = "success") => {
@@ -57,6 +61,47 @@ const EtudiantsOrdres = () => {
     }
   };
 
+  const handleAddStudent = async () => {
+    if (!matricule.trim()) {
+      return showMessage(
+        "Veuillez saisir un numéro matricule.",
+        "error"
+      );
+    }
+
+    try {
+
+      setLoading(true);
+
+      const result =
+        await enregistrerSituationFinanciereService({
+          matricule
+        });
+
+      showMessage(
+        result.message ||
+        "Situation financière enregistrée avec succès.",
+        "success"
+      );
+
+      setMatricule("");
+
+    } catch (error) {
+
+      showMessage(
+        error.message ||
+        "Erreur lors de l'enregistrement.",
+        "error"
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
   return (
     <div className="etudiants-container fade-in">
       <h2>Enregistrement des étudiants en ordre avec les frais</h2>
@@ -102,8 +147,22 @@ const EtudiantsOrdres = () => {
       {/* Ajout manuel */}
       <div className="card-section">
         <h3>Enregistrement via matricule</h3>
-        <input type="text" placeholder="Saisir le numéro matricule" disabled />
-        <button className="primary-btn" disabled>Enregistrer l'étudiant</button>
+
+        <input
+          type="text"
+          placeholder="Saisir le numéro matricule"
+          value={matricule}
+          onChange={(e) => setMatricule(e.target.value)}
+        />
+
+        <button
+          className="primary-btn"
+          onClick={handleAddStudent}
+          disabled={loading}
+        >
+          {loading ? "Enregistrement..." : "Enregistrer l'étudiant"}
+        </button>
+
       </div>
     </div>
   );

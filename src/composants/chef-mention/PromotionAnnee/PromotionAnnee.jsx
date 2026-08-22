@@ -19,7 +19,7 @@ const PromotionAnnee = ({ code_mention }) => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
-  const [newPromotion, setNewPromotion] = useState("");
+  const [newPromotion, setNewPromotion] = useState(""); 
   const [promotionsAnneePassee, setPromotionsAnneePassee] = useState([]);
 
   const [promotions, setPromotions] = useState([]);
@@ -129,7 +129,7 @@ const PromotionAnnee = ({ code_mention }) => {
         await getPromotionVersionByCodeAnneePasseeService({
           code_parcours: parcour
         });
-
+ 
       if (result.success) {
         setPromotionsAnneePassee(result.data || []);
       } else {
@@ -189,7 +189,7 @@ const PromotionAnnee = ({ code_mention }) => {
       showMessage(result.message, "error");
     }
   };
-
+ 
   /* =========================
      Sélection modification
   ========================= */
@@ -292,9 +292,16 @@ const PromotionAnnee = ({ code_mention }) => {
             list="liste-promotions"
             placeholder="Nom de la promotion-année (ex: L1 Informatique)"
             value={newPromotion}
-            onChange={(e) => setNewPromotion(e.target.value)}
-          />
+            onChange={(e) => {
+              const value = e.target.value.toLowerCase();
 
+              const formatted =
+                value.charAt(0).toUpperCase() + value.slice(1);
+
+              setNewPromotion(formatted);
+            }}
+          />
+ 
           <datalist id="liste-promotions">
             {promotionsAnneePassee.map((p, index) => (
               <option
@@ -335,7 +342,14 @@ const PromotionAnnee = ({ code_mention }) => {
                 type="text"
                 placeholder="Nouveau nom de la promotion-année"
                 value={nouveauNomPromotion}
-                onChange={(e) => setNouveauNomPromotion(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value.toLowerCase();
+
+                  const formatted =
+                    value.charAt(0).toUpperCase() + value.slice(1);
+
+                  setNouveauNomPromotion(formatted);
+                }}
               />
 
               <button onClick={handleUpdate}>

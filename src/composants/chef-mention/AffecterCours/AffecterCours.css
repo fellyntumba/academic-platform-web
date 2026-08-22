@@ -62,6 +62,7 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   animation: slideUp 0.3s ease;
   z-index: 1000;
+  white-space: pre-line;
 }
 
 .notification.success {
@@ -84,6 +85,63 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+.actions-buttons {
+
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+
+}
+
+
+
+.actions-buttons button {
+
+  min-height: 45px;
+
+}
+
+
+
+/* Bouton reconduction */
+
+.reconduire-btn {
+
+  padding: 12px 28px;
+
+  border: none;
+
+  border-radius: 25px;
+
+  background: linear-gradient(
+    90deg,
+    #ff9800,
+    #ff5722
+  );
+
+  color: white;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+}
+
+
+
+.reconduire-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+
 }
 
 /* Responsive */

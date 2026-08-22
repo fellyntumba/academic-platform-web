@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiService"; // ton utilitaire fetch
+import { apiFetch } from "../../accueils/apiService"; // ton utilitaire fetch
 
 const BASE_URL = "/administration";
 
@@ -15,7 +15,7 @@ export async function creerParcoursVersion({code_parcours, nom_parcours_version}
       }),
     });
 
-    const data = await res.json();
+    const data = await res.json(); 
 
     if (!res.ok) {
       return {
@@ -117,3 +117,32 @@ export async function getParcours({code_mention}) {
     return { success: false, message: "Erreur réseau" };
   }
 }
+
+
+/* =========================
+   Récupérer le parcours version pour annee passee
+========================= */
+export const getParcoursVersionByCodeAnneePasseeService = async ({ code_parcours }) => {
+  try {
+ 
+    const response = await apiFetch(`${BASE_URL}/parcours-version/annee-passee`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code_parcours })
+    });
+
+    const data = await response.json();
+
+    return data; // { success, message, data }
+
+  } catch (error) {
+
+    console.error("Erreur récupération promotions versions :", error);
+
+    return {
+      success: false,
+      message: "Erreur réseau lors de la récupération des promotions",
+      data: []
+    };
+  }
+}; 

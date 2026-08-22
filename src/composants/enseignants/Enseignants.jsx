@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import "./Enseignants.css";
-import { useNavigate } from "react-router-dom";
-import { isAuthenticated, logout } from "./authentification/serviceAuth";
+
+import {
+  isAuthenticated,
+  logout,
+  switchRole
+} from "../accueils/serviceAuth";
 import { getAnneeAcademiqueEnCoursService, getNombreRecoursEnAttenteService } from "./enseignantService";
 
 import Recours from "./Recours/Recours";
 import SaisirCotes from "./SaisirCotes/SaisirCotes";
 import Documents from "./Documents/Documents";
 import { useContextUniv } from "../../featuresAndInfos/ContextUnivProvider";
+import { ADMIN_ROLES, ROLE_LABELS } from "../accueils/roles";
 
   
-const Enseignants = () => {
+const Enseignants = () => { 
 
-  const navigate = useNavigate();
 
   const [infoUser, setInfoUser] = useState(null);
   const [annee, setAnnee] = useState("");
@@ -41,28 +45,54 @@ const Enseignants = () => {
     }, 4000);
   };
 
+    //Deconexionn
   const handleQuit = async () => {
+
     await logout();
-    navigate("/home");
+
+    // recharge l'application pour refaire isAuthenticated()
+    window.location.replace("/home");
+
   };
 
-//Recuperation info de l' enseignant
-useEffect(() => {
+  //changer le profile actif
+  const handleSwitchRole = async (e) => {
+
+    const role = e.target.value;
+
+    const result = await switchRole(role);
+
+    if (!result.success) {
+      alert(result.message);
+      return;
+    }
+
+    console.log("ROLE CHANGÉ");
+
+    window.location.replace("/");
+  };
+
+  //Recuperation info de l' enseignant
+  useEffect(() => {
     const loadUser = async () => {
       try {
+        const auth = await isAuthenticated();
 
-        const user = await isAuthenticated();
-        setInfoUser(user);
+        if (!auth.authenticated) {
+          window.location.replace("/home");
+          return;
+        }
+
+        setInfoUser(auth.user);
 
       } catch {
-
-        navigate("/home");
-
+        window.location.replace("/home");
       }
     };
 
     loadUser();
-}, []);
+  }, []);
+
 
 //Nombre de recours en attente
 useEffect(() => {
@@ -143,43 +173,52 @@ const handleActionClick = async (actionName) => {
         </div>
       )}
 
-      {activeView === null && (
-        <>
-          <h2 className="dashboard-title">
-            Tableau de bord Enseignant
-          </h2>
+      <div className="teacher-content">
 
-          <div className="actions-grid">
+        {message && (
+          <div className={`parcours-notification ${messageType}`}>
+            {message}
+          </div>
+        )}
 
-            {actions.map((action) => (
+        {activeView === null && (
+          <>
+            <h2 className="dashboard-title">
+              Tableau de bord Enseignant
+            </h2>
 
-              <div
-                key={action.name}
-                className="action-card"
-                onClick={() => handleActionClick(action.name)}
-              >
+            <div className="actions-grid">
 
-                <div className="action-icon">
-                  {action.icon}
+              {actions.map((action) => (
+
+                <div
+                  key={action.name}
+                  className="action-card"
+                  onClick={() => handleActionClick(action.name)}
+                >
+
+                  <div className="action-icon">
+                    {action.icon}
+                  </div>
+
+                  <p>{action.name}</p>
+
+                  {action.badge > 0 && (
+                    <span className="badge">
+                      {action.badge > 99 ? "99+" : action.badge}
+                    </span>
+                  )}
+
                 </div>
 
-                <p>{action.name}</p>
+              ))}
 
-                {action.badge > 0 && (
-                  <span className="badge">
-                    {action.badge > 99 ? "99+" : action.badge}
-                  </span>
-                )}
+            </div>
+          </>
+        )}
 
-              </div>
 
-            ))}
-
-          </div>
-        </>
-      )}
-
-      {activeView === "saisir-cotes" && (
+              {activeView === "saisir-cotes" && (
         <div className="component-wrapper fade-in">
 
           <button
@@ -224,19 +263,141 @@ const handleActionClick = async (actionName) => {
         </div>
       )}
 
-      <footer className="dashboard-footer">
 
-        <span className="footer-center">
-          Plateforme académique intelligente et sécurisée
-        </span>
+      </div>
 
-        {infoUser && (
-          <span className="footer-right">
-            {infoUser.titre}. {infoUser.nom}
-          </span>
-        )}
+      {/* {activeView === null && (
+        <>
+          <h2 className="dashboard-title">
+            Tableau de bord Enseignant
+          </h2>
 
-      </footer>
+          <div className="actions-grid">
+
+            {actions.map((action) => (
+
+              <div
+                key={action.name}
+                className="action-card"
+                onClick={() => handleActionClick(action.name)}
+              >
+
+                <div className="action-icon">
+                  {action.icon}
+                </div>
+
+                <p>{action.name}</p>
+
+                {action.badge > 0 && (
+                  <span className="badge">
+                    {action.badge > 99 ? "99+" : action.badge}
+                  </span>
+                )}
+
+              </div>
+
+            ))}
+
+          </div>
+        </>
+      )} */}
+
+
+
+            <footer className="dashboard-footer">
+      
+              <div className="footer-center">
+                Plateforme académique intelligente et sécurisée
+              </div>
+      
+      
+              {infoUser && (
+      
+                <div className="footer-user-card">
+      
+      
+                  {/* Avatar */}
+                  <div className="footer-avatar">
+                    {infoUser.nom
+                      ?.split(" ")
+                      .map(word => word[0])
+                      .join("")
+                      .substring(0,2)
+                      .toUpperCase()
+                    }
+                  </div>
+      
+      
+      
+                  {/* Informations utilisateur */}
+                  <div className="footer-user-info">
+      
+      
+                    <div className="footer-user-name">
+                      {infoUser.nom}
+                    </div>
+      
+      
+                    <div className="footer-user-detail">
+      
+                      {infoUser.code_faculte && (
+                        <>
+                          {infoUser.code_faculte}
+                        </>
+                      )}
+      
+                      {infoUser.code_mention && (
+                        <>
+                          &nbsp; | &nbsp;
+                          {infoUser.code_mention}
+                        </>
+                      )}
+      
+                    </div>
+      
+      
+      
+                    <div className="footer-role-row">
+      
+                      <span className="role-label">
+                        Profil :
+                      </span>
+      
+      
+                      <select
+                        value={infoUser.active_role}
+                        onChange={handleSwitchRole}
+                      >
+      
+                        {infoUser.roles
+                          ?.map(role => (
+      
+                            <option
+                              key={role}
+                              value={role}
+                            >
+                              {ROLE_LABELS[role]}
+                            </option>
+      
+                          ))
+                        }
+      
+      
+                      </select>
+      
+      
+                    </div>
+      
+      
+                  </div>
+      
+      
+                </div>
+      
+              )}
+      
+      
+            </footer>
 
     </div>
   );

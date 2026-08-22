@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "./SetupWizard.css"
+import "./SetupWizard.css";
+
 import Step1 from "../etapes/step1/Step1";
 import Step2 from "../etapes/step2/Step2";
-import Step3 from "../etapes/step3/Step3";
-// import Step4 from "../etapes/step4/Step4";
-// import Step5 from "../etapes/step5/Step5";
 import StepIndicator from "../etapes/Indicator";
+
 import AuthModal from "../authentification/AuthModal";
 import { isAuthenticated } from "../authentification/serviceAuth";
 
@@ -13,65 +12,115 @@ const SetupWizard = ({ setupStatus, onCompleted }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [authenticated, setAuthenticated] = useState(null);
 
-
+  /*
+   * Vérifier l'authentification à l'ouverture
+   * du wizard.
+   */
   useEffect(() => {
     const checkAuth = async () => {
-      const result = await isAuthenticated();
-      setAuthenticated(result.user);
+      try {
+        const result = await isAuthenticated();
+
+        setAuthenticated(result?.user ?? null);
+      } catch (error) {
+        console.error(
+          "Erreur vérification authentification :",
+          error
+        );
+
+        setAuthenticated(null);
+      }
     };
 
-    checkAuth(); 
+    checkAuth();
   }, []);
- 
+
+  /*
+   * Déterminer automatiquement l'étape
+   * à partir du statut de configuration.
+   *
+   * Étape 0 : SGA
+   * Étape 1 : Facultés
+   */
   useEffect(() => {
-    if (!setupStatus) return;
+    if (!setupStatus) {
+      return;
+    }
 
     const stepsStatus = [
-    !!setupStatus.super_admin,         // Super admin
-    // !!setupStatus.annee_academique,    // Année académique
-    !!setupStatus.facultes,            // Facultés créées
-    // !!setupStatus.mentions,    // Chaque faculté a au moins un cycle
-    // !!setupStatus.specialites, // Chaque cycle a au moins une promotion
-    !!setupStatus.admin_fac            // Admin de faculté
-  ];
+      !!setupStatus.sga,
+      !!setupStatus.facultes,
+    ];
 
-    const firstFalseIndex = stepsStatus.findIndex(v => !v);
-    
+    const firstFalseIndex = stepsStatus.findIndex(
+      (value) => !value
+    );
+
+    /*
+     * Si les deux étapes sont déjà terminées,
+     * App s'occupera de la navigation.
+     */
     if (firstFalseIndex === -1) {
-      onCompleted();
-    } else {
-      setCurrentStep(firstFalseIndex);
+      return;
     }
-  }, [setupStatus]);
 
-  // {authenticated && console.log(authenticated);}
-  // {setupStatus && console.log(setupStatus.facultes);}
-  // console.log(currentStep);
-  
+    setCurrentStep(firstFalseIndex);
+  }, [setupStatus]);
 
   return (
     <div className="wizard-container">
-      <h1 className="wizard-title">Configuration initiale</h1>
-      {currentStep < 3 && <StepIndicator currentStep={currentStep} />}
+      <h1 className="wizard-title">
+        Configuration initiale
+      </h1>
+
+      {currentStep < 2 && (
+        <StepIndicator currentStep={currentStep} />
+      )}
 
       <div className="step-content">
-        {currentStep === 0 && <Step1 onNext={() => {setCurrentStep(1);
-                                                    setAuthenticated(false);
-                                                    }} />}
 
+        {/* =========================
+            ÉTAPE 1 : SGA
+        ========================= */}
+        {currentStep === 0 && (
+          <Step1
+            onNext={() => {
+              setCurrentStep(1);
 
-        {/* 🔐 AuthModal avant Step2 */}
-        {currentStep === 1 && !authenticated && (
-          <AuthModal onAuthenticated={() => {setAuthenticated(true); }} />)}
-        {currentStep === 1 && authenticated && (
-          <Step2 onNext={() => setCurrentStep(2)} />
+              /*
+               * On force l'affichage de l'AuthModal
+               * avant l'étape finale.
+               */
+              setAuthenticated(null);
+            }}
+          />
         )}
 
+        {/* =========================
+            ÉTAPE 2 : AUTHENTIFICATION
+        ========================= */}
+        {currentStep === 1 && !authenticated && (
+          <AuthModal
+            onAuthenticated={(result) => {
+              /*
+               * AuthModal peut retourner directement
+               * l'utilisateur ou simplement signaler
+               * l'authentification.
+               */
+              setAuthenticated(
+                result?.user ?? result ?? true
+              );
+            }}
+          />
+        )}
 
-        {currentStep === 2 && !authenticated && (
-          <AuthModal onAuthenticated={() => {setAuthenticated(true);
-                                             setRequireAuth(false); }} />)}
-        {currentStep === 2 && <Step3 onFinish={onCompleted} />}
+        {/* =========================
+            ÉTAPE 2 : CODE FACULTÉ
+            = ÉTAPE FINALE
+        ========================= */}
+        {currentStep === 1 && authenticated && (
+          <Step2 onFinish={onCompleted} />
+        )}
 
       </div>
     </div>

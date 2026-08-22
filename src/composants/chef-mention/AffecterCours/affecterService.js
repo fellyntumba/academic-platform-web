@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiService";
+import { apiFetch } from "../../accueils/apiService";
 
 // Récupérer les enseignants actifs
 export const getActiveEnseignantsService = async () => {
@@ -67,3 +67,27 @@ export const affecterCoursService = async ({
   return data;
 };
 
+
+// Reconduire les affectations de l'année précédente
+export const reconduireAffectationsService = async ({ code_mention }) => {
+
+  const response = await apiFetch("/administration/maintenir-affecter-cours", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      code_mention,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Erreur lors de la reconduction des affectations."
+    );
+  }
+
+  return data;
+};

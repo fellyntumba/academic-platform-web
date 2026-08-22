@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from "react";
 import "./EtudiantsInscrits.css";
-import { importEtudiantsInscrits, getPromotionsService } from "./etudiantsInscritsService";
+import {
+  importEtudiantsInscrits,
+  getPromotionsService,
+  inscrireEtudiantService
+} from "./etudiantsInscritsService";
 
 const EtudiantsInscrits = ({code_mention}) => {
   const [selectedFile, setSelectedFile] = useState(null);  
   const [promotion, setPromotion] = useState("");    
-  const [matricule, setMatricule] = useState("");
+  const [ancienMatricule, setAncienMatricule] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listPromos, setListPromos] = useState([]);
+  const [nom, setNom] = useState("");
+  const [postnom, setPostnom] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [sexe, setSexe] = useState("");
+  const [promotionManuelle, setPromotionManuelle] = useState("");
   
-
+  
   /* ============================= */
   /* 🔹 Gestion notification 4s    */
   /* ============================= */
@@ -20,7 +29,7 @@ const EtudiantsInscrits = ({code_mention}) => {
     setMessage(msg);
     setMessageType(type);
 
-    setTimeout(() => {
+    setTimeout(() => {    
       setMessage("");
       setMessageType("");
     }, 4000);
@@ -91,10 +100,61 @@ const EtudiantsInscrits = ({code_mention}) => {
     }
   };
 
-  const handleAddStudent = () => {
-    if (!matricule.trim()) return showMessage("Veuillez saisir un numéro matricule.", "error");
-    showMessage(`Étudiant ${matricule} enregistré avec succès (simulation).`, "success");
-    setMatricule("");
+
+  const handleAddStudent = async () => {
+    if (
+      !ancienMatricule.trim() ||
+      !nom.trim() ||
+      !postnom.trim() ||
+      !prenom.trim() ||
+      !sexe ||
+      !promotionManuelle
+    ) {
+      return showMessage(
+        "Veuillez renseigner tous les champs.",
+        "error"
+      );
+    }
+
+    try {
+
+      setLoading(true);
+
+      const result = await inscrireEtudiantService({
+        ancienMatricule,
+        nom,
+        postnom,
+        prenom,
+        sexe,
+        nom_promotion: promotionManuelle
+      });
+
+      showMessage(
+        result.message || "Étudiant inscrit avec succès.",
+        "success"
+      );
+
+      // Réinitialisation du formulaire
+      setAncienMatricule("");
+      setNom("");
+      setPostnom("");
+      setPrenom("");
+      setSexe("");
+      setPromotionManuelle("");
+
+    } catch (error) {
+
+      showMessage(
+        error.message || "Erreur lors de l'inscription.",
+        "error"
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
   };
 
 // {listPromos && console.log(listPromos);}
@@ -110,7 +170,7 @@ const EtudiantsInscrits = ({code_mention}) => {
       )}
 
       <div className="consigne-box">
-        ⚠️ <strong>Consigne :</strong> Veuillez importer uniquement un fichier Excel (.xlsx, .xls) contenant obligatoirement les colonnes <strong> "matricule", "nom", "postnom", "prenom" et "sexe"</strong>.
+        ⚠️ <strong>Consigne :</strong> Veuillez importer uniquement un fichier Excel (.xlsx, .xls) contenant obligatoirement les colonnes <strong> "code", "nom", "postnom" et "sexe"</strong>.
       </div>
 
       {/* Upload Excel */}
@@ -158,9 +218,81 @@ const EtudiantsInscrits = ({code_mention}) => {
 
       {/* Ajout manuel */}
       <div className="card-section">
-        <h3>Enregistrement via matricule</h3>
-        <input type="text" placeholder="Saisir le numéro matricule" value={matricule} onChange={(e) => setMatricule(e.target.value)} />
-        <button className="primary-btn" onClick={handleAddStudent}>Enregistrer l'étudiant</button>
+        <h3>Enregistrement manuel d'un étudiant</h3>
+
+        <div className="manual-form">
+
+          <div className="manual-column">
+
+            <input
+              type="text"
+              placeholder="Code"
+              value={ancienMatricule}
+              onChange={(e) => setAncienMatricule(e.target.value)}
+            />
+
+            <input
+              type="text"
+              placeholder="Nom"
+              value={nom}
+              onChange={(e) => setNom(e.target.value)}
+            />
+
+            <input
+              type="text"
+              placeholder="Postnom"
+              value={postnom}
+              onChange={(e) => setPostnom(e.target.value)}
+            />
+
+          </div>
+
+          <div className="manual-column">
+
+            <input
+              type="text"
+              placeholder="Prénom"
+              value={prenom}
+              onChange={(e) => setPrenom(e.target.value)}
+            />
+
+            <select
+              value={sexe}
+              onChange={(e) => setSexe(e.target.value)}
+            >
+              <option value="">-- Sexe --</option>
+              <option value="M">Masculin</option>
+              <option value="F">Féminin</option>
+            </select>
+
+            <select
+              value={promotionManuelle}
+              onChange={(e) => setPromotionManuelle(e.target.value)}
+            >
+              <option value="">-- Promotion --</option>
+
+              {listPromos.map((p) => (
+                <option
+                  key={p.id_version}
+                  value={p.nom_promotion}
+                >
+                  {p.nom_promotion}
+                </option>
+              ))}
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <button
+          className="primary-btn"
+          onClick={handleAddStudent}
+        >
+          Enregistrer l'étudiant
+        </button>
+
       </div>
     </div>
   );

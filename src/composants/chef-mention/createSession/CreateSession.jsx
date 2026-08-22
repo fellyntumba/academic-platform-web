@@ -38,7 +38,7 @@ const CreateSession = ({ code_mention }) => {
   // Charger les promotions au démarrage
   // ===============================
   useEffect(() => {
-    const loadPromotions = async () => {
+    const loadPromotions = async () => { 
       try {
         setLoading(true); // ✅ AJOUT
 

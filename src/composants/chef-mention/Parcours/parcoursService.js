@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiService"; // ton utilitaire fetch
+import { apiFetch } from "../../accueils/apiService"; // ton utilitaire fetch
 
 const BASE_URL = "/administration";
 
@@ -20,7 +20,7 @@ export async function creerParcours({code_parcours, code_mention}) {
   }
 }
 
-/* =========================
+/* ========================= 
    Modifier un code_parcours
 ========================= */
 export async function modifierParcours({ancien_code, nouveau_code}) {
@@ -55,3 +55,41 @@ export async function getParcours({code_mention}) {
     return { success: false, message: "Erreur réseau" };
   }
 }
+
+
+
+// Récupérer les code_parcours configurés pour une université
+export const getCodeParcoursConfig = async ({code_mention}) => {
+  try {
+    const response = await apiFetch("/administration/university-config/code-parcours/get",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code_mention,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+        data.error ||
+        "Erreur lors de la récupération des mentions."
+      );
+    }
+
+    return data.data || [];
+  } catch (error) {
+    console.error(
+      "Erreur getCodeParcoursConfig :",
+      error
+    );
+
+    throw error;
+  }
+};

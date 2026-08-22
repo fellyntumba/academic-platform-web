@@ -3,7 +3,8 @@ import "./MentionAnnee.css";
 import { 
   createMentionAnneeService, 
   getMentionVersionService, 
-  modifyMentionVersionService 
+  modifyMentionVersionService,
+  getMentionVersionByCodeAnneePasseeService
 } from "./mentionAnneeService";
 
 const MentionAnnee = ({ code_mention }) => {
@@ -17,6 +18,7 @@ const MentionAnnee = ({ code_mention }) => {
   const [versionExistante, setVersionExistante] = useState(null);
   const [idVersionExistante, setIdVersionExistante] = useState("");
   const [nouveauNom, setNouveauNom] = useState("");
+  const [mentionAnneePassee, setMentionAnneePassee] = useState([]);
 
   const showMessage = (msg, type = "success") => {
     setMessage(msg);
@@ -45,6 +47,35 @@ const MentionAnnee = ({ code_mention }) => {
       }
     };
     loadVersion();
+  }, [code_mention]);
+
+
+  /* =========================
+    Charger faculté/ année passée
+  ========================= */
+  useEffect(() => {
+
+    const fetchMentionAnneePassee = async () => {
+
+      if (!code_mention) {
+        setMentionAnneePassee([]);
+        return;
+      }
+
+      const result =
+        await getMentionVersionByCodeAnneePasseeService({
+          code_mention
+        });
+
+      if (result.success) {
+        setMentionAnneePassee(result.data || []);
+      } else {
+        setMentionAnneePassee([]);
+      }
+    };
+
+    fetchMentionAnneePassee();
+
   }, [code_mention]);
 
   const handleCreate = async () => {
@@ -113,12 +144,30 @@ const MentionAnnee = ({ code_mention }) => {
           <h3>Créer une mention-année</h3>
           <input
             type="text"
+            list="liste-mention"
             placeholder="Nom de la mention-année"
             value={nomCreer}
-            onChange={(e) => setNomCreer(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value.toLowerCase();
+
+              const formatted =
+                value.charAt(0).toUpperCase() + value.slice(1);
+
+              setNomCreer(formatted);
+            }}
+
           />
+
+          <datalist id="liste-mention">
+            {mentionAnneePassee.map((m, index) => (
+              <option
+                key={index}
+                value={m.nom_mention} 
+              />
+            ))}
+          </datalist>
           <button onClick={handleCreate}>Créer</button>
-        </div>
+        </div> 
 
         {/* Modification */}
         <div className="mention-annee-card fade-in">
@@ -134,7 +183,14 @@ const MentionAnnee = ({ code_mention }) => {
             type="text"
             placeholder="Nouveau nom de la mention-année"
             value={nouveauNom}
-            onChange={(e) => setNouveauNom(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value.toLowerCase();
+
+              const formatted =
+                value.charAt(0).toUpperCase() + value.slice(1);
+
+              setNouveauNom(formatted);
+            }}
           />
           <button onClick={handleModify}>Modifier</button>
         </div>

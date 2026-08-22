@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Parcours.css";
-import { getParcours, modifierParcours, creerParcours } from "./parcoursService";
-import Data_fac from "../../../assets/data/data_univ.json";
+import { getParcours, modifierParcours, creerParcours, getCodeParcoursConfig } from "./parcoursService";
+
 
 const Parcours = ({ code_mention }) => {
   const [parcours, setParcours] = useState([]);
@@ -12,6 +12,8 @@ const Parcours = ({ code_mention }) => {
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+
+  const [parcoursConfig, setParcoursConfig] = useState([]);
 
   const showMessage = (msg, type = "success") => {
     setMessage(msg);
@@ -28,8 +30,26 @@ const Parcours = ({ code_mention }) => {
     else showMessage(result.message, "error");
   };
 
+  // Récupérer les parcours configurés pour une université
+  const loadParcoursConfig = async () => {
+    try { 
+      const data = await getCodeParcoursConfig({code_mention});
+
+      setParcoursConfig(
+        Array.isArray(data) ? data : []
+      );
+    } catch (error) {
+      alert(
+        "Erreur chargement configuration : " +
+          error.message
+      );
+    }
+  };
+
+
   useEffect(() => {
     loadParcours();
+    loadParcoursConfig();
   }, []);
 
   const handleCreate = async () => {
@@ -62,8 +82,8 @@ const Parcours = ({ code_mention }) => {
       setNouveau_code("");
     } else showMessage(result.message, "error");
   };
-
-
+ 
+ 
 
   return (
     <div className="parcours-wrapper">
@@ -82,22 +102,14 @@ const Parcours = ({ code_mention }) => {
           >
             <option value="">Sélectionner un code parcours</option>
 
-            {(() => {
-              // 1️⃣ Chercher la mention parmi toutes les facultés
-              let parcoursList = [];
-              Data_fac.facultes.forEach((fac) => {
-                const mention = fac.mentions.find((m) => m.code === code_mention);
-                if (mention) {
-                  parcoursList = mention.parcours; // récupérer les parcours
-                }
-              });
-              // 2️⃣ Retourner les options JSX
-              return parcoursList.map((p) => (
-                <option key={p.code} value={p.code}>
+            {parcoursConfig.map((p) => (
+                <option
+                  key={p.code}
+                  value={p.code}
+                >
                   {p.code} - {p.nom}
                 </option>
-              ));
-            })()}
+            ))}
           </select>
           <button onClick={handleCreate}>Créer</button>
         </div>

@@ -1,4 +1,4 @@
-import { apiFetch } from "../authentification/apiService";
+import { apiFetch } from "../../accueils/apiService";
 
 // Récupérer les recours d’un enseignant (année en cours)
 export const getRecoursEnseignantEnCoursService = async (enseignantId) => {

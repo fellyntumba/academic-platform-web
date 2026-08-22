@@ -1,7 +1,7 @@
 
 
 const StepIndicator = ({ currentStep }) => {
-  const steps = ["Créer le cpt S.A.", "Créer les code_facs", "Créer les cpts des A.F." ];
+  const steps = ["Créer le cpt S.G.A.", "Créer les code_facs" ];
   return (
     <div className="step-indicator">
       {steps.map((step, index) => (
@@ -16,6 +16,6 @@ const StepIndicator = ({ currentStep }) => {
     </div>
   );
 };
-
+ 
 export default StepIndicator;
 

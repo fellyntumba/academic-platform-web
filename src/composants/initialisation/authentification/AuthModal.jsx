@@ -8,27 +8,27 @@ const AuthModal = ({ onAuthenticated }) => {
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  
   /* =========================
      Envoi OTP
-  ========================= */
-const handleSendEmail = async (e) => {
-  e.preventDefault();
-  setError("");
+  ========================= */ 
+  const handleSendEmail = async (e) => {
+    e.preventDefault(); 
+    setError("");
+    
+    if (!email.trim()) return setError("Veuillez entrer un email.");
 
-  if (!email.trim()) return setError("Veuillez entrer un email.");
+    setLoading(true);
+    const result = await sendOtpSuperAdmin({ email });
+    setLoading(false);
 
-  setLoading(true);
-  const result = await sendOtpSuperAdmin({ email });
-  setLoading(false);
-
-  if (result.success) {
-    setStep(2);
-  } else {
-    // ✅ On affiche EXACTEMENT le message du backend
-    setError(result.message);
-  }
-};
+    if (result.success) {
+      setStep(2);
+    } else {
+      // ✅ On affiche EXACTEMENT le message du backend
+      setError(result.message);
+    }
+  };
 
   /* =========================
      Vérification OTP

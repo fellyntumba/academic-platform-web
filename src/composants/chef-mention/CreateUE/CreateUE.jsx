@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import "./CreateUE.css";
 import {
@@ -9,7 +7,8 @@ import {
   updateUEService,
   getUEService,
   deleteUEService,
-  getUEByPromotionAnneePasseeService
+  getUEByPromotionAnneePasseeService,
+  cloneUEAndCoursService
 } from "./ueService";
 
 // ============================
@@ -18,121 +17,82 @@ import {
 const CreateUE = ({ code_mention }) => {
 
     // ============================
-
     // 📌 MODE D'UTILISATION (CREATE / MODIFY / DELETE)
-
     // ============================
-
     const [mode, setMode] = useState("create");
 
-    // ============================
 
+    // ============================
     // 📌 DONNÉES UE
-
     // ============================
-
     const [ues, setUEs] = useState([]);
-
     const [selectedUE, setSelectedUE] = useState(null);
-
     const [deletedCoursIds, setDeletedCoursIds] = useState([]);
 
-    // ============================
 
+    // ============================
     // 📌 FORMULAIRE UE
-
     // ============================
-
     const [nomUE, setNomUE] = useState("");
-
     const [promotionID, setPromotionID] = useState("");
-
     const [nomPromotion, setNomPromotion] = useState("");
-
     const [semestre, setSemestre] = useState("");
 
-    // ============================
 
+    // ============================
     // 📌 LISTE DYNAMIQUE DES COURS
-
     // ============================
-
     const [coursList, setCoursList] = useState([{ nom: "", credit: 1 }]);
 
-    // ============================
 
+    // ============================
     // 📌 DONNÉES RÉFÉRENTIELLES
-
     // ============================
-
     const [promotions, setPromotions] = useState([]);
-
     const [semestres, setSemestres] = useState([]);
-
     const [uesAnneePassee, setUEsAnneePassee] = useState([]);
 
-    // ============================
 
+    // ============================
     // 📌 NOTIFICATIONS UI
-
-    // ============================
-
+    // ============================ 
     const [message, setMessage] = useState("");
-
     const [messageType, setMessageType] = useState("");
 
-    // ============================
 
+    // ============================
     // 📌 AFFICHAGE DES MESSAGES (SUCCESS / ERROR)
-
     // ============================
-
     const showMessage = (msg, type = "success") => {
-
       setMessage(msg);
-
       setMessageType(type);
 
       setTimeout(() => {
-
         setMessage("");
-
         setMessageType("");
-
       }, 4000);
 
     };
 
-    // ==========================================================
 
+    // ==========================================================
     // 📌 CHARGEMENT DES PROMOTIONS (INIT APP)
-
     // ==========================================================
-
     useEffect(() => {
-
       const fetchPromotions = async () => {
-
         try {
-
           const data = await getPromotionsService({ code_mention });
-
           const list = data.data || [];
-
           setPromotions(list);
-
           setUEs([]);
 
           if (list.length > 0) {
-
             setPromotionID(Number(list[0].id_version));
-
             setNomPromotion(list[0].nom_promotion);
 
           }
 
         } catch (error) {
-
           showMessage("Erreur chargement promotions", "error");
 
         }
@@ -143,36 +103,23 @@ const CreateUE = ({ code_mention }) => {
 
     }, [code_mention]);
 
-    // ==========================================================
 
+    // ==========================================================
     // 📌 CHARGEMENT DES SEMESTRES SELON PROMOTION
-
     // ==========================================================
-
     useEffect(() => {
-
       const fetchSemestres = async () => {
-
         if (!promotionID) return;
-
         try {
-
           const data = await getSemestresService({ id_promotion: promotionID });
-
           const sems = data.data || [];
-
           setSemestres(sems);
-
           if (sems.length > 0) {
-
             setSemestre(Number(sems[0].id_semestre));
 
           }
-
         } catch (error) {
-
           showMessage("Erreur chargement semestres", "error");
-
         }
 
       };
@@ -181,32 +128,21 @@ const CreateUE = ({ code_mention }) => {
 
     }, [promotionID]);
 
-    // ==========================================================
 
+    // ==========================================================
     // 📌 CHARGEMENT DES UE D'UNE ANNÉE PASSÉE (AUTO FILL)
-
     // ==========================================================
-
     useEffect(() => {
-
       const fetchUEAnneePassee = async () => {
-
         if (!nomPromotion) {
-
           setUEsAnneePassee([]);
-
           return;
-
         }
-
         try {
-
           const result = await getUEByPromotionAnneePasseeService({
-
             nom_promotion: nomPromotion
 
           });
-
           setUEsAnneePassee(result.success ? result.data || [] : []);
 
         } catch (error) {
@@ -230,19 +166,14 @@ const CreateUE = ({ code_mention }) => {
     useEffect(() => {
 
       const fetchUEs = async () => {
-
         if (!promotionID || !semestre || mode === "create") return;
-
         try {
 
           const data = await getUEService({
-
             promotion_version_id: promotionID,
-
             semestre_id: semestre
 
           });
-
           setUEs(data.data || []);
 
         } catch (error) {
@@ -257,36 +188,25 @@ const CreateUE = ({ code_mention }) => {
 
     }, [promotionID, semestre, mode]);
 
-    // ==========================================================
 
+    // ==========================================================
     // 📌 SÉLECTION D'UNE UE (MODIFIER / SUPPRIMER)
-
     // ==========================================================
-
     const handleSelectUE = (e) => {
-
       const id = Number(e.target.value);
-
       const ue = ues.find(u => Number(u.id_ue) === id);
 
       if (!ue) return;
 
       setSelectedUE(ue);
-
       setNomUE(ue.nom_ue);
 
       const cours = ue.cours || [];
-
       setCoursList(
-
         cours.length > 0
-
           ? cours.map(c => ({
-
               id_cours: c.id_cours || null,
-
               nom: c.nom_cours || c.nom || "",
-
               credit: Number(c.credit) || 1
 
             }))
@@ -301,93 +221,65 @@ const CreateUE = ({ code_mention }) => {
 
  
   // ==========================================================
-
   // 📌 CHANGEMENT DE MODE (CREATE / MODIFY / DELETE)
-
   // ==========================================================
-
   const handleModeChange = (m) => {
-
     setMode(m);
-
     setSelectedUE(null);
-
     setNomUE("");
-
     setCoursList([{ nom: "", credit: 1 }]);
 
   };
 
-  // ==========================================================
 
+  // =========================================================
   // 📌 RESET FORMULAIRE
-
   // ==========================================================
-
   const reset = () => {
-
     setNomUE("");
-
     setCoursList([{ nom: "", credit: 1 }]);
-
     setSelectedUE(null);
 
   };
 
-  // ==========================================================
 
+  // ==========================================================
   // 📌 AJOUT D'UN COURS
-
   // ==========================================================
-
   const addCours = () => {
-
     setCoursList([...coursList, { id_cours: null, nom: "", credit: 1 }]);
 
   };
 
-  // ==========================================================
 
+  // ==========================================================
   // 📌 SUPPRESSION D'UN COURS (AVEC TRACKING BACKEND)
-
   // ==========================================================
-
   const removeCours = (i) => {
-
     const cours = coursList[i];
-
     if (cours?.id_cours) {
-
       setDeletedCoursIds(prev => [...prev, cours.id_cours]);
 
     }
-
     setCoursList(coursList.filter((_, index) => index !== i));
 
   };
 
-  // ==========================================================
 
+  // ==========================================================
   // 📌 MODIFICATION D'UN COURS (LIVE EDIT)
-
   // ==========================================================
-
   const updateCours = (index, field, value) => {
-
     const updated = [...coursList];
-
     updated[index][field] = value;
-
     setCoursList(updated);
 
   };
 
+
   // ==========================================================
-
   // 📌 AUTO-FILL UE À PARTIR D'UNE UE EXISTANTE (ANNÉE PASSÉE)
-
   // =========================================================
-
   const handleUEChange = (e) => {
     const value = e.target.value;
 
@@ -514,6 +406,39 @@ const CreateUE = ({ code_mention }) => {
     }
   };
 
+
+  // ==========================================================
+  // 📌 CLONER LES UE ET COURS DE L'ANNÉE PRÉCÉDENTE
+  // ==========================================================
+  const handleCloneUECours = async () => {
+
+    const confirmation = window.confirm(
+      "Cette opération va copier toutes les UE et tous les cours de l'année académique précédente vers l'année académique en cours pour cette mention.\n\nContinuer ?"
+    );
+
+    if (!confirmation) return;
+
+    try {
+
+      const resultat = await cloneUEAndCoursService({
+        code_mention
+      });
+
+      showMessage(
+        resultat.message || "Clonage effectué avec succès.",
+        "success"
+      );
+
+    } catch (error) {
+
+      showMessage(
+        error.message || "Erreur lors du clonage.",
+        "error"
+      );
+
+    }
+
+  };
  
   return (
     <div className="ue-container fade-in">
@@ -522,6 +447,14 @@ const CreateUE = ({ code_mention }) => {
 
       {/* MODE */}
       <div className="mode-buttons">
+
+        <button
+          className="clone-btn"
+          onClick={handleCloneUECours}
+        >
+          Initialiser les UE & cours
+        </button>
+
         {["create", "modify", "delete"].map(m => (
           <button
             key={m}
@@ -533,6 +466,7 @@ const CreateUE = ({ code_mention }) => {
             {m === "delete" && "Supprimer"}
           </button>
         ))}
+
       </div>
 
       {/* SELECT UE */}
@@ -546,10 +480,10 @@ const CreateUE = ({ code_mention }) => {
           ))}
         </select>
       )}
-
+ 
       {/* FORM */}
       {(mode === "create" || selectedUE) && (
-        <>
+        <> 
           <input
             type="text"
             list="liste-ue-annee-passee"

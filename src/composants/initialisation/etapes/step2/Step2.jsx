@@ -1,122 +1,171 @@
 import React, { useEffect, useState } from "react";
-import { createCodeFac, getCodeFac } from "./service";
-import Data_fac from "../../../../assets/data/data_univ.json";
+import {
+  getCodesFacultesConfig,
+  createCodeFac,
+  getCodeFacBDuniv,
+} from "./service";
+import { logout } from "../../../accueils/serviceAuth";
 
-const Step2 = ({ onNext }) => {
-
+const Step2 = ({ onFinish }) => {
   const [nomFaculte, setNomFaculte] = useState("");
   const [facs, setFacs] = useState([]);
-  const [message, setMessage] = useState("");
-  const [showForm, setShowForm] = useState(true);
+  const [facultesConfig, setFacultesConfig] = useState([]);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  /* =================
-     Charger les facultés
-  ==================== */
+  // Récupérer les facultés configurées pour une université
+  const loadFacultesConfig = async () => {
+    try { 
+      const data = await getCodesFacultesConfig();
+
+      setFacultesConfig(
+        Array.isArray(data) ? data : []
+      );
+    } catch (error) {
+      alert(
+        "Erreur chargement configuration : " +
+          error.message
+      );
+    }
+  };
+
+  //Récupérer code-facs 
   const loadFacs = async () => {
     try {
-      const data = await getCodeFac();
+      const data = await getCodeFacBDuniv();
 
-      // ✅ normalisation (TRÈS IMPORTANT)
       const list = Array.isArray(data)
         ? data
-        : data.data || [];
+        : Array.isArray(data?.data)
+        ? data.data
+        : [];
 
       setFacs(list);
     } catch (error) {
-      alert("Erreur chargement codes-facs : " + error.message);
+      alert(
+        "Erreur chargement codes-facs : " +
+          error.message
+      );
     }
   };
 
   useEffect(() => {
-    loadFacs(); 
+    loadFacs();
+    loadFacultesConfig();
   }, []);
 
-  /* ====================
-     Ajouter faculté
-  ==================== */
+  // 🔹 Création
   const handleAdd = async (e) => {
     e.preventDefault();
 
     if (!nomFaculte.trim()) {
-      return alert("Veuillez sélectionner un code-fac.");
+      alert("Veuillez sélectionner un code-fac.");
+      return;
     }
 
     try {
       const result = await createCodeFac({
-        code_faculte: nomFaculte
+        code_faculte: nomFaculte,
       });
 
       alert(result.message);
 
-      // ✅ AJOUT LOCAL INSTANTANÉ (COMME STEP3)
       setFacs((prev) => [
         ...prev,
         {
-          id_faculte: result.faculte?.id_faculte,
-          code_faculte: nomFaculte
-        }
+          id_faculte:
+            result.faculte?.id_faculte ??
+            `${nomFaculte}-${Date.now()}`,
+          code_faculte: nomFaculte,
+        },
       ]);
 
       setNomFaculte("");
-
     } catch (error) {
       alert("Erreur : " + error.message);
     }
+  };
+
+  const handleFinish = async () => {
+    if (facs.length === 0) {
+      alert("Veuillez ajouter au moins un code-fac.");
+      return;
+    }
+
+    
+      setShowSuccess(true);
+
+      //Déconnexion réelle.
+      await logout();
+    
+      // Simuler un petit délai de 2,5 s avant de rediriger
+      setTimeout(async () => {
+        await onFinish();
+      }, 2500);
   };
 
   return (
     <div className="step-form">
       <h2>Code faculté</h2>
 
-      {showForm ? (
-        <form onSubmit={handleAdd}>
+      <form onSubmit={handleAdd}>
+        <select
+          className="faculte-select"
+          value={nomFaculte}
+          onChange={(e) =>
+            setNomFaculte(e.target.value)
+          }
+        >
+          <option value="">
+            Sélectionner un code faculté
+          </option>
 
-          <select
-            className="faculte-select"
-            value={nomFaculte}
-            onChange={(e) => setNomFaculte(e.target.value)}
-          >
-            <option value="">Sélectionner un code faculté</option>
+          {facultesConfig.map((fac) => (
+            <option
+              key={fac.code}
+              value={fac.code}
+            >
+              {fac.code} - {fac.nom}
+            </option>
+          ))}
+        </select>
 
-            {Data_fac.facultes.map((fac) => (
-              <option key={fac.code} value={fac.code}>
-                {fac.code} - {fac.nom}
-              </option>
-            ))}
+        <button type="submit">
+          Ajouter
+        </button>
+      </form>
 
-          </select>
-
-          <button type="submit">Ajouter</button>
-
-        </form>
-      ):(
-        <p className="list-items">{message}</p>
-      )}
-      
       {facs.length > 0 && (
         <ul className="facultes-list horizontal">
-          {facs.map((f) => (
-            <li key={f.id_faculte}>{f.code_faculte}</li>
+          {facs.map((f, index) => (
+            <li
+              key={
+                f.id_faculte ??
+                `${f.code_faculte}-${index}`
+              }
+            >
+              {f.code_faculte}
+            </li>
           ))}
         </ul>
       )}
 
       <div className="buttons">
-        <button
-          onClick={() => {
-            if (facs.length === 0) {
-              return alert("Veuillez ajouter au moins un code-fac.");
-            }
-            onNext();
-          }}
-        >
-          Suivant
+        <button onClick={handleFinish} disabled={facs.length === 0}>
+          Terminer
         </button>
       </div>
 
+      {/* 🌟 Message succès animé */}
+      {showSuccess && (
+        <div className="success-overlay">
+          <div className="success-box">
+            <div className="spinner"></div>
+            <h3>Configuration terminée avec succès !</h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Step2;
-

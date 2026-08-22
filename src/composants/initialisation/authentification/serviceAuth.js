@@ -1,4 +1,4 @@
-import { apiFetch } from "./apiService";
+import { apiFetch } from "../../accueils/apiService";
 const BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000/api/administration`;
  
 /* ========================= 
@@ -6,18 +6,18 @@ const BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000/
 ========================= */
 export async function sendOtpSuperAdmin({email}) {
   try {
-    const res = await fetch(`${BASE_URL}/send-otp-sa`, {
+    const res = await fetch(`${BASE_URL}/send-otp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     });
-
+  
     const data = await res.json();
 
     if (!res.ok) {
       return { success: false, message: data.message };
     }
-
+ 
     return { success: true, message: data.message };
 
   } catch (error) {
@@ -25,13 +25,13 @@ export async function sendOtpSuperAdmin({email}) {
   }
 }
 
-
+ 
 /* =========================
    Vérification OTP
 ========================= */
 export async function verifyOtpSuperAdmin({email, otp}) {
   try {
-    const res = await fetch(`${BASE_URL}/verify-otp-sa`, {
+    const res = await fetch(`${BASE_URL}/verify-otp`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -55,37 +55,37 @@ export async function verifyOtpSuperAdmin({email, otp}) {
 // Pour verifier si user est authentifié 
 export async function isAuthenticated() {
   try {
-    const res = await apiFetch("/auth/me");
+
+    const res = await apiFetch("/administration/me");
+
+    const data = await res.json();
 
     if (!res.ok) {
       return {
         authenticated: false,
-        user: null,
+        user: null
       };
     }
 
-    const data = await res.json();
-  
-    
-
     return {
-      authenticated: true,
-      user: data.user,
+      authenticated: data.authenticated,
+      user: data.user
     };
 
   } catch (err) {
+
     if (err.message === "NOT_AUTHENTICATED") {
       return {
         authenticated: false,
-        user: null,
+        user: null
       };
     }
 
-    console.error("Erreur isAuthenticated:", err);
+    console.error("Erreur isAuthenticated :", err);
 
     return {
       authenticated: false,
-      user: null,
+      user: null
     };
   }
 }

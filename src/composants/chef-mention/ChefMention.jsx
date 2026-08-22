@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { isAuthenticated, logout } from "./authentification/serviceAuth";
+import {
+  isAuthenticated,
+  logout,
+  switchRole ,
+  
+} from "../accueils/serviceAuth";
 import "./ChefMention.css";
-// import { getAnneeAcademiqueEnCoursService } from "./service";
+import { getAnneeAcademiqueEnCoursService } from "./chefMentionService";
  
 import MentionAnnee from "./MentionAnnee/MentionAnnee";
 import PromotionAnnee from "./PromotionAnnee/PromotionAnnee";
@@ -14,7 +19,7 @@ import AffecterCours from "./AffecterCours/AffecterCours";
 import ListeCoursEnseignants from "./ListeCoursEnseignants/ListeCoursEnseignants";
 import SuiviEnvoiNotes from "./SuiviEnvoiNotes/SuiviEnvoiNotes";
 // import PeriodeNotes from "./PeriodeNotes/PeriodeNotes";
-import PeriodeRecours from "./PeriodeRecours/PeriodeRecours";
+import PeriodeRecours from "./PeriodeRecours/PeriodeRecours"; 
 
 import StatsReussitePromotion from "./StatsReussitePromotion/StatsReussitePromotion";
 import CreateSession from "./createSession/createSession";
@@ -22,9 +27,11 @@ import EtudiantsInscrits from "./EtudiantsInscrits/EtudiantsInscrits";
 import EtudiantsOrdres from "./EtudiantsOrdres/EtudiantsOrdres";
 import SuiviRecours from "./SuiviRecours/SuiviRecours";
 import CreateUE from "./CreateUE/CreateUE";
+import FixationFraisAcademiques from "./fixationFrais/FixationFraisAcademiques";
 import { useContextUniv } from "../../featuresAndInfos/ContextUnivProvider";
+import { ADMIN_ROLES, ROLE_LABELS } from "../accueils/roles";
 
-
+  
   
 const menuItems = [
   {
@@ -92,6 +99,13 @@ const menuItems = [
     title: "Statistiques",
     subMenus: ["Taux de réussite / échec par promotion"],
   },
+
+  {
+    title: "Gestion des frais académiques",
+    subMenus: [
+      "Fixer les frais académiques",
+    ],
+  },
 ];
 
 
@@ -101,14 +115,80 @@ const ChefMention = () => {
   const [activeView, setActiveView] = useState(null);
   const [infoUser, setInfoUser] = useState(null);
   const { infoUniv, loading } = useContextUniv();
+  const [annee, setAnnee] = useState("");
   // const [annee, setAnnee] = useState("");
 
   const navigate = useNavigate();
 
+  //Deconnexionn
   const handleQuit = async () => {
+
     await logout();
-    navigate("/home");
+
+    // recharge l'application pour refaire isAuthenticated()
+    window.location.replace("/home");
+
   };
+
+  //Charger année academique 
+  useEffect(()=>{
+    const loadAnnee = async () =>{
+      try {
+    
+        const result = await getAnneeAcademiqueEnCoursService();
+    
+        if (!result || !result.data) {
+          showMessage("Aucune année académique en cours.", "error");
+          return;
+        }
+        setAnnee(result.data.libelle)
+    
+      } catch (error) {
+        showMessage(error.message, "error");
+    
+      }
+    }
+    loadAnnee();
+  }, [])
+
+
+  //changer le profile actif
+  const handleSwitchRole = async (e) => {
+
+    const role = e.target.value;
+
+    const result = await switchRole(role);
+
+    if (!result.success) {
+      alert(result.message);
+      return;
+    }
+
+    console.log("ROLE CHANGÉ");
+
+    window.location.replace("/");
+  };
+
+  //Recuperer info user
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const auth = await isAuthenticated();
+
+        if (!auth.authenticated) {
+          window.location.replace("/home");
+          return;
+        }
+
+        setInfoUser(auth.user);
+
+      } catch {
+        window.location.replace("/home");
+      }
+    };
+
+    loadUser();
+  }, []);
 
 //Recuperer annee acad
   // useEffect(() => {
@@ -127,22 +207,8 @@ const ChefMention = () => {
   // }, []); 
 
 //Recuperer info user
-  useEffect(() => {
-      const loadUser = async () => {
-        try {
-  
-          const user = await isAuthenticated();
-          setInfoUser(user);
-  
-        } catch {
-  
-          navigate("/home");
-  
-        }
-      };
-  
-      loadUser();
-  }, []);
+// {infoUser && console.log(infoUser);}
+
 
   const toggleMenu = (index) => {
     setActiveMenu(activeMenu === index ? null : index);
@@ -168,6 +234,7 @@ const ChefMention = () => {
     else if (title === "Taux de réussite / échec par promotion") setActiveView("statistiques");
     // else if (title === "Créer / Modifier les semestres") setActiveView("semestres");
     else if (title === "Lancer les sessions") setActiveView("sessions");
+    else if (title === "Fixer les frais académiques") setActiveView("fixer-frais-academiques");
     else setActiveView(null);
 
   };
@@ -204,7 +271,7 @@ const ChefMention = () => {
           <div className="menu-card">
 
             <div className="menu-card-title">
-              Configuration initiale
+              Configuration initiale 
             </div>
 
             <div className="menu-card-desc">
@@ -259,7 +326,7 @@ const ChefMention = () => {
               Ces paramètres doivent être mis à jour à chaque année académique.
             </div>
 
-            {[0,2,4,5,6,7,8,9,10].map((i) => {
+            {[0,2,4,5,6,7,8,9,10,11].map((i) => {
 
               const item = menuItems[i];
 
@@ -323,25 +390,110 @@ const ChefMention = () => {
           {activeView === "parcours-année" && <ParcoursAnnee code_mention={infoUser?.code_mention} />}
           {activeView === "promotions" && <Promotions code_mention={infoUser?.code_mention} />}
           {activeView === "promotions-année" && <PromotionAnnee code_mention={infoUser?.code_mention} />}
+          {activeView === "fixer-frais-academiques" && <FixationFraisAcademiques code_mention={infoUser?.code_mention} annee= {annee}/>}
+          
+
 
         </main>
 
       </div>
   
 
-      <footer className="dashboard-footer">
 
-        <span className="footer-center">
-          Plateforme académique intelligente et sécurisée
-        </span>
-
-        {infoUser && (
-          <span className="footer-right">
-            {infoUser.nom}, Mention : {infoUser.code_mention}
-          </span>
-        )}
-
-      </footer>
+            <footer className="dashboard-footer">
+      
+              <div className="footer-center">
+                Plateforme académique intelligente et sécurisée
+              </div>
+      
+      
+              {infoUser && (
+      
+                <div className="footer-user-card">
+      
+      
+                  {/* Avatar */}
+                  <div className="footer-avatar">
+                    {infoUser.nom
+                      ?.split(" ")
+                      .map(word => word[0])
+                      .join("")
+                      .substring(0,2)
+                      .toUpperCase()
+                    }
+                  </div>
+      
+      
+      
+                  {/* Informations utilisateur */}
+                  <div className="footer-user-info">
+      
+      
+                    <div className="footer-user-name">
+                      {infoUser.nom}
+                    </div>
+      
+      
+                    <div className="footer-user-detail">
+      
+                      {infoUser.code_faculte && (
+                        <>
+                          {infoUser.code_faculte}
+                        </>
+                      )}
+      
+                      {infoUser.code_mention && (
+                        <>
+                          &nbsp; | &nbsp;
+                          {infoUser.code_mention}
+                        </>
+                      )}
+      
+                    </div>
+      
+      
+      
+                    <div className="footer-role-row">
+      
+                      <span className="role-label">
+                        Profil :
+                      </span>
+      
+      
+                      <select
+                        value={infoUser.active_role}
+                        onChange={handleSwitchRole}
+                      >
+      
+                        {infoUser.roles 
+                          ?.map(role => (
+      
+                            <option
+                              key={role}
+                              value={role}
+                            >
+                              {ROLE_LABELS[role]} 
+                            </option>
+      
+                          ))
+                        }
+      
+      
+                      </select>
+      
+      
+                    </div>
+      
+      
+                  </div>
+      
+      
+                </div>
+      
+              )}
+      
+      
+            </footer>
 
     </div>
   );

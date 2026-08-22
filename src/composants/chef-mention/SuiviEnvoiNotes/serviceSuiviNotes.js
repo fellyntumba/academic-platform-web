@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiService";
+import { apiFetch } from "../../accueils/apiService";
 
 //Récupérer le suivi d'envoi des notes
 export const getSuiviNotesService = async ({ id_version, semestre_id, session_id }) => {

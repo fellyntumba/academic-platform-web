@@ -4,19 +4,21 @@ import {
   getParcours,
   creerParcoursVersion,
   getParcoursVersion,
-  modifierParcoursVersion
+  modifierParcoursVersion,
+  getParcoursVersionByCodeAnneePasseeService
 } from "./parcoursAnneeService";
 
 const ParcoursAnnee = ({ code_mention }) => {
   const [parcours, setParcours] = useState([]);
   const [parcoursVersions, setParcoursVersions] = useState([]);
+  const [parcoursVersionsAnneePassee, setParcoursVersionsAnneePassee] = useState([]);
   const [codeParcours, setCodeParcours] = useState("");
   const [ancienNom, setAncienNom] = useState("");
   const [nouveauNom, setNouveauNom] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // "success" ou "error"
 
-  const showMessage = (msg, type = "success") => {
+  const showMessage = (msg, type = "success") => { 
     setMessage(msg);
     setMessageType(type);
     setTimeout(() => {
@@ -24,6 +26,34 @@ const ParcoursAnnee = ({ code_mention }) => {
       setMessageType("");
     }, 4000);
   };
+
+  /* =========================
+    Charger parcours version/ année passée
+  ========================= */
+  useEffect(() => {
+
+    const fetchParcoursVersionAnneePassee = async () => {
+
+      if (!codeParcours) {
+        setParcoursVersionsAnneePassee([]);
+        return;
+      }
+
+      const result =
+        await getParcoursVersionByCodeAnneePasseeService({
+          code_parcours: codeParcours
+        });
+  
+      if (result.success) {
+        setParcoursVersionsAnneePassee(result.data || []);
+      } else {
+        setParcoursVersionsAnneePassee([]);
+      }
+    };
+
+    fetchParcoursVersionAnneePassee();
+
+  }, [codeParcours]);
 
   /* =====================================================
      🔹 Charger les codes parcours
@@ -43,7 +73,7 @@ const ParcoursAnnee = ({ code_mention }) => {
   }, [code_mention]);
 
   /* =====================================================
-     🔹 Fonction centralisée de refresh
+     Charger parcours versions
   ====================================================== */
   const fetchParcoursVersions = async () => {
     if (!codeParcours) return;
@@ -159,10 +189,26 @@ const handleModify = async () => {
 
           <input
             type="text"
+            list="liste-parcours"
             placeholder="Nom du parcours-année"
             value={nouveauNom}
-            onChange={(e) => setNouveauNom(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value.toLowerCase();
+
+              const formatted =
+                value.charAt(0).toUpperCase() + value.slice(1);
+
+              setNouveauNom(formatted);
+            }}
           />
+          <datalist id="liste-parcours">
+            {parcoursVersionsAnneePassee.map((p, index) => (
+              <option
+                key={index}
+                value={p.nom_parcours} 
+              />
+            ))}
+          </datalist>
 
           <button onClick={handleCreate}>
             Créer
@@ -196,7 +242,14 @@ const handleModify = async () => {
                 type="text"
                 placeholder="Nouveau nom du parcours-année"
                 value={nouveauNom}
-                onChange={(e) => setNouveauNom(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value.toLowerCase();
+
+                  const formatted =
+                    value.charAt(0).toUpperCase() + value.slice(1);
+
+                  setNouveauNom(formatted);
+                }}
               />
               <button onClick={handleModify}>
                 Modifier

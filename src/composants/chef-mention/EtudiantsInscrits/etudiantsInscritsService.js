@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiService";
+import { apiFetch } from "../../accueils/apiService";
 
 
 export const importEtudiantsInscrits = async (file, promotion) => {
@@ -57,4 +57,57 @@ export const getPromotionsService = async ({code_mention}) => {
   }
 
   return data;
+};
+
+
+
+// =============================
+// INSCRIRE UN ÉTUDIANT
+// =============================
+export const inscrireEtudiantService = async ({
+  ancienMatricule,
+  nom,
+  postnom,
+  prenom,
+  sexe,
+  nom_promotion
+}) => {
+
+  try {
+
+    const response = await apiFetch(
+      "/administration/etudiant/inscrit",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ancienMatricule: ancienMatricule.trim().toUpperCase(),
+          nom: nom.trim(),
+          postnom: postnom.trim(),
+          prenom: prenom.trim(),
+          sexe,
+          nom_promotion
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+        "Erreur lors de l'inscription de l'étudiant."
+      );
+    }
+
+    return data;
+
+  } catch (error) {
+
+    throw error;
+
+  }
+
 };
