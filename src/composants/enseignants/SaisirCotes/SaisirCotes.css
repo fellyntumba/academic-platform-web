@@ -14,9 +14,9 @@
   border-radius: 20px;
   margin-bottom: 30px;
   text-align: center;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
 }
-   
+
 .title-session {
   margin-bottom: 20px;
   font-size: 1.3rem;
@@ -45,14 +45,14 @@
 
 .btn-session:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,114,255,0.2);
+  box-shadow: 0 10px 25px rgba(0, 114, 255, 0.2);
 }
 
 .btn-session.active {
   background: linear-gradient(90deg, #00c6ff, #0072ff);
   color: white;
   border: none;
-  box-shadow: 0 12px 30px rgba(0,114,255,0.35);
+  box-shadow: 0 12px 30px rgba(0, 114, 255, 0.35);
 }
 
 .warning-session {
@@ -76,7 +76,7 @@
   padding: 25px;
   margin-bottom: 25px;
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
 .top-line,
@@ -104,7 +104,7 @@ select:focus,
 input:focus {
   outline: none;
   border-color: #0072ff;
-  box-shadow: 0 0 0 3px rgba(0,114,255,0.15);
+  box-shadow: 0 0 0 3px rgba(0, 114, 255, 0.15);
   background: white;
 }
 
@@ -140,11 +140,11 @@ input:focus {
   color: white;
 }
 
-.btn-valid:hover,  
+.btn-valid:hover,
 .btn-send:hover,
 .btn-fiche:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0,114,255,0.3);
+  box-shadow: 0 8px 18px rgba(0, 114, 255, 0.3);
 }
 
 button:disabled {
@@ -185,6 +185,7 @@ button:disabled {
   min-width: auto;
   font-size: 13px;
 }
+
 .notes-list .btn-send {
   display: block;
   margin: 20px auto 0 auto;
@@ -199,20 +200,21 @@ button:disabled {
   color: #9ca3af;
   padding: 20px;
 }
-/* Conteneur du mini formulaire pour modifier la cote */
+
+/* ================= MODIFICATION COTE ================= */
+
 .cote-card {
   display: flex;
-  justify-content: center; /* centre le formulaire horizontalement */
+  justify-content: center;
   margin-top: 5px;
 }
 
 .cote-edit {
   display: flex;
   align-items: center;
-  gap: 8px; /* espace entre l'input et les boutons */
+  gap: 8px;
 }
 
-/* Input de modification plus compact */
 .cote-edit input {
   padding: 6px 10px;
   font-size: 13px;
@@ -221,7 +223,6 @@ button:disabled {
   border: 1px solid #e5e7eb;
 }
 
-/* Boutons OK / Annuler petits et harmonieux */
 .cote-edit button {
   padding: 5px 10px;
   font-size: 12px;
@@ -233,29 +234,27 @@ button:disabled {
   transition: all 0.2s ease;
 }
 
-/* Bouton OK bleu */
 .cote-edit .btn-ok {
   background: linear-gradient(90deg, #00c6ff, #0072ff);
 }
 
-/* Bouton Annuler rouge */
 .cote-edit .btn-cancel {
   background: #ef4444;
 }
 
-/* Hover léger pour les deux */
 .cote-edit .btn-ok:hover,
 .cote-edit .btn-cancel:hover {
   transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
-/* ================= STAT ================= */
+
+/* ================= STATISTIQUES ================= */
 
 .summary-left {
   padding: 20px;
   border-radius: 16px;
   background: white;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -270,61 +269,124 @@ button:disabled {
   padding: 20px;
   border-radius: 16px;
   background: #f9fafb;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   min-width: 220px;
 }
 
-/* ================= DEROGATION ================= */
+/* ================= AJOUT DE POINTS ================= */
 
-.derogation-box {
+.points-box {
   flex: 1;
   min-width: 300px;
-  max-width: 380px;
+  max-width: 430px;
   padding: 20px;
   border-radius: 14px;
-  background: linear-gradient(135deg,#fff7ed,#fff);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  background: linear-gradient(
+    135deg,
+    #f8fbff,
+    #ffffff
+  );
+  border: 1px solid #e6edf7;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
 }
 
-.derogation-box h4 {
-  color: #ea580c;
+.points-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 16px;
+}
+
+.points-box h4 {
+  margin: 0 0 6px 0;
+  color: #1f4ba5;
+  font-size: 17px;
   font-weight: 700;
 }
 
-.derogation-box textarea {
-  resize: none;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  background: #fafafa;
+.points-box-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.45;
 }
 
-.derogation-box textarea:focus {
-  outline: none;
-  border-color: #ea580c;
-  box-shadow: 0 0 0 3px rgba(234,88,12,0.15);
+.points-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #eaf3ff;
+  color: #0072ff;
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.btn-derogation {
-  background: linear-gradient(90deg,#f97316,#ea580c);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 25px;
+.points-box-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.points-box-form label {
+  display: block;
+  margin-bottom: 6px;
+  color: #374151;
+  font-size: 12px;
   font-weight: 600;
+}
+
+.points-box-form select {
+  min-width: 125px;
+  padding: 9px 12px;
+  font-size: 13px;
+}
+
+.btn-points {
+  min-height: 39px;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 9px;
+  background: linear-gradient(
+    90deg,
+    #00c6ff,
+    #0072ff
+  );
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  white-space: nowrap;
+  transition: all 0.25s ease;
 }
 
-.btn-derogation:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(234,88,12,0.3);
+.btn-points:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 6px 15px
+    rgba(0, 114, 255, 0.25);
 }
 
-.saisir-notification { 
+.btn-points:disabled {
+  background: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.points-hint {
+  margin: 10px 0 0 0;
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+/* ================= NOTIFICATION ================= */
+
+.saisir-notification {
   position: fixed;
   bottom: 30px;
   left: 50%;
@@ -337,12 +399,102 @@ button:disabled {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   z-index: 9999;
   animation: slideUp 0.3s ease;
-} 
+}
 
 .saisir-notification.success {
-  background: linear-gradient(90deg, #00c853, #00e676);
+  background: linear-gradient(
+    90deg,
+    #00c853,
+    #00e676
+  );
 }
 
 .saisir-notification.error {
-  background: linear-gradient(90deg, #d32f2f, #ff5252);
+  background: linear-gradient(
+    90deg,
+    #d32f2f,
+    #ff5252
+  );
 }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform:
+      translate(-50%, 15px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translate(-50%, 0);
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+  .notes-container {
+    padding: 20px;
+  }
+
+  .bottom-line {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .summary-left,
+  .points-box {
+    max-width: none;
+    width: 100%;
+  }
+
+  .btn-fiche {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .notes-container {
+    padding: 12px;
+  }
+
+  .card-session,
+  .card-cote {
+    padding: 16px;
+  }
+
+  .options-session {
+    gap: 10px;
+  }
+
+  .btn-session {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .top-line,
+  .second-line {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  select,
+  input,
+  .btn-valid {
+    width: 100%;
+  }
+
+  .points-box-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .points-box-form select,
+  .btn-points {
+    width: 100%;
+  }
+}
+

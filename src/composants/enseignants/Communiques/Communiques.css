@@ -1,0 +1,1036 @@
+/* =========================================================
+   WRAPPER
+========================================================= */
+
+.gestion-communiques-wrapper {
+  width: 100%;
+  min-height: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(37, 99, 235, 0.035),
+      transparent 32%
+    ),
+    #f5f7fb;
+}
+
+/* =========================================================
+   CARTE PRINCIPALE
+========================================================= */
+
+.gestion-communiques-card {
+  width: 100%;
+  max-width: 1080px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e9f0;
+  border-radius: 22px;
+
+  padding: 34px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 18px 45px rgba(15, 23, 42, 0.07),
+    0 3px 10px rgba(15, 23, 42, 0.025);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.gestion-communiques-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 24px;
+
+  padding-bottom: 28px;
+  margin-bottom: 27px;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+.header-title-area {
+  min-width: 0;
+}
+
+.gestion-eyebrow {
+  display: inline-flex;
+  align-items: center;
+
+  margin-bottom: 8px;
+
+  color: #2563eb;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.gestion-communiques-header h2 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 27px;
+  line-height: 1.2;
+
+  font-weight: 760;
+
+  letter-spacing: -0.65px;
+}
+
+.gestion-communiques-header p {
+  max-width: 620px;
+
+  margin: 9px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.header-badge {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 12px;
+
+  border: 1px solid #dbe7ff;
+  border-radius: 999px;
+
+  background: #f6f9ff;
+
+  color: #2563eb;
+
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.header-badge-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.communique-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.form-section {
+  padding: 24px;
+
+  border: 1px solid #e8ecf2;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-section:hover {
+  border-color: #dfe5ee;
+
+  box-shadow:
+    0 4px 15px rgba(15, 23, 42, 0.025);
+}
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 13px;
+
+  margin-bottom: 21px;
+}
+
+.section-number {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #edf4ff;
+  color: #2563eb;
+
+  font-size: 11px;
+  font-weight: 850;
+
+  border: 1px solid #dce9ff;
+}
+
+.section-heading-content {
+  min-width: 0;
+}
+
+.section-heading h3 {
+  margin: 1px 0 4px;
+
+  color: #1f2937;
+
+  font-size: 15px;
+  line-height: 1.3;
+
+  font-weight: 750;
+}
+
+.section-heading span {
+  display: block;
+
+  color: #8a93a3;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   GRID INFORMATIONS
+========================================================= */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.65fr)
+    minmax(220px, 0.75fr);
+
+  gap: 18px;
+}
+
+/* =========================================================
+   DESTINATAIRES
+========================================================= */
+
+.destinataires-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(210px, 0.7fr)
+    minmax(0, 1.3fr);
+
+  gap: 18px;
+
+  width: 100%;
+}
+
+/* =========================================================
+   CHAMPS
+========================================================= */
+
+.field-group,
+.destination-field {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.field-group label,
+.destination-field label {
+  margin-bottom: 8px;
+
+  color: #374151;
+
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.field-group input,
+.field-group select,
+.destination-field select {
+  width: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  height: 43px;
+
+  padding:
+    0 13px;
+
+  border: 1px solid #dce1e8;
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #ffffff;
+  color: #1f2937;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.field-group input::placeholder {
+  color: #a6adba;
+}
+
+.field-group input:hover,
+.field-group select:hover,
+.destination-field select:hover {
+  border-color: #c8d0dc;
+}
+
+.field-group input:focus,
+.field-group select:focus,
+.destination-field select:focus {
+  border-color: #6f9cf5;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.field-group input:disabled,
+.field-group select:disabled,
+.destination-field select:disabled {
+  background: #f6f8fa;
+
+  color: #a0a8b5;
+
+  cursor: not-allowed;
+
+  border-color: #e4e7eb;
+}
+
+.field-group small,
+.destination-field small {
+  margin-top: 7px;
+
+  color: #98a1b2;
+
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   PROMOTION
+========================================================= */
+
+.promotion-destination {
+  position: relative;
+}
+
+.select-with-status {
+  position: relative;
+
+  width: 100%;
+}
+
+.select-with-status select {
+  padding-right: 42px;
+}
+
+.select-spinner {
+  position: absolute;
+
+  top: 50%;
+  right: 13px;
+
+  width: 14px;
+  height: 14px;
+
+  margin-top: -7px;
+
+  border:
+    2px solid #dbe5f8;
+
+  border-top-color: #2563eb;
+
+  border-radius: 50%;
+
+  animation:
+    communiqueSelectSpin 0.7s linear infinite;
+
+  pointer-events: none;
+}
+
+@keyframes communiqueSelectSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.field-loading {
+  color: #2563eb !important;
+}
+
+.field-success {
+  color: #15803d !important;
+}
+
+.field-warning {
+  color: #b45309 !important;
+}
+
+/* =========================================================
+   CONTENU FICHIER
+========================================================= */
+
+.communique-file-area {
+  width: 100%;
+}
+
+.communique-file-area input[type="file"] {
+  display: none;
+}
+
+.communique-file-label {
+  width: 100%;
+
+  min-height: 84px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 15px 16px;
+
+  border:
+    1.5px dashed #cbd5e1;
+
+  border-radius: 13px;
+
+  background: #f9fafc;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.communique-file-label:hover {
+  border-color: #7aa7ff;
+
+  background: #f5f8ff;
+
+  box-shadow:
+    0 4px 12px rgba(37, 99, 235, 0.05);
+}
+
+.communique-file-label.has-file {
+  border-style: solid;
+
+  border-color: #bfdbfe;
+
+  background: #f7faff;
+}
+
+.communique-file-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #edf4ff;
+
+  color: #2563eb;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.communique-file-label.has-file
+.communique-file-icon {
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+.communique-file-content {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.communique-file-content strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #374151;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.communique-file-content small {
+  display: block;
+
+  color: #98a1b2;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.communique-file-button {
+  flex-shrink: 0;
+
+  padding: 9px 14px;
+
+  border-radius: 9px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.communique-file-label:hover
+.communique-file-button {
+  background: #1d4ed8;
+}
+
+.communique-file-info {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 8px;
+
+  margin-top: 10px;
+
+  padding: 10px 12px;
+
+  border: 1px solid #edf0f4;
+  border-radius: 9px;
+
+  background: #fafbfc;
+
+  color: #8a93a3;
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.file-info-icon {
+  width: 16px;
+  height: 16px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eaf1ff;
+
+  color: #2563eb;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   EXPIRATION
+========================================================= */
+
+.expiration-field {
+  max-width: 520px;
+}
+
+/* =========================================================
+   ZONE PUBLICATION
+========================================================= */
+
+.publication-area {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding:
+    17px 18px;
+
+  border:
+    1px solid #e2e8f0;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8faff,
+      #ffffff
+    );
+}
+
+.publication-hint {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.publication-hint-icon {
+  width: 31px;
+  height: 31px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #dcfce7;
+  color: #15803d;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.publication-hint strong {
+  display: block;
+
+  color: #374151;
+
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.publication-hint span:not(
+  .publication-hint-icon
+) {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #8a93a3;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   BOUTON PUBLICATION
+========================================================= */
+
+.submit-communique-btn {
+  min-width: 230px;
+
+  min-height: 44px;
+
+  padding:
+    0 20px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 14px rgba(37, 99, 235, 0.18);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.submit-communique-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 7px 18px rgba(37, 99, 235, 0.23);
+}
+
+.submit-communique-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit-communique-btn:disabled {
+  opacity: 0.7;
+
+  cursor: wait;
+
+  transform: none;
+}
+
+.submit-icon {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.button-spinner {
+  width: 14px;
+  height: 14px;
+
+  display: inline-block;
+
+  border:
+    2px solid rgba(255, 255, 255, 0.35);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation:
+    communiqueSpin 0.7s linear infinite;
+}
+
+@keyframes communiqueSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+.communique-notification {
+  position: fixed;
+
+  right: 25px;
+  bottom: 25px;
+
+  z-index: 2000;
+
+  max-width: 430px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    13px 16px;
+
+  border-radius: 12px;
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 650;
+
+  box-shadow:
+    0 12px 35px rgba(15, 23, 42, 0.18);
+
+  animation:
+    notificationIn 0.25s ease;
+}
+
+.communique-notification.success {
+  background: #15803d;
+}
+
+.communique-notification.error {
+  background: #dc2626;
+}
+
+.communique-notification.info {
+  background: #2563eb;
+}
+
+.notification-icon {
+  width: 23px;
+  height: 23px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.18);
+
+  font-size: 11px;
+  font-weight: 850;
+}
+
+@keyframes notificationIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — TABLETTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .gestion-communiques-wrapper {
+    padding: 22px;
+  }
+
+  .gestion-communiques-card {
+    max-width: 100%;
+
+    padding: 27px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .destinataires-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .expiration-field {
+    max-width: none;
+  }
+
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .gestion-communiques-wrapper {
+    padding: 12px;
+  }
+
+  .gestion-communiques-card {
+    padding: 19px;
+
+    border-radius: 16px;
+  }
+
+  .gestion-communiques-header {
+    flex-direction: column;
+
+    gap: 14px;
+
+    padding-bottom: 21px;
+    margin-bottom: 21px;
+  }
+
+  .gestion-communiques-header h2 {
+    font-size: 22px;
+  }
+
+  .gestion-communiques-header p {
+    font-size: 12px;
+  }
+
+  .header-badge {
+    align-self: flex-start;
+  }
+
+  .communique-form {
+    gap: 13px;
+  }
+
+  .form-section {
+    padding: 18px;
+
+    border-radius: 13px;
+  }
+
+  .section-heading {
+    gap: 10px;
+
+    margin-bottom: 17px;
+  }
+
+  .section-number {
+    width: 31px;
+    height: 31px;
+
+    border-radius: 9px;
+  }
+
+  .section-heading h3 {
+    font-size: 14px;
+  }
+
+  .section-heading span {
+    font-size: 10px;
+  }
+
+  .publication-area {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 14px;
+
+    padding: 15px;
+  }
+
+  .submit-communique-btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .communique-notification {
+    left: 12px;
+    right: 12px;
+
+    bottom: 12px;
+
+    max-width: none;
+  }
+
+}
+
+/* =========================================================
+   RESPONSIVE — PETIT MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+  .gestion-communiques-wrapper {
+    padding: 8px;
+  }
+
+  .gestion-communiques-card {
+    padding: 15px;
+
+    border-radius: 14px;
+  }
+
+  .gestion-communiques-header h2 {
+    font-size: 20px;
+  }
+
+  .form-section {
+    padding: 15px;
+  }
+
+  .communique-file-label {
+    min-height: auto;
+
+    padding: 13px;
+
+    gap: 10px;
+  }
+
+  .communique-file-icon {
+    width: 37px;
+    height: 37px;
+
+    font-size: 16px;
+  }
+
+  .communique-file-content strong {
+    font-size: 11px;
+  }
+
+  .communique-file-content small {
+    font-size: 9px;
+  }
+
+  .communique-file-button {
+    padding:
+      8px 10px;
+
+    font-size: 9px;
+  }
+
+  .publication-hint {
+    align-items: flex-start;
+  }
+
+}

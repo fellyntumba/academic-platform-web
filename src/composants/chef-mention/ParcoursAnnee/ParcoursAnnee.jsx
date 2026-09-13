@@ -189,7 +189,7 @@ const handleModify = async () => {
 
           <input
             type="text"
-            list="liste-parcours"
+            list="liste-parcours" 
             placeholder="Nom du parcours-année"
             value={nouveauNom}
             onChange={(e) => {

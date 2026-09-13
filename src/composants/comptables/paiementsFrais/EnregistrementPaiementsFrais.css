@@ -161,30 +161,187 @@
 
 
 /* ============================================================
-   ALERT
+   NOTIFICATIONS / MESSAGES
    ============================================================ */
 
 .payment-alert {
+  position: fixed;
+
+  left: 50%;
+  bottom: 24px;
+
+  transform: translateX(-50%) translateY(20px);
+
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding: 13px 16px;
-  border-radius: 12px;
-  font-size: 13px;
+  gap: 12px;
+
+  min-width: 280px;
+  max-width: min(620px, calc(100vw - 32px));
+
+  padding: 14px 22px;
+
+  border-radius: 30px;
+
+  color: #ffffff;
+
+  font-size: 0.95rem;
   font-weight: 600;
+  line-height: 1.4;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.18),
+    0 4px 10px rgba(0, 0, 0, 0.08);
+
+  z-index: 9999;
+
+  animation: paymentNotificationSlideUp 0.35s ease forwards;
+
+  white-space: normal;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.payment-alert.error {
-  border: 1px solid #fecaca;
-  background: #fef2f2;
-  color: #991b1b;
+
+/* ============================================================
+   ICÔNE
+   ============================================================ */
+
+.payment-alert .alert-icon {
+
+  width: 28px;
+  height: 28px;
+
+  flex: 0 0 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.22);
+
+  color: #ffffff;
+
+  font-size: 0.9rem;
+  font-weight: 800;
+
 }
+
+
+/* ============================================================
+   MESSAGE DE SUCCÈS
+   ============================================================ */
 
 .payment-alert.success {
-  border: 1px solid #bbf7d0;
-  background: #f0fdf4;
-  color: #166534;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00b84f,
+      #00d86a
+    );
+
+}
+
+
+/* ============================================================
+   MESSAGE D'ERREUR
+   ============================================================ */
+
+.payment-alert.error {
+
+  background:
+    linear-gradient(
+      90deg,
+      #d32f2f,
+      #ff5252
+    );
+
+}
+
+
+/* ============================================================
+   ANIMATION
+   ============================================================ */
+
+@keyframes paymentNotificationSlideUp {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateX(-50%)
+      translateY(30px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      translateY(0);
+
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  .payment-alert {
+
+    left: 16px;
+    right: 16px;
+
+    bottom: 18px;
+
+    min-width: 0;
+    max-width: none;
+
+    width: auto;
+
+    transform:
+      translateY(20px);
+
+    border-radius: 18px;
+
+    padding: 13px 16px;
+
+  }
+
+
+  @keyframes paymentNotificationSlideUp {
+
+    from {
+
+      opacity: 0;
+
+      transform:
+        translateY(25px);
+
+    }
+
+    to {
+
+      opacity: 1;
+
+      transform:
+        translateY(0);
+
+    }
+
+  }
+
 }
 
 .alert-icon {
@@ -1593,3 +1750,158 @@
   }
 
 }
+
+
+/* ============================================================
+   SCANNER QR — HTML5-QRCODE
+   ============================================================ */
+
+.payment-qr-reader {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  position: relative;
+  overflow: hidden;
+  background: #050505;
+  border-radius: 18px;
+}
+
+.payment-qr-reader video {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 320px;
+  object-fit: cover;
+  display: block;
+  border-radius: 18px;
+}
+
+.payment-qr-reader img {
+  display: none !important;
+}
+
+.payment-qr-reader > div {
+  width: 100% !important;
+  border: 0 !important;
+}
+
+.payment-qr-reader__dashboard {
+  display: none !important;
+}
+
+.payment-qr-reader__dashboard_section {
+  display: none !important;
+}
+
+.payment-qr-reader__dashboard_section_csr {
+  display: none !important;
+}
+
+.payment-qr-reader__scan_region {
+  width: 100% !important;
+  min-height: 320px;
+  border: 0 !important;
+}
+
+.payment-qr-reader__scan_region img {
+  display: none !important;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  .payment-qr-reader {
+    min-height: 280px;
+    border-radius: 14px;
+  }
+
+  .payment-qr-reader video {
+    min-height: 280px;
+    border-radius: 14px;
+  }
+
+  .payment-qr-reader__scan_region {
+    min-height: 280px;
+  }
+
+}
+
+/* ============================================================
+   BOUTON REJET PAIEMENT
+   ============================================================ */
+
+.reject-payment-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  min-height: 48px;
+  padding: 12px 24px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #dc2626,
+    #b91c1c
+  );
+
+  color: #ffffff;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px rgba(220, 38, 38, 0.20);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.reject-payment-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 24px rgba(220, 38, 38, 0.28);
+}
+
+
+.reject-payment-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+.reject-payment-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+.reject-payment-button span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  font-size: 1.15rem;
+  line-height: 1;
+}
+

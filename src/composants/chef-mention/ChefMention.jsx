@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   isAuthenticated,
-  logout,
+  logout, 
   switchRole ,
   
 } from "../accueils/serviceAuth";
@@ -28,6 +28,8 @@ import EtudiantsOrdres from "./EtudiantsOrdres/EtudiantsOrdres";
 import SuiviRecours from "./SuiviRecours/SuiviRecours";
 import CreateUE from "./CreateUE/CreateUE";
 import FixationFraisAcademiques from "./fixationFrais/FixationFraisAcademiques";
+import RessourcesAcces from "./RessourcesAcces/RessourcesAcces";
+import Communique from "./Communique/Communique";
 import { useContextUniv } from "../../featuresAndInfos/ContextUnivProvider";
 import { ADMIN_ROLES, ROLE_LABELS } from "../accueils/roles";
 
@@ -82,10 +84,13 @@ const menuItems = [
       "Suivre les notes envoyées/Pub des resultats"
     ],
   },
-  // {
-  //   title: "Suivi des notes",
-  //   subMenus: ["Suivre les notes envoyées"],
-  // },
+  {
+    title: "Gestion des ressources",
+    subMenus: [
+      "Créer / Modifier une ressource"
+      
+    ],
+  },
   {
     title: "Gestion des recours",
     subMenus: [
@@ -104,6 +109,13 @@ const menuItems = [
     title: "Gestion des frais académiques",
     subMenus: [
       "Fixer les frais académiques",
+    ],
+  },
+
+  {
+    title: "Gestion des communiqués",
+    subMenus: [
+      "Créer / Publier un communiqué"
     ],
   },
 ];
@@ -157,19 +169,34 @@ const ChefMention = () => {
 
     const role = e.target.value;
 
+    console.log("=================================");
+    console.log("🔄 CHANGEMENT DE PROFIL");
+    console.log("➡️ Profil demandé :", role);
+
     const result = await switchRole(role);
 
     if (!result.success) {
+      console.error("❌ ÉCHEC CHANGEMENT PROFIL :", result);
       alert(result.message);
       return;
     }
 
-    console.log("ROLE CHANGÉ");
+    console.log("✅ PROFIL CHANGÉ");
+    console.log("➡️ active_role :", result.active_role);
+    console.log("➡️ user reçu du backend :", result.user);
+
+    console.log("🆔 identity_id :", result.user?.identity_id);
+    console.log("👤 identity_type :", result.user?.identity_type);
+    console.log("🏢 admin_id :", result.user?.admin_id);
+    console.log("👨‍🏫 enseignant_id :", result.user?.enseignant_id);
+    console.log("🎯 active_role :", result.user?.active_role);
+
+    console.log("=================================");
 
     window.location.replace("/");
   };
 
-  //Recuperer info user
+  //Recuperer info user 
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -179,6 +206,21 @@ const ChefMention = () => {
           window.location.replace("/home");
           return;
         }
+
+        console.log("=================================");
+        console.log("👑 INTERFACE CHEF MENTION");
+        console.log("🔐 UTILISATEUR APRÈS RECHARGEMENT");
+        console.log("➡️ user :", auth.user);
+
+        console.log("🆔 identity_id :", auth.user?.identity_id);
+        console.log("👤 identity_type :", auth.user?.identity_type);
+        console.log("🏢 admin_id :", auth.user?.admin_id);
+        console.log("👨‍🏫 enseignant_id :", auth.user?.enseignant_id);
+        console.log("🎯 active_role :", auth.user?.active_role);
+        console.log("🏛️ code_faculte :", auth.user?.code_faculte);
+        console.log("📚 code_mention :", auth.user?.code_mention);
+
+        console.log("=================================");
 
         setInfoUser(auth.user);
 
@@ -235,13 +277,15 @@ const ChefMention = () => {
     // else if (title === "Créer / Modifier les semestres") setActiveView("semestres");
     else if (title === "Lancer les sessions") setActiveView("sessions");
     else if (title === "Fixer les frais académiques") setActiveView("fixer-frais-academiques");
+    else if (title === "Créer / Modifier une ressource") setActiveView("ressource");
+    else if (title === "Créer / Publier un communiqué") setActiveView("communique");
     else setActiveView(null);
 
   };
 
 
   return (
-    <div className="admin-fac-dashboard">
+    <div className="admin-fac-dashboard"> 
 
       <header className="home-header" style={{
         borderBottom: `3px solid ${infoUniv?.primaryColor || "#3b82f6"}`}}>
@@ -326,7 +370,7 @@ const ChefMention = () => {
               Ces paramètres doivent être mis à jour à chaque année académique.
             </div>
 
-            {[0,2,4,5,6,7,8,9,10,11].map((i) => {
+            {[0,2,4,5,6,7,8,9,10,11,12,13].map((i) => {
 
               const item = menuItems[i];
 
@@ -384,13 +428,16 @@ const ChefMention = () => {
           {activeView === "periode-recour" && <PeriodeRecours code_mention={infoUser?.code_mention}/>}
           {activeView === "suivi-recours" && <SuiviRecours code_mention={infoUser?.code_mention}/>}
           {/* {activeView === "deliberation" && <Deliberation code_mention={infoUser?.code_mention} annee={annee}/>} */}
-          {activeView === "statistiques" && <StatsReussitePromotion />}
+          {activeView === "statistiques" && <StatsReussitePromotion code_mention={infoUser?.code_mention} />}
           {activeView === "mention-année" &&  <MentionAnnee code_mention={infoUser?.code_mention} />}
           {activeView === "parcours" &&  <Parcours code_mention={infoUser?.code_mention} />}
           {activeView === "parcours-année" && <ParcoursAnnee code_mention={infoUser?.code_mention} />}
           {activeView === "promotions" && <Promotions code_mention={infoUser?.code_mention} />}
           {activeView === "promotions-année" && <PromotionAnnee code_mention={infoUser?.code_mention} />}
           {activeView === "fixer-frais-academiques" && <FixationFraisAcademiques code_mention={infoUser?.code_mention} annee= {annee}/>}
+          {activeView === "ressource" && <RessourcesAcces code_mention={infoUser?.code_mention} annee= {annee}/>}
+          {activeView === "communique" && (<Communique code_mention={infoUser?.code_mention}/>)}
+          
           
 
 

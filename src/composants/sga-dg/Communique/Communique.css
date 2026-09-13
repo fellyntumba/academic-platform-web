@@ -1,0 +1,777 @@
+/* =========================================================
+   WRAPPER
+========================================================= */
+
+.gestion-communiques-wrapper {
+  width: 100%;
+  min-height: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+  background: #f6f8fc;
+  display: flex;
+  justify-content: center;
+}
+
+/* =========================================================
+   CARTE
+========================================================= */
+
+.gestion-communiques-card {
+  width: 100%;
+  max-width: 980px;
+  background: #ffffff;
+  border: 1px solid #e7ebf2;
+  border-radius: 20px;
+  padding: 34px;
+  box-sizing: border-box;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.07);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.gestion-communiques-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.gestion-eyebrow {
+  display: inline-block;
+  margin-bottom: 7px;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.gestion-communiques-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 25px;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+}
+
+.gestion-communiques-header p {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   MODE SWITCH
+========================================================= */
+
+.communique-mode-switch {
+  display: flex;
+  gap: 7px;
+  padding: 5px;
+  margin-bottom: 26px;
+  background: #f1f4f8;
+  border-radius: 13px;
+}
+
+.communique-mode-switch button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #667085;
+  padding: 11px 18px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.communique-mode-switch button:hover:not(:disabled) {
+  color: #1d4ed8;
+}
+
+.communique-mode-switch button.active {
+  background: #ffffff;
+  color: #1d4ed8;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.communique-mode-switch button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.mode-icon {
+  margin-right: 7px;
+  font-size: 16px;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.communique-form {
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.form-section {
+  border: 1px solid #e8ebf0;
+  border-radius: 15px;
+  padding: 23px;
+  background: #ffffff;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-bottom: 20px;
+}
+
+.section-number {
+  width: 31px;
+  height: 31px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef4ff;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.section-heading h3 {
+  margin: 1px 0 4px;
+  color: #1f2937;
+  font-size: 15px;
+}
+
+.section-heading span {
+  color: #8a93a3;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px;
+}
+
+/* =========================================================
+   DESTINATAIRES — 3 ZONES SUR UNE LIGNE
+========================================================= */
+
+.destinataires-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+/* =========================================================
+   ZONE DE DESTINATION
+========================================================= */
+
+.destination-field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.destination-field label {
+  color: #374151;
+  font-size: 12px;
+  font-weight: 750;
+  margin-bottom: 8px;
+}
+
+.destination-field select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid #dce1e8;
+  background: #ffffff;
+  color: #1f2937;
+  border-radius: 10px;
+  padding: 12px 13px;
+  outline: none;
+  font-size: 13px;
+  transition: 0.2s ease;
+}
+
+.destination-field select:focus {
+  border-color: #7aa7ff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.destination-field select:disabled {
+  background: #f3f5f8;
+  color: #a0a8b5;
+  border-color: #e5e7eb;
+  cursor: not-allowed;
+}
+
+.destination-field select:disabled option {
+  color: #a0a8b5;
+}
+
+.destination-field small {
+  margin-top: 6px;
+  color: #98a1b2;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.destination-field .field-warning {
+  color: #b45309 !important;
+}
+
+/* =========================================================
+   INDICATION MENTION
+========================================================= */
+
+.mention-target-info {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 11px;
+  background: #f8fafc;
+}
+
+.mention-target-icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: #eef4ff;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.mention-target-info strong {
+  display: block;
+  color: #374151;
+  font-size: 12px;
+}
+
+.mention-target-info p {
+  margin: 3px 0 0;
+  color: #8a93a3;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   CHAMPS CLASSIQUES
+========================================================= */
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-group label {
+  color: #374151;
+  font-size: 12px;
+  font-weight: 750;
+  margin-bottom: 8px;
+}
+
+.field-group input,
+.field-group select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #dce1e8;
+  background: #ffffff;
+  color: #1f2937;
+  border-radius: 10px;
+  padding: 12px 13px;
+  outline: none;
+  font-size: 13px;
+  transition: 0.2s ease;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  border-color: #7aa7ff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.field-group input:disabled,
+.field-group select:disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+}
+
+.field-group small {
+  margin-top: 6px;
+  color: #98a1b2;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.target-field {
+  margin-top: 17px;
+}
+
+.field-warning {
+  color: #b45309 !important;
+}
+
+/* =========================================================
+   CIBLE UNIVERSITÉ
+========================================================= */
+
+.university-target {
+  margin-top: 17px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #dce7ff;
+  border-radius: 12px;
+  background: #f8faff;
+}
+
+.university-target-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #eef4ff;
+  font-size: 18px;
+}
+
+.university-target strong {
+  display: block;
+  color: #243b64;
+  font-size: 13px;
+}
+
+.university-target p {
+  margin: 4px 0 0;
+  color: #74809a;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   FICHIER
+========================================================= */
+
+.communique-file-area {
+  width: 100%;
+}
+
+.communique-file-area input[type="file"] {
+  display: none;
+}
+
+.communique-file-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 13px;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.communique-file-label:hover {
+  border-color: #7aa7ff;
+  background: #f5f8ff;
+}
+
+.communique-file-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: #eef4ff;
+  color: #2563eb;
+  font-size: 19px;
+}
+
+.communique-file-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.communique-file-content strong {
+  display: block;
+  overflow: hidden;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.communique-file-content small {
+  display: block;
+  margin-top: 4px;
+  color: #98a1b2;
+  font-size: 10px;
+}
+
+.communique-file-button {
+  flex-shrink: 0;
+  padding: 9px 14px;
+  border-radius: 9px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.communique-file-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #8a93a3;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.communique-file-info > span:first-child {
+  color: #2563eb;
+  font-size: 12px;
+}
+
+/* =========================================================
+   APERÇU
+========================================================= */
+
+.rule-preview {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px;
+  border-radius: 13px;
+  background: #f5f8ff;
+  border: 1px solid #dfe8ff;
+}
+
+.preview-icon {
+  width: 35px;
+  height: 35px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.preview-content {
+  min-width: 0;
+}
+
+.preview-content > span {
+  display: block;
+  color: #8090ad;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.preview-content strong {
+  display: block;
+  margin-top: 3px;
+  color: #243b64;
+  font-size: 13px;
+}
+
+.preview-content p {
+  margin: 4px 0 0;
+  color: #74809a;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   APERÇU SUPPRESSION
+========================================================= */
+
+.delete-preview {
+  background: #fff8f8;
+  border-color: #fee2e2;
+}
+
+.delete-icon {
+  background: #dc2626;
+}
+
+/* =========================================================
+   BOUTON
+========================================================= */
+
+.submit-communique-btn {
+  width: 100%;
+  min-height: 47px;
+  border: none;
+  border-radius: 11px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 5px 14px rgba(37, 99, 235, 0.18);
+}
+
+.submit-communique-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.submit-communique-btn.modification {
+  background: #dc2626;
+  box-shadow: 0 5px 14px rgba(220, 38, 38, 0.16);
+}
+
+.submit-communique-btn.modification:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.submit-communique-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.submit-communique-btn span {
+  margin-right: 8px;
+}
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.button-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: communiqueSpin 0.7s linear infinite;
+  vertical-align: -2px;
+}
+
+@keyframes communiqueSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+.communique-notification {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  max-width: 420px;
+
+  padding: 13px 17px;
+
+  border-radius: 12px;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+
+  animation: notificationIn 0.25s ease;
+}
+
+.communique-notification.success {
+  background: #15803d;
+}
+
+.communique-notification.error {
+  background: #dc2626;
+}
+
+.communique-notification.info {
+  background: #2563eb;
+}
+
+.notification-icon {
+  width: 23px;
+  height: 23px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  font-weight: 800;
+}
+
+@keyframes notificationIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .gestion-communiques-wrapper {
+    padding: 15px;
+  }
+
+  .gestion-communiques-card {
+    padding: 21px;
+    border-radius: 15px;
+  }
+
+  .gestion-communiques-header h2 {
+    font-size: 21px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .destinataires-grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .communique-file-label {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .communique-file-content {
+    width: calc(100% - 56px);
+  }
+
+  .communique-file-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .communique-notification {
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    max-width: none;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .gestion-communiques-card {
+    padding: 16px;
+  }
+
+  .form-section {
+    padding: 17px;
+  }
+
+  .communique-mode-switch {
+    flex-direction: column;
+  }
+
+  .communique-mode-switch button {
+    padding: 10px 8px;
+    font-size: 11px;
+  }
+
+  .section-heading {
+    gap: 9px;
+  }
+
+  .section-heading span {
+    line-height: 1.4;
+  }
+
+  .communique-file-label {
+    padding: 14px;
+  }
+
+}
+
+.destinataires-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.destination-field select:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .destinataires-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

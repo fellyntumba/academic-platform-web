@@ -4,7 +4,7 @@ import { apiFetch } from "../../accueils/apiService";
 export const getRecoursEnseignantEnCoursService = async (enseignantId) => {
   try {
     const response = await apiFetch(
-      "/enseignant/recours-get",
+      "/enseignant/recours-get", 
       {
         method: "POST",
         headers: {
@@ -15,7 +15,7 @@ export const getRecoursEnseignantEnCoursService = async (enseignantId) => {
     );
 
     const data = await response.json();
-
+ 
     if (!response.ok) {
       throw new Error(
         data.message || "Erreur lors de la récupération des recours."
@@ -53,25 +53,33 @@ export const acceptRecoursService = async ({id_recours, newCote }) => {
   }
 };
 
-//
-export const rejectRecoursService = async (id_recours) => {
+// Rejeter recours
+export const rejectRecoursService = async ({id_recours, motif_rejet}) => {
   try {
-    const response = await apiFetch("/enseignant/recours/reject", {
-      method: "POST",
-      body: JSON.stringify({
-        id_recours,
-      }),
-    });
+    const response = await apiFetch(
+      "/enseignant/recours/reject",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          id_recours,
+          motif_rejet,
+        }),
+      }
+    );
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || "Erreur lors du rejet du recours");
+      throw new Error(
+        data.message ||
+          "Erreur lors du rejet du recours"
+      );
     }
 
     return data;
-
   } catch (error) {
     throw error;
   }
-};
+}; 
+
+

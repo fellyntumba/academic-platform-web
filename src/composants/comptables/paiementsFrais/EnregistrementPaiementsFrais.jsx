@@ -1,18 +1,31 @@
 import React, {
+  useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 
 import "./EnregistrementPaiementsFrais.css";
 
 import {
-  rechercherPaiementParReference,
-  validerPaiementFrais,
-  STATUTS_REFERENCE
+  verifierPaiementParQRCode,
+  verifierPaiementParReference,
+  confirmerPaiement,
+  rejeterPaiementAttente,
 } from "./enregistrementPaiementsFraisService";
 
+import {
+  Html5Qrcode,
+  Html5QrcodeSupportedFormats,
+} from "html5-qrcode";
 
+
+// ============================================================
+// CONSTANTES
+// ============================================================
+
+const QR_READER_ELEMENT_ID =
+  "paiement-qr-reader";
 
 
 // ============================================================
@@ -58,29 +71,36 @@ const EnregistrementPaiementsFrais = () => {
 
 
   // ==========================================================
-  // DONNÉES DE VALIDATION
+  // RÉSULTAT DE LA VÉRIFICATION
   // ==========================================================
-
-  const [montantEncaisse, setMontantEncaisse] =
-    useState("");
-
-  const [modePaiement, setModePaiement] =
-    useState("");
-
-  const [confirmation, setConfirmation] =
-    useState(false);
-
-
-  // ==========================================================
-  // RÉSULTAT
-  // ==========================================================
-
-  const [resultat, setResultat] =
+  const [resultatVerification, setResultatVerification] =
     useState(null);
 
 
   // ==========================================================
-  // SCANNER
+  // RÉSULTAT DE LA VALIDATION
+  // ==========================================================
+  const [resultatValidation, setResultatValidation] =
+    useState(null);
+
+
+  // ==========================================================
+  // RÉSULTAT DU REJET
+  // ==========================================================
+  const [resultatRejet, setResultatRejet] =
+    useState(null);
+
+
+  // ==========================================================
+  // ORIGINE DE LA VÉRIFICATION
+  // ==========================================================
+
+  const [methodeVerification, setMethodeVerification] =
+    useState("");
+
+
+  // ==========================================================
+  // SCANNER QR
   // ==========================================================
 
   const [scannerOuvert, setScannerOuvert] =
@@ -89,21 +109,24 @@ const EnregistrementPaiementsFrais = () => {
   const [scannerErreur, setScannerErreur] =
     useState("");
 
-  const videoRef =
+  const [scannerDemarrage, setScannerDemarrage] =
+    useState(false);
+
+  const qrScannerRef =
     useRef(null);
 
-  const streamRef =
-    useRef(null);
+  const qrScanEnCoursRef =
+    useRef(false);
 
-  const animationFrameRef =
-    useRef(null);
+  const scannerMontageRef =
+    useRef(false);
 
 
   // ==========================================================
   // NOTIFICATION
   // ==========================================================
 
-  const showMessage = (
+  const showMessage = useCallback((
     msg,
     type = "success"
   ) => {
@@ -117,603 +140,1522 @@ const EnregistrementPaiementsFrais = () => {
       setMessageType("");
 
     }, 5000);
-  };
-
-
-  // ==========================================================
-  // NETTOYAGE SCANNER
-  // ==========================================================
-
-  const stopScanner = () => {
-
-    if (animationFrameRef.current) {
-
-      cancelAnimationFrame(
-        animationFrameRef.current
-      );
-
-      animationFrameRef.current = null;
-    }
-
-
-    if (streamRef.current) {
-
-      streamRef.current
-        .getTracks()
-        .forEach((track) => {
-          track.stop();
-        });
-
-      streamRef.current = null;
-    }
-
-
-    setScannerOuvert(false);
-  };
-
-
-  // ==========================================================
-  // NETTOYAGE À LA DESTRUCTION
-  // ==========================================================
-
-  useEffect(() => {
-
-    return () => {
-      stopScanner();
-    };
 
   }, []);
 
 
+  // ==========================================================
+  // ARRÊTER LE SCANNER
+  // ==========================================================
+
+  const stopScanner = useCallback(async () => {
+
+    qrScanEnCoursRef.current =
+      false;
+
+    setScannerDemarrage(false);
+
+
+    const scanner =
+      qrScannerRef.current;
+
+
+    if (!scanner) {
+
+      setScannerOuvert(false);
+
+      return;
+
+    }
+
+
+    try {
+
+      const state =
+        scanner.getState();
+
+
+      if (
+        state === 2 ||
+        state === 3
+      ) {
+
+        await scanner.stop();
+
+      }
+
+    } catch (error) {
+
+      console.warn(
+        "Arrêt du scanner QR :",
+        error
+      );
+
+    }
+
+
+    try {
+
+      scanner.clear();
+
+    } catch (error) {
+
+      console.warn(
+        "Nettoyage du scanner QR :",
+        error
+      );
+
+    }
+
+
+    qrScannerRef.current =
+      null;
+
+    setScannerOuvert(false);
+
+  }, []);
 
 
   // ==========================================================
-  // RECHERCHE DE LA RÉFÉRENCE
+  // EXTRAIRE LES DONNÉES DU QR CODE
   // ==========================================================
 
-  const rechercherReference = async (
-      referenceValue = reference
-    ) => {
+  const extraireDonneesQRCode = useCallback((
+    contenu
+  ) => {
 
-      const valeur =
-        String(referenceValue || "").trim();
+    const valeur =
+      String(
+        contenu || ""
+      ).trim();
 
 
-      if (!valeur) {
+    if (!valeur) {
+
+      throw new Error(
+        "Le QR code est vide."
+      );
+
+    }
+
+
+    /*
+     * ========================================================
+     * CAS 1 :
+     * LE QR CONTIENT DIRECTEMENT UNE URL
+     * ========================================================
+     */
+
+    // if (
+    //   valeur.startsWith("http://") ||
+    //   valeur.startsWith("https://")
+    // ) {
+
+    //   let url;
+
+    //   try {
+
+    //     url =
+    //       new URL(valeur);
+
+    //   } catch {
+
+    //     throw new Error(
+    //       "L'URL contenue dans le QR code est invalide."
+    //     );
+
+    //   }
+
+
+    //   const idPaiement =
+    //     url.searchParams.get(
+    //       "id_paiement"
+    //     );
+
+
+    //   const referencePaiement =
+    //     url.searchParams.get(
+    //       "reference_paiement"
+    //     );
+
+
+    //   const tokenSecurite =
+    //     url.searchParams.get(
+    //       "token_securite"
+    //     );
+
+
+    //   if (
+    //     idPaiement &&
+    //     referencePaiement &&
+    //     tokenSecurite
+    //   ) {
+
+    //     return {
+
+    //       idPaiement,
+
+    //       referencePaiement,
+
+    //       tokenSecurite,
+
+    //     };
+
+    //   }
+
+
+    //   /*
+    //    * ======================================================
+    //    * COMPATIBILITÉ ALTERNATIVE
+    //    * ======================================================
+    //    */
+
+    //   const referenceAlternative =
+    //     url.searchParams.get(
+    //       "reference"
+    //     ) ||
+    //     url.searchParams.get(
+    //       "ref"
+    //     );
+
+
+    //   if (referenceAlternative) {
+
+    //     return {
+
+    //       idPaiement:
+    //         url.searchParams.get(
+    //           "id"
+    //         ),
+
+    //       referencePaiement:
+    //         referenceAlternative,
+
+    //       tokenSecurite:
+    //         url.searchParams.get(
+    //           "token"
+    //         ) ||
+    //         url.searchParams.get(
+    //           "token_securite"
+    //         ),
+
+    //     };
+
+    //   }
+
+    // }
+
+
+    /*
+     * ========================================================
+     * CAS 2 :
+     * LE QR CONTIENT UN JSON
+     * ========================================================
+     */
+
+    try {
+
+      const json =
+        JSON.parse(valeur);
+
+
+      if (
+        json &&
+        (
+          json.id_paiement ||
+          json.idPaiement
+        ) &&
+        (
+          json.reference_paiement ||
+          json.referencePaiement
+        ) &&
+        (
+          json.token_securite ||
+          json.tokenSecurite
+        )
+      ) {
+
+        return {
+
+          idPaiement:
+            json.id_paiement ||
+            json.idPaiement,
+
+          referencePaiement:
+            json.reference_paiement ||
+            json.referencePaiement,
+
+          tokenSecurite:
+            json.token_securite ||
+            json.tokenSecurite,
+
+        };
+
+      }
+
+    } catch {
+      /*
+       * Le contenu n'est pas du JSON.
+       */
+    }
+
+
+    throw new Error(
+      "Le QR code ne contient pas les informations de paiement attendues."
+    );
+
+  }, []);
+
+
+  // ==========================================================
+  // RECHERCHE PAR RÉFÉRENCE
+  // ==========================================================
+
+  const rechercherReference = useCallback(async (
+    referenceValue = reference
+  ) => {
+
+    const valeur =
+      String(
+        referenceValue || ""
+      ).trim();
+
+
+    if (!valeur) {
+
+      showMessage(
+        "Veuillez saisir une référence de paiement.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (loading) {
+
+      return;
+
+    }
+
+
+    try {
+
+      setLoading(true);
+
+      setMessage("");
+      setMessageType("");
+
+      setPaiement(null);
+
+      setResultatVerification(null);
+      setResultatValidation(null);
+      setResultatRejet(null);
+
+
+      const response =
+        await verifierPaiementParReference(
+          valeur
+        );
+
+
+      if (
+        !response?.success ||
+        !response?.data?.paiement
+      ) {
+
+        throw new Error(
+          response?.message ||
+          "Les informations du paiement sont invalides."
+        );
+
+      }
+
+
+      setReference(
+        response.data.paiement.reference_paiement
+      );
+
+
+      setReferenceRecherchee(
+        response.data.paiement.reference_paiement
+      );
+
+
+      setPaiement(
+        response.data
+      );
+
+
+      setResultatVerification(
+        response
+      );
+
+
+      setMethodeVerification(
+        "reference"
+      );
+
+
+      setEtape(
+        "verification"
+      );
+
+
+      showMessage(
+        "Paiement trouvé et vérifié avec succès.",
+        "success"
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Erreur vérification référence :",
+        error
+      );
+
+
+      setPaiement(null);
+
+      setResultatVerification(null);
+
+      setResultatValidation(null);
+
+      setEtape(
+        "accueil"
+      );
+
+
+      if (
+        error?.code ===
+        "PAYMENT_NOT_FOUND"
+      ) {
 
         showMessage(
-          "Veuillez saisir ou scanner une référence de paiement.",
+          "Aucun paiement correspondant à cette référence.",
           "error"
         );
 
-        return;
-      }
-
-
-      if (loading) {
-        return;
-      }
-
-
-      try {
-
-        setLoading(true);
-
-        setMessage("");
-
-        setMessageType("");
-
-        setPaiement(null);
-
-        setResultat(null);
-
-
-        const paiementNormalise =
-          await rechercherPaiementParReference(
-            valeur
-          );
-
-
-        if (!paiementNormalise) {
-
-          throw new Error(
-            "Les informations du paiement sont invalides."
-          );
-
-        }
-
-
-        setReference(
-          paiementNormalise.reference
-        );
-
-
-        setReferenceRecherchee(
-          paiementNormalise.reference
-        );
-
-
-        setPaiement(
-          paiementNormalise
-        );
-
-
-        // ========================================================
-        // VÉRIFICATION DU STATUT
-        // ========================================================
-
-        if (
-          paiementNormalise.statutReference !==
-          STATUTS_REFERENCE.VALIDE
-        ) {
-
-          setEtape(
-            "verification"
-          );
-
-
-          showMessage(
-
-            paiementNormalise.statutReference ===
-              STATUTS_REFERENCE.EXPIREE
-
-              ? "Cette référence de paiement a expiré."
-
-              : paiementNormalise.statutReference ===
-                STATUTS_REFERENCE.UTILISEE
-
-              ? "Cette référence a déjà été utilisée."
-
-              : "Cette référence n'est pas valide.",
-
-            "error"
-
-          );
-
-
-          return;
-        }
-
-
-        // ========================================================
-        // VÉRIFICATION CRYPTOGRAPHIQUE
-        // ========================================================
-
-        if (
-
-          paiementNormalise.signatureValide ===
-          false
-
-          ||
-
-          paiementNormalise.securite
-            ?.signatureValide === false
-
-        ) {
-
-          setEtape(
-            "verification"
-          );
-
-
-          showMessage(
-            "La signature de sécurité de cette référence est invalide.",
-            "error"
-          );
-
-
-          return;
-        }
-
-
-        // ========================================================
-        // QR AUTHENTIQUE
-        // ========================================================
-
-        if (
-          paiementNormalise.securite
-            ?.qrAuthentique === false
-        ) {
-
-          setEtape(
-            "verification"
-          );
-
-
-          showMessage(
-            "Le QR code présenté n'est pas authentique.",
-            "error"
-          );
-
-
-          return;
-        }
-
-
-        // ========================================================
-        // MONTANT PROPOSÉ
-        // ========================================================
-
-        const montantTranche =
-          Number(
-            paiementNormalise.tranche?.montant ||
-            0
-          );
-
-
-        const solde =
-          Number(
-            paiementNormalise.frais?.solde ||
-            0
-          );
-
-
-        setMontantEncaisse(
-
-          montantTranche > 0
-            ? montantTranche
-            : solde
-
-        );
-
-
-        setEtape(
-          "confirmation"
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Erreur recherche référence :",
-          error
-        );
-
-
-        setEtape(
-          "accueil"
-        );
-
+      } else if (
+        error?.code ===
+        "PAYMENT_NOT_PENDING"
+      ) {
 
         showMessage(
           error?.message ||
-          "Impossible de récupérer cette opération.",
+          "Ce paiement n'est plus en attente.",
           "error"
         );
 
+      } else {
 
-      } finally {
-
-        setLoading(false);
+        showMessage(
+          error?.message ||
+          "Impossible de vérifier ce paiement.",
+          "error"
+        );
 
       }
 
-    };
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  }, [
+    loading,
+    reference,
+    showMessage,
+  ]);
+
+
+  // ==========================================================
+  // VÉRIFICATION PAR QR CODE
+  // ==========================================================
+
+  const verifierQRCode = useCallback(async (
+    donneesQR
+  ) => {
+
+    if (loading) {
+
+      return;
+
+    }
+
+
+    try {
+
+      setLoading(true);
+
+      setMessage("");
+      setMessageType("");
+
+      setPaiement(null);
+
+      setResultatVerification(null);
+      setResultatValidation(null);
+      setResultatRejet(null);
+
+
+      const response =
+        await verifierPaiementParQRCode({
+
+          idPaiement:
+            donneesQR.idPaiement,
+
+          referencePaiement:
+            donneesQR.referencePaiement,
+
+          tokenSecurite:
+            donneesQR.tokenSecurite,
+
+        });
+
+
+      if (
+        !response?.success ||
+        !response?.data?.paiement
+      ) {
+
+        throw new Error(
+          response?.message ||
+          "Les informations du paiement sont invalides."
+        );
+
+      }
+
+
+      setReference(
+        response.data.paiement.reference_paiement
+      );
+
+
+      setReferenceRecherchee(
+        response.data.paiement.reference_paiement
+      );
+
+
+      setPaiement(
+        response.data
+      );
+
+
+      setResultatVerification(
+        response
+      );
+
+
+      setMethodeVerification(
+        "qr"
+      );
+
+
+      setEtape(
+        "verification"
+      );
+
+
+      showMessage(
+        "QR code authentifié et paiement vérifié avec succès.",
+        "success"
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Erreur vérification QR :",
+        error
+      );
+
+
+      setPaiement(null);
+
+      setResultatVerification(null);
+      setResultatValidation(null);
+
+      setEtape(
+        "accueil"
+      );
+
+
+      if (
+        error?.code ===
+        "INVALID_PAYMENT_TOKEN"
+      ) {
+
+        showMessage(
+          "Le token de sécurité du QR code est invalide.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "PAYMENT_NOT_FOUND"
+      ) {
+
+        showMessage(
+          "Le paiement associé à ce QR code est introuvable.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "PAYMENT_NOT_PENDING"
+      ) {
+
+        showMessage(
+          error?.message ||
+          "Ce paiement n'est plus en attente.",
+          "error"
+        );
+
+      } else {
+
+        showMessage(
+          error?.message ||
+          "Impossible de vérifier le QR code.",
+          "error"
+        );
+
+      }
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  }, [
+    loading,
+    showMessage,
+  ]);
 
 
   // ==========================================================
   // TRAITER LE CONTENU DU QR
   // ==========================================================
 
-  const traiterQRCode = (contenu) => {
+  const traiterQRCode = useCallback(async (
+    contenu
+  ) => {
 
-    const valeur =
-      String(contenu || "").trim();
+    if (
+      qrScanEnCoursRef.current
+    ) {
 
-
-    if (!valeur) {
       return;
+
     }
 
 
-    /*
-     * Le QR peut contenir directement une référence
-     * ou une URL de paiement.
-     */
-
-    let referenceExtraite =
-      valeur;
+    qrScanEnCoursRef.current =
+      true;
 
 
     try {
 
-      if (
-        valeur.startsWith("http://") ||
-        valeur.startsWith("https://")
-      ) {
-
-        const url =
-          new URL(valeur);
-
-        referenceExtraite =
-          url.searchParams.get(
-            "reference"
-          ) ||
-          url.searchParams.get(
-            "ref"
-          ) ||
-          url.pathname.split("/").filter(Boolean).pop() ||
-          valeur;
-      }
-
-    } catch {
-      referenceExtraite = valeur;
-    }
-
-
-    setReference(
-      referenceExtraite
-    );
-
-    stopScanner();
-
-    rechercherReference(
-      referenceExtraite
-    );
-
-  };
-
-
-  // ==========================================================
-  // SCANNER QR NATIF
-  // ==========================================================
-
-  const scannerFrame = async () => {
-
-    if (
-      !videoRef.current ||
-      !streamRef.current
-    ) {
-      return;
-    }
-
-
-    if (
-      !("BarcodeDetector" in window)
-    ) {
-
-      return;
-    }
-
-
-    try {
-
-      const detector =
-        new window.BarcodeDetector({
-          formats: ["qr_code"],
-        });
-
-
-      const codes =
-        await detector.detect(
-          videoRef.current
+      const donneesQR =
+        extraireDonneesQRCode(
+          contenu
         );
 
 
-      if (
-        Array.isArray(codes) &&
-        codes.length > 0 &&
-        codes[0]?.rawValue
-      ) {
+      await stopScanner();
 
-        traiterQRCode(
-          codes[0].rawValue
-        );
 
-        return;
-      }
+      await verifierQRCode(
+        donneesQR
+      );
 
     } catch (error) {
 
-      console.warn(
-        "Détection QR :",
+      console.error(
+        "Traitement QR :",
         error
+      );
+
+
+      qrScanEnCoursRef.current =
+        false;
+
+
+      showMessage(
+        error?.message ||
+        "QR code invalide.",
+        "error"
       );
 
     }
 
+  }, [
+    extraireDonneesQRCode,
+    stopScanner,
+    verifierQRCode,
+    showMessage,
+  ]);
 
-    animationFrameRef.current =
-      requestAnimationFrame(
-        scannerFrame
+
+  // ==========================================================
+  // DÉMARRER LE SCANNER QR
+  // ==========================================================
+
+  const demarrerScanner = useCallback(async () => {
+
+    if (
+      scannerDemarrage
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      qrScannerRef.current
+    ) {
+
+      return;
+
+    }
+
+
+    setScannerErreur("");
+
+    setScannerDemarrage(true);
+
+
+    try {
+
+      if (
+        typeof window === "undefined" ||
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
+      ) {
+
+        throw new Error(
+          "La caméra n'est pas disponible dans ce navigateur."
+        );
+
+      }
+
+
+      const hostname =
+        window.location.hostname;
+
+
+      const contexteSecurise =
+        window.isSecureContext ||
+        hostname === "localhost" ||
+        hostname === "127.0.0.1";
+
+
+      if (!contexteSecurise) {
+
+        throw new Error(
+          "La caméra nécessite une connexion HTTPS. Utilisez HTTPS en production."
+        );
+
+      }
+
+
+      const element =
+        document.getElementById(
+          QR_READER_ELEMENT_ID
+        );
+
+
+      if (!element) {
+
+        throw new Error(
+          "Impossible d'initialiser la zone du scanner."
+        );
+
+      }
+
+
+      const scanner =
+        new Html5Qrcode(
+          QR_READER_ELEMENT_ID,
+          {
+            formatsToSupport: [
+              Html5QrcodeSupportedFormats.QR_CODE,
+            ],
+
+            verbose: false,
+          }
+        );
+
+
+      qrScannerRef.current =
+        scanner;
+
+
+      const cameraConfig = {
+
+        fps: 10,
+
+        qrbox: (
+          viewfinderWidth,
+          viewfinderHeight
+        ) => {
+
+          const largeur =
+            Math.min(
+              viewfinderWidth,
+              viewfinderHeight
+            );
+
+          const taille =
+            Math.floor(
+              largeur * 0.70
+            );
+
+          return {
+
+            width: taille,
+
+            height: taille,
+
+          };
+
+        },
+
+        aspectRatio: 1,
+
+        disableFlip: false,
+
+      };
+
+
+      await scanner.start(
+
+        {
+          facingMode: {
+            exact: "environment",
+          },
+        },
+
+        cameraConfig,
+
+        async (decodedText) => {
+
+          await traiterQRCode(
+            decodedText
+          );
+
+        },
+
+        () => {}
+
       );
-  };
+
+
+      setScannerErreur("");
+
+    } catch (error) {
+
+      console.error(
+        "Démarrage scanner QR :",
+        error
+      );
+
+
+      try {
+
+        if (
+          qrScannerRef.current
+        ) {
+
+          try {
+
+            await qrScannerRef.current.clear();
+
+          } catch {}
+
+          qrScannerRef.current =
+            null;
+
+        }
+
+
+        const scanner =
+          new Html5Qrcode(
+            QR_READER_ELEMENT_ID,
+            {
+              formatsToSupport: [
+                Html5QrcodeSupportedFormats.QR_CODE,
+              ],
+
+              verbose: false,
+            }
+          );
+
+
+        qrScannerRef.current =
+          scanner;
+
+
+        const cameraConfig = {
+
+          fps: 10,
+
+          qrbox: (
+            viewfinderWidth,
+            viewfinderHeight
+          ) => {
+
+            const largeur =
+              Math.min(
+                viewfinderWidth,
+                viewfinderHeight
+              );
+
+            const taille =
+              Math.floor(
+                largeur * 0.70
+              );
+
+            return {
+
+              width: taille,
+
+              height: taille,
+
+            };
+
+          },
+
+          aspectRatio: 1,
+
+          disableFlip: false,
+
+        };
+
+
+        await scanner.start(
+
+          {
+            facingMode: "environment",
+          },
+
+          cameraConfig,
+
+          async (decodedText) => {
+
+            await traiterQRCode(
+              decodedText
+            );
+
+          },
+
+          () => {}
+
+        );
+
+
+        setScannerErreur("");
+
+      } catch (fallbackError) {
+
+        console.error(
+          "Fallback caméra QR :",
+          fallbackError
+        );
+
+
+        if (
+          qrScannerRef.current
+        ) {
+
+          try {
+
+            const state =
+              qrScannerRef.current.getState();
+
+            if (
+              state === 2 ||
+              state === 3
+            ) {
+
+              await qrScannerRef.current.stop();
+
+            }
+
+          } catch {}
+
+
+          try {
+
+            qrScannerRef.current.clear();
+
+          } catch {}
+
+
+          qrScannerRef.current =
+            null;
+
+        }
+
+
+        let erreur =
+          "Impossible d'accéder à la caméra.";
+
+
+        const nomErreur =
+          fallbackError?.name ||
+          error?.name ||
+          "";
+
+
+        if (
+          nomErreur ===
+          "NotAllowedError"
+        ) {
+
+          erreur =
+            "L'accès à la caméra a été refusé. Autorisez la caméra dans les paramètres du navigateur.";
+
+        } else if (
+          nomErreur ===
+          "NotFoundError"
+        ) {
+
+          erreur =
+            "Aucune caméra compatible n'a été trouvée sur cet appareil.";
+
+        } else if (
+          nomErreur ===
+          "NotReadableError"
+        ) {
+
+          erreur =
+            "La caméra est déjà utilisée par une autre application.";
+
+        } else if (
+          nomErreur ===
+          "SecurityError"
+        ) {
+
+          erreur =
+            "Le navigateur bloque l'accès à la caméra pour des raisons de sécurité. Utilisez HTTPS.";
+
+        } else if (
+          nomErreur ===
+          "OverconstrainedError"
+        ) {
+
+          erreur =
+            "La caméra arrière demandée n'est pas disponible sur cet appareil.";
+
+        } else if (
+          fallbackError?.message
+        ) {
+
+          erreur =
+            fallbackError.message;
+
+        }
+
+
+        setScannerErreur(
+          erreur
+        );
+
+      }
+
+    } finally {
+
+      setScannerDemarrage(false);
+
+    }
+
+  }, [
+    scannerDemarrage,
+    traiterQRCode,
+  ]);
 
 
   // ==========================================================
   // OUVRIR LE SCANNER
   // ==========================================================
 
-  const ouvrirScanner = async () => {
+  const ouvrirScanner = useCallback(() => {
 
     setScannerErreur("");
 
+    qrScanEnCoursRef.current =
+      false;
+
+    setScannerOuvert(true);
+
+  }, []);
+
+
+  // ==========================================================
+  // DÉMARRER LE SCANNER APRÈS AFFICHAGE DU MODAL
+  // ==========================================================
+
+  useEffect(() => {
 
     if (
-      !navigator.mediaDevices ||
-      !navigator.mediaDevices.getUserMedia
+      !scannerOuvert
     ) {
 
-      setScannerErreur(
-        "La caméra n'est pas disponible sur cet appareil."
-      );
-
-      setScannerOuvert(true);
+      scannerMontageRef.current =
+        false;
 
       return;
+
+    }
+
+
+    if (
+      scannerMontageRef.current
+    ) {
+
+      return;
+
+    }
+
+
+    scannerMontageRef.current =
+      true;
+
+
+    const timer =
+      window.setTimeout(() => {
+
+        demarrerScanner();
+
+      }, 100);
+
+
+    return () => {
+
+      window.clearTimeout(
+        timer
+      );
+
+    };
+
+  }, [
+    scannerOuvert,
+    demarrerScanner,
+  ]);
+
+
+  // ==========================================================
+  // NETTOYAGE DU SCANNER À LA DESTRUCTION
+  // ==========================================================
+
+  useEffect(() => {
+
+    return () => {
+
+      const scanner =
+        qrScannerRef.current;
+
+
+      if (!scanner) {
+
+        return;
+
+      }
+
+
+      const nettoyer =
+        async () => {
+
+          try {
+
+            const state =
+              scanner.getState();
+
+
+            if (
+              state === 2 ||
+              state === 3
+            ) {
+
+              await scanner.stop();
+
+            }
+
+          } catch (error) {
+
+            console.warn(
+              "Nettoyage scanner :",
+              error
+            );
+
+          }
+
+
+          try {
+
+            scanner.clear();
+
+          } catch (error) {
+
+            console.warn(
+              "Nettoyage élément scanner :",
+              error
+            );
+
+          }
+
+
+          qrScannerRef.current =
+            null;
+
+        };
+
+
+      nettoyer();
+
+    };
+
+  }, []);
+
+
+  // ==========================================================
+  // CONFIRMER / VALIDER LE PAIEMENT
+  // ==========================================================
+
+  const validerPaiement = useCallback(async () => {
+
+    if (loading) {
+
+      return;
+
+    }
+
+
+    if (
+      resultatValidation?.success
+    ) {
+
+      return;
+
+    }
+
+
+    const paiementActuel =
+      paiement?.paiement;
+
+
+    const idPaiement =
+      paiementActuel?.id_paiement;
+
+
+    const referencePaiement =
+      paiementActuel?.reference_paiement ||
+      referenceRecherchee;
+
+
+    if (
+      idPaiement === undefined ||
+      idPaiement === null ||
+      idPaiement === ""
+    ) {
+
+      showMessage(
+        "L'identifiant du paiement est introuvable. Impossible de confirmer ce paiement.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      !referencePaiement ||
+      !String(referencePaiement).trim()
+    ) {
+
+      showMessage(
+        "La référence du paiement est introuvable. Impossible de confirmer ce paiement.",
+        "error"
+      );
+
+      return;
+
     }
 
 
     try {
 
-      const stream =
-        await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: {
-              ideal: "environment",
-            },
-          },
-          audio: false,
+      setLoading(true);
+
+      setMessage("");
+      setMessageType("");
+
+
+      const response =
+        await confirmerPaiement({
+
+          idPaiement,
+
+          referencePaiement:
+            String(
+              referencePaiement
+            ).trim(),
+
         });
 
 
-      streamRef.current =
-        stream;
+      if (
+        !response?.success ||
+        !response?.data?.paiement
+      ) {
 
-      setScannerOuvert(true);
+        const erreur =
+          new Error(
+            response?.message ||
+            "Impossible de confirmer le paiement."
+          );
+
+        erreur.code =
+          response?.code;
+
+        erreur.status =
+          200;
+
+        erreur.data =
+          response;
+
+        throw erreur;
+
+      }
 
 
-      window.setTimeout(() => {
+      /*
+       * ======================================================
+       * LE BACKEND RETOURNE UNIQUEMENT :
+       *
+       * response.data.paiement
+       *
+       * On conserve donc toutes les informations déjà
+       * récupérées pendant la vérification :
+       *
+       * étudiant
+       * promotion
+       * parcours
+       * tranche
+       * tarif
+       *
+       * et on remplace uniquement les données du paiement
+       * par celles retournées après confirmation.
+       * ======================================================
+       */
 
-        if (
-          videoRef.current
-        ) {
+      const paiementConfirme =
+        response.data.paiement;
 
-          videoRef.current.srcObject =
-            stream;
 
-          videoRef.current
-            .play()
-            .then(() => {
+      setPaiement(
+        (ancienPaiement) => {
 
-              if (
-                "BarcodeDetector" in window
-              ) {
+          if (!ancienPaiement) {
 
-                scannerFrame();
+            return response.data;
 
-              } else {
+          }
 
-                setScannerErreur(
-                  "La détection automatique des QR codes n'est pas disponible dans ce navigateur. Utilisez la saisie manuelle."
-                );
 
-              }
+          return {
 
-            })
-            .catch(
-              (error) => {
+            ...ancienPaiement,
 
-                console.error(
-                  "Lecture caméra :",
-                  error
-                );
+            paiement: {
 
-                setScannerErreur(
-                  "Impossible de démarrer la caméra."
-                );
-              }
-            );
+              ...ancienPaiement.paiement,
+
+              ...paiementConfirme,
+
+            },
+
+          };
 
         }
+      );
 
-      }, 50);
+
+      setResultatValidation(
+        response
+      );
+
+
+      /*
+       * Passage à l'étape 3.
+       */
+
+      setEtape(
+        "validation"
+      );
+
+
+      showMessage(
+        response.message ||
+        "Paiement confirmé avec succès.",
+        "success"
+      );
 
     } catch (error) {
 
       console.error(
-        "Accès caméra :",
+        "Erreur confirmation paiement :",
         error
       );
 
-      setScannerOuvert(true);
 
-      setScannerErreur(
-        "Accès à la caméra refusé ou impossible. Vous pouvez saisir la référence manuellement."
-      );
+      if (
+        error?.code ===
+        "PAYMENT_NOT_FOUND"
+      ) {
+
+        showMessage(
+          "Le paiement à confirmer est introuvable.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "PAYMENT_NOT_PENDING"
+      ) {
+
+        showMessage(
+          error?.message ||
+          "Ce paiement n'est plus en attente et ne peut pas être confirmé.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "PAYMENT_CONFIRMATION_FAILED"
+      ) {
+
+        showMessage(
+          error?.message ||
+          "La confirmation du paiement a échoué. Aucune validation définitive n'a été effectuée.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "ID_PAIEMENT_REQUIRED" ||
+        error?.code ===
+        "INVALID_PAYMENT_ID"
+      ) {
+
+        showMessage(
+          error?.message ||
+          "L'identifiant du paiement est invalide.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "REFERENCE_REQUIRED"
+      ) {
+
+        showMessage(
+          error?.message ||
+          "La référence du paiement est requise.",
+          "error"
+        );
+
+      } else {
+
+        showMessage(
+          error?.message ||
+          "Impossible de confirmer le paiement.",
+          "error"
+        );
+
+      }
+
+    } finally {
+
+      setLoading(false);
+
     }
 
-  };
+  }, [
+    loading,
+    paiement,
+    referenceRecherchee,
+    resultatValidation,
+    showMessage,
+  ]);
 
 
   // ==========================================================
-  // ANNULER
+  // REJETER LE PAIEMENT
   // ==========================================================
 
-  const annulerOperation = () => {
+  const rejeterPaiement = useCallback(async () => {
 
-    stopScanner();
-
-    setPaiement(null);
-    setReference("");
-    setReferenceRecherchee("");
-    setMontantEncaisse("");
-    setModePaiement("");
-    setConfirmation(false);
-    setResultat(null);
-    setEtape("accueil");
-    setMessage("");
-    setMessageType("");
-
-  };
+    if (loading) {
+      return;
+    }
 
 
-  // ==========================================================
-  // VALIDER LE PAIEMENT
-  // ==========================================================
+    const paiementActuel =
+      paiement?.paiement;
 
-  const validerPaiement = async () => {
+
+    const idPaiement =
+      paiementActuel?.id_paiement;
+
+
+    const referencePaiement =
+      paiementActuel?.reference_paiement ||
+      referenceRecherchee;
+
 
     if (
-      !paiement ||
-      !referenceRecherchee
+      idPaiement === undefined ||
+      idPaiement === null ||
+      idPaiement === ""
     ) {
-      return;
-    }
-
-
-    if (!montantEncaisse) {
 
       showMessage(
-        "Veuillez renseigner le montant réellement encaissé.",
+        "L'identifiant du paiement est introuvable. Impossible de rejeter ce paiement.",
         "error"
       );
 
       return;
+
     }
-
-
-    const montant =
-      Number(montantEncaisse);
 
 
     if (
-      !Number.isFinite(montant) ||
-      montant <= 0
+      !referencePaiement ||
+      !String(referencePaiement).trim()
     ) {
 
       showMessage(
-        "Le montant encaissé est invalide.",
+        "La référence du paiement est introuvable. Impossible de rejeter ce paiement.",
         "error"
       );
 
       return;
+
     }
 
 
-    if (!modePaiement) {
-
-      showMessage(
-        "Veuillez sélectionner le mode de paiement.",
-        "error"
+    const confirmation =
+      window.confirm(
+        "Voulez-vous vraiment rejeter ce paiement ?\n\nCette opération sera enregistrée côté serveur."
       );
-
-      return;
-    }
 
 
     if (!confirmation) {
-
-      showMessage(
-        "Veuillez confirmer que le montant a été réellement encaissé.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    if (loading) {
       return;
     }
 
@@ -723,80 +1665,165 @@ const EnregistrementPaiementsFrais = () => {
       setLoading(true);
 
       setMessage("");
-
       setMessageType("");
 
 
-      const data =
-        await validerPaiementFrais({
+      const response =
+        await rejeterPaiementAttente({
 
-          reference:
-            referenceRecherchee,
+          idPaiement,
 
-          montantEncaisse:
-            montant,
-
-          modePaiement:
-            modePaiement,
-
-          confirmationAgent:
-            true,
+          referencePaiement:
+            String(
+              referencePaiement
+            ).trim(),
 
         });
 
 
-      setResultat({
+      if (
+        !response?.success ||
+        !response?.data?.paiement
+      ) {
 
-        success: true,
-
-        reference:
-          data?.reference_operation ||
-          data?.operation?.reference ||
-          referenceRecherchee,
-
-        transaction:
-          data?.numero_transaction ||
-          data?.operation?.numero_transaction ||
-          data?.transaction?.reference ||
-          "—",
-
-        date:
-          data?.date_validation ||
-          data?.operation?.date_validation ||
-          new Date().toISOString(),
-
-        montant:
-          Number(
-            data?.montant_encaisse ??
-            montant
-          ),
-
-        modePaiement:
-          data?.mode_paiement ||
-          modePaiement,
-
-      });
+        const erreur =
+          new Error(
+            response?.message ||
+            "Impossible de rejeter le paiement."
+          );
 
 
-      setEtape(
-        "succes"
+        erreur.code =
+          response?.code;
+
+
+        erreur.status =
+          200;
+
+
+        erreur.data =
+          response;
+
+
+        throw erreur;
+
+      }
+
+
+      const paiementRejete =
+        response.data.paiement;
+
+
+      setPaiement(
+        (ancienPaiement) => {
+
+          if (!ancienPaiement) {
+            return response.data;
+          }
+
+
+          return {
+
+            ...ancienPaiement,
+
+            paiement: {
+
+              ...ancienPaiement.paiement,
+
+              ...paiementRejete,
+
+            },
+
+          };
+
+        }
       );
 
 
-    } catch (error) {
-
-      console.error(
-        "Erreur validation paiement :",
-        error
+      setResultatRejet(
+        response
       );
 
 
       showMessage(
-        error?.message ||
-        "Erreur lors de la validation du paiement.",
-        "error"
+        response.message ||
+        "Paiement rejeté avec succès.",
+        "success"
       );
 
+    } catch (error) {
+
+      console.error(
+        "Erreur rejet paiement :",
+        error
+      );
+
+
+      if (
+        error?.code ===
+        "PAYMENT_NOT_FOUND"
+      ) {
+
+        showMessage(
+          "Le paiement à rejeter est introuvable.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "PAYMENT_NOT_PENDING"
+      ) {
+
+        showMessage(
+          error?.message ||
+          "Ce paiement n'est plus en attente et ne peut pas être rejeté.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "PAYMENT_REJECTION_FAILED"
+      ) {
+
+        showMessage(
+          error?.message ||
+          "Le rejet du paiement a échoué.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "ID_PAIEMENT_REQUIRED" ||
+        error?.code ===
+        "INVALID_PAYMENT_ID"
+      ) {
+
+        showMessage(
+          error?.message ||
+          "L'identifiant du paiement est invalide.",
+          "error"
+        );
+
+      } else if (
+        error?.code ===
+        "REFERENCE_REQUIRED"
+      ) {
+
+        showMessage(
+          error?.message ||
+          "La référence du paiement est requise.",
+          "error"
+        );
+
+      } else {
+
+        showMessage(
+          error?.message ||
+          "Impossible de rejeter le paiement.",
+          "error"
+        );
+
+      }
 
     } finally {
 
@@ -804,27 +1831,57 @@ const EnregistrementPaiementsFrais = () => {
 
     }
 
-  };
-
+  }, [
+    loading,
+    paiement,
+    referenceRecherchee,
+    resultatRejet,
+    showMessage,
+  ]);
 
   // ==========================================================
-  // NOUVELLE OPÉRATION
+  // ANNULER / RETOUR
   // ==========================================================
 
-  const nouvelleOperation = () => {
+  const annulerOperation = useCallback(() => {
+
+    void stopScanner();
 
     setPaiement(null);
+
     setReference("");
+
     setReferenceRecherchee("");
-    setMontantEncaisse("");
-    setModePaiement("");
-    setConfirmation(false);
-    setResultat(null);
+
+    setMethodeVerification("");
+
+    setResultatVerification(null);
+
+    setResultatValidation(null);
+    setResultatRejet(null);
+
     setEtape("accueil");
+
     setMessage("");
+
     setMessageType("");
 
-  };
+  }, [
+    stopScanner,
+  ]);
+
+
+  // ==========================================================
+  // NOUVELLE RECHERCHE
+  // ==========================================================
+
+  const nouvelleRecherche = useCallback(() => {
+
+    annulerOperation();
+
+  }, [
+    annulerOperation,
+  ]);
 
 
   // ==========================================================
@@ -843,7 +1900,9 @@ const EnregistrementPaiementsFrais = () => {
     if (
       !Number.isFinite(nombre)
     ) {
+
       return `0 ${devise}`;
+
     }
 
 
@@ -858,10 +1917,14 @@ const EnregistrementPaiementsFrais = () => {
   // FORMAT DATE
   // ==========================================================
 
-  const formatDate = (date) => {
+  const formatDate = (
+    date
+  ) => {
 
     if (!date) {
+
       return "—";
+
     }
 
 
@@ -874,7 +1937,9 @@ const EnregistrementPaiementsFrais = () => {
         valeur.getTime()
       )
     ) {
+
       return date;
+
     }
 
 
@@ -890,21 +1955,27 @@ const EnregistrementPaiementsFrais = () => {
 
 
   // ==========================================================
-  // INITIALS
+  // INITIALES
   // ==========================================================
 
   const getInitiales = () => {
 
-    if (!paiement?.etudiant) {
+    if (
+      !paiement?.etudiant
+    ) {
+
       return "ET";
+
     }
 
 
     const prenom =
-      paiement.etudiant.prenom || "";
+      paiement.etudiant.prenom ||
+      "";
 
     const nom =
-      paiement.etudiant.nom || "";
+      paiement.etudiant.nom ||
+      "";
 
 
     return `${prenom.charAt(0)}${nom.charAt(0)}`
@@ -912,6 +1983,29 @@ const EnregistrementPaiementsFrais = () => {
       .trim() || "ET";
 
   };
+
+
+  // ==========================================================
+  // DONNÉES COURTES
+  // ==========================================================
+
+  const paiementData =
+    paiement?.paiement;
+
+  const etudiantData =
+    paiement?.etudiant;
+
+  const trancheData =
+    paiement?.tranche;
+
+  const tarifData =
+    paiement?.tarif;
+
+  const promotionData =
+    paiement?.promotion;
+
+  const parcoursData =
+    paiement?.parcours;
 
 
   // ==========================================================
@@ -983,10 +2077,8 @@ const EnregistrementPaiementsFrais = () => {
               ? "active"
               : ""
           } ${
-            [
-              "confirmation",
-              "succes"
-            ].includes(etape)
+            etape === "verification" ||
+            etape === "validation"
               ? "completed"
               : ""
           }`}
@@ -1008,11 +2100,11 @@ const EnregistrementPaiementsFrais = () => {
 
         <div
           className={`payment-step ${
-            etape === "confirmation"
-              ? "active"
+            etape === "verification"
+              ? "active completed"
               : ""
           } ${
-            etape === "succes"
+            etape === "validation"
               ? "completed"
               : ""
           }`}
@@ -1034,7 +2126,7 @@ const EnregistrementPaiementsFrais = () => {
 
         <div
           className={`payment-step ${
-            etape === "succes"
+            etape === "validation"
               ? "active completed"
               : ""
           }`}
@@ -1064,9 +2156,11 @@ const EnregistrementPaiementsFrais = () => {
         >
 
           <span className="alert-icon">
+
             {messageType === "error"
               ? "!"
               : "✓"}
+
           </span>
 
           <span>
@@ -1079,7 +2173,7 @@ const EnregistrementPaiementsFrais = () => {
 
 
       {/* ======================================================
-          ÉTAPE ACCUEIL
+          ACCUEIL
       ====================================================== */}
 
       {etape === "accueil" && (
@@ -1087,8 +2181,11 @@ const EnregistrementPaiementsFrais = () => {
         <div className="payment-workspace">
 
 
-          <div className="scanner-card">
+          {/* ==================================================
+              SCANNER
+          ================================================== */}
 
+          <div className="scanner-card">
 
             <div className="scanner-card-top">
 
@@ -1118,7 +2215,9 @@ const EnregistrementPaiementsFrais = () => {
             <button
               type="button"
               className="scan-button"
-              onClick={ouvrirScanner}
+              onClick={
+                ouvrirScanner
+              }
               disabled={loading}
             >
 
@@ -1171,6 +2270,7 @@ const EnregistrementPaiementsFrais = () => {
                   }}
                   placeholder="Ex. PAY-2026-8F4K92"
                   autoComplete="off"
+                  disabled={loading}
                 />
 
 
@@ -1184,7 +2284,7 @@ const EnregistrementPaiementsFrais = () => {
                 >
 
                   {loading
-                    ? "Recherche..."
+                    ? "Vérification..."
                     : "Rechercher"}
 
                 </button>
@@ -1207,6 +2307,10 @@ const EnregistrementPaiementsFrais = () => {
 
           </div>
 
+
+          {/* ==================================================
+              GUIDE
+          ================================================== */}
 
           <div className="agent-guide-card">
 
@@ -1286,12 +2390,12 @@ const EnregistrementPaiementsFrais = () => {
                 <div>
 
                   <strong>
-                    Encaisser
+                    Contrôler
                   </strong>
 
                   <p>
-                    Encaissez exactement le montant
-                    affiché par la plateforme.
+                    Contrôlez le montant et les
+                    informations académiques.
                   </p>
 
                 </div>
@@ -1308,12 +2412,12 @@ const EnregistrementPaiementsFrais = () => {
                 <div>
 
                   <strong>
-                    Confirmer
+                    Valider
                   </strong>
 
                   <p>
-                    Validez uniquement après
-                    réception effective des fonds.
+                    La validation sera effectuée
+                    après cette étape de vérification.
                   </p>
 
                 </div>
@@ -1330,50 +2434,11 @@ const EnregistrementPaiementsFrais = () => {
 
 
       {/* ======================================================
-          ÉTAPE VÉRIFICATION
+          VÉRIFICATION / VALIDATION
       ====================================================== */}
 
-      {etape === "verification" &&
-        paiement && (
-
-        <div className="invalid-payment-card">
-
-          <div className="invalid-icon">
-            !
-          </div>
-
-          <h3>
-            Paiement non vérifiable
-          </h3>
-
-          <p>
-            La référence
-            <strong>
-              {" "}
-              {paiement.reference}
-            </strong>
-            {" "}
-            ne peut pas être traitée.
-          </p>
-
-          <button
-            type="button"
-            className="secondary-action"
-            onClick={annulerOperation}
-          >
-            Nouvelle recherche
-          </button>
-
-        </div>
-
-      )}
-
-
-      {/* ======================================================
-          ÉTAPE CONFIRMATION
-      ====================================================== */}
-
-      {etape === "confirmation" &&
+      {(etape === "verification" ||
+        etape === "validation") &&
         paiement && (
 
         <div className="confirmation-workspace">
@@ -1381,7 +2446,7 @@ const EnregistrementPaiementsFrais = () => {
 
           {/* ==================================================
               IDENTITÉ
-          ================================================== */}
+              ================================================== */}
 
           <div className="identity-card">
 
@@ -1400,13 +2465,21 @@ const EnregistrementPaiementsFrais = () => {
               </div>
 
 
-              <div className="verified-status">
+              <div
+                className={`verified-status ${
+                  etape === "validation"
+                    ? "payment-confirmed-status"
+                    : ""
+                }`}
+              >
 
                 <span>
                   ✓
                 </span>
 
-                Référence vérifiée
+                {etape === "validation"
+                  ? "Paiement confirmé"
+                  : "Paiement vérifié"}
 
               </div>
 
@@ -1415,45 +2488,40 @@ const EnregistrementPaiementsFrais = () => {
 
             <div className="identity-main">
 
-              {paiement.etudiant.photo ? (
+              <div className="student-avatar">
 
-                <img
-                  src={
-                    paiement.etudiant.photo
-                  }
-                  alt={
-                    paiement.etudiant.nomComplet
-                  }
-                  className="student-photo"
-                />
+                {getInitiales()}
 
-              ) : (
-
-                <div className="student-avatar">
-
-                  {getInitiales()}
-
-                </div>
-
-              )}
+              </div>
 
 
               <div className="student-identity">
 
                 <h3>
-                  {
-                    paiement.etudiant.nomComplet
-                  }
+
+                  {[
+                    etudiantData?.nom,
+                    etudiantData?.postnom,
+                    etudiantData?.prenom,
+                  ]
+                    .filter(Boolean)
+                    .join(" ") || "Étudiant"}
+
                 </h3>
 
                 <span className="student-number">
+
                   Matricule :
+
                   {" "}
+
                   <strong>
                     {
-                      paiement.etudiant.matricule
+                      etudiantData?.matricule ||
+                      "—"
                     }
                   </strong>
+
                 </span>
 
               </div>
@@ -1466,12 +2534,13 @@ const EnregistrementPaiementsFrais = () => {
               <div>
 
                 <span>
-                  Faculté
+                  Email
                 </span>
 
                 <strong>
                   {
-                    paiement.formation.faculte
+                    etudiantData?.email ||
+                    "—"
                   }
                 </strong>
 
@@ -1481,12 +2550,13 @@ const EnregistrementPaiementsFrais = () => {
               <div>
 
                 <span>
-                  Mention
+                  Téléphone
                 </span>
 
                 <strong>
                   {
-                    paiement.formation.mention
+                    etudiantData?.telephone ||
+                    "—"
                   }
                 </strong>
 
@@ -1501,7 +2571,8 @@ const EnregistrementPaiementsFrais = () => {
 
                 <strong>
                   {
-                    paiement.formation.promotion
+                    promotionData?.nom_promotion ||
+                    "—"
                   }
                 </strong>
 
@@ -1516,7 +2587,8 @@ const EnregistrementPaiementsFrais = () => {
 
                 <strong>
                   {
-                    paiement.formation.annee
+                    promotionData?.annee_academique ||
+                    "—"
                   }
                 </strong>
 
@@ -1529,7 +2601,7 @@ const EnregistrementPaiementsFrais = () => {
 
           {/* ==================================================
               PAIEMENT
-          ================================================== */}
+              ================================================== */}
 
           <div className="payment-details-card">
 
@@ -1543,7 +2615,8 @@ const EnregistrementPaiementsFrais = () => {
 
                 <h3>
                   {
-                    paiement.frais.libelle
+                    trancheData?.libelle ||
+                    "Paiement"
                   }
                 </h3>
 
@@ -1558,7 +2631,9 @@ const EnregistrementPaiementsFrais = () => {
 
                 <strong>
                   {
-                    paiement.reference
+                    paiementData?.reference_paiement ||
+                    referenceRecherchee ||
+                    "—"
                   }
                 </strong>
 
@@ -1576,14 +2651,14 @@ const EnregistrementPaiementsFrais = () => {
                 </span>
 
                 <strong>
+
                   {
                     formatMontant(
-                      paiement.tranche?.montant ||
-                      paiement.frais?.solde ||
-                      paiement.frais?.montantTotal,
-                      paiement.frais?.devise
+                      paiementData?.montant,
+                      "FC"
                     )
                   }
+
                 </strong>
 
               </div>
@@ -1594,12 +2669,13 @@ const EnregistrementPaiementsFrais = () => {
                 <div>
 
                   <span>
-                    Type de frais
+                    Type de tarif
                   </span>
 
                   <strong>
                     {
-                      paiement.frais.type
+                      tarifData?.type_tarif ||
+                      "—"
                     }
                   </strong>
 
@@ -1613,15 +2689,18 @@ const EnregistrementPaiementsFrais = () => {
                   </span>
 
                   <strong>
+
                     {
-                      paiement.tranche.numero
-                        ? `N° ${paiement.tranche.numero} — `
+                      trancheData?.numero_tranche
+                        ? `N° ${trancheData.numero_tranche} — `
                         : ""
                     }
 
                     {
-                      paiement.tranche.libelle
+                      trancheData?.libelle ||
+                      "—"
                     }
+
                   </strong>
 
                 </div>
@@ -1630,16 +2709,18 @@ const EnregistrementPaiementsFrais = () => {
                 <div>
 
                   <span>
-                    Total tarif
+                    Montant du tarif
                   </span>
 
                   <strong>
+
                     {
                       formatMontant(
-                        paiement.frais.montantTotal,
-                        paiement.frais.devise
+                        tarifData?.montant,
+                        "FC"
                       )
                     }
+
                   </strong>
 
                 </div>
@@ -1648,14 +2729,13 @@ const EnregistrementPaiementsFrais = () => {
                 <div>
 
                   <span>
-                    Déjà payé
+                    Échéance
                   </span>
 
                   <strong>
                     {
-                      formatMontant(
-                        paiement.frais.montantDejaPaye,
-                        paiement.frais.devise
+                      formatDate(
+                        trancheData?.date_echeance
                       )
                     }
                   </strong>
@@ -1670,24 +2750,14 @@ const EnregistrementPaiementsFrais = () => {
             <div className="balance-row">
 
               <span>
-                Solde après cette opération
+                Date de création
               </span>
 
               <strong>
 
                 {
-                  formatMontant(
-                    Math.max(
-                      0,
-                      (
-                        paiement.frais.solde -
-                        Number(
-                          paiement.tranche.montant ||
-                          0
-                        )
-                      )
-                    ),
-                    paiement.frais.devise
+                  formatDate(
+                    paiementData?.date_creation
                   )
                 }
 
@@ -1699,8 +2769,8 @@ const EnregistrementPaiementsFrais = () => {
 
 
           {/* ==================================================
-              SÉCURITÉ
-          ================================================== */}
+              INFORMATIONS PAIEMENT
+              ================================================== */}
 
           <div className="security-card">
 
@@ -1713,12 +2783,15 @@ const EnregistrementPaiementsFrais = () => {
               <div>
 
                 <h3>
-                  Vérification de sécurité
+                  {etape === "validation"
+                    ? "Paiement confirmé"
+                    : "Vérification du paiement"}
                 </h3>
 
                 <p>
-                  La demande a été vérifiée par
-                  le serveur Academic Platform.
+                  {etape === "validation"
+                    ? "Le serveur a confirmé définitivement le paiement."
+                    : "Les informations ont été vérifiées par le serveur."}
                 </p>
 
               </div>
@@ -1737,12 +2810,12 @@ const EnregistrementPaiementsFrais = () => {
                 <div>
 
                   <strong>
-                    Référence authentique
+                    Paiement trouvé
                   </strong>
 
                   <small>
-                    La référence correspond
-                    à une opération enregistrée.
+                    Le paiement correspond à la
+                    référence fournie.
                   </small>
 
                 </div>
@@ -1759,12 +2832,15 @@ const EnregistrementPaiementsFrais = () => {
                 <div>
 
                   <strong>
-                    Signature vérifiée
+                    {etape === "validation"
+                      ? "Paiement confirmé"
+                      : "Paiement en attente"}
                   </strong>
 
                   <small>
-                    La signature cryptographique
-                    a été validée côté serveur.
+                    {etape === "validation"
+                      ? "La confirmation du paiement a été enregistrée côté serveur."
+                      : "Le paiement est actuellement disponible pour vérification."}
                   </small>
 
                 </div>
@@ -1781,17 +2857,113 @@ const EnregistrementPaiementsFrais = () => {
                 <div>
 
                   <strong>
-                    Référence disponible
+                    Mode de vérification
                   </strong>
 
                   <small>
-                    Cette référence n'a pas encore
-                    été utilisée.
+
+                    {
+                      methodeVerification === "qr"
+                        ? "QR code authentifié avec token de sécurité."
+                        : "Référence de paiement vérifiée côté serveur."
+                    }
+
                   </small>
 
                 </div>
 
               </div>
+
+
+              {methodeVerification === "qr" && (
+
+                <div className="security-check">
+
+                  <span>
+                    ✓
+                  </span>
+
+                  <div>
+
+                    <strong>
+                      QR code authentifié
+                    </strong>
+
+                    <small>
+                      L'identifiant, la référence et
+                      le token de sécurité du QR code
+                      ont été vérifiés.
+                    </small>
+
+                  </div>
+
+                </div>
+
+              )}
+
+
+              {etape === "validation" &&
+                resultatValidation?.data?.paiement && (
+
+                <>
+                  <div className="security-check">
+
+                    <span>
+                      ✓
+                    </span>
+
+                    <div>
+
+                      <strong>
+                        Date de validation
+                      </strong>
+
+                      <small>
+                        {
+                          formatDate(
+                            resultatValidation
+                              ?.data
+                              ?.paiement
+                              ?.date_validation
+                          )
+                        }
+                      </small>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="security-check">
+
+                    <span>
+                      ✓
+                    </span>
+
+                    <div>
+
+                      <strong>
+                        Statut final
+                      </strong>
+
+                      <small>
+                        {
+                          resultatValidation
+                            ?.data
+                            ?.paiement
+                            ?.statut ||
+                          paiementData?.statut ||
+                          "Confirmé"
+                        }
+                      </small>
+
+                    </div>
+
+                  </div>
+
+                </>
+
+              )}
 
             </div>
 
@@ -1799,21 +2971,21 @@ const EnregistrementPaiementsFrais = () => {
 
 
           {/* ==================================================
-              ENCAISSEMENT
-          ================================================== */}
+              PARCOURS ACADÉMIQUE
+              ================================================== */}
 
-          <div className="cashier-card">
+          <div className="payment-details-card">
 
-            <div className="cashier-card-header">
+            <div className="payment-details-header">
 
               <div>
 
                 <span>
-                  ENCAISSEMENT
+                  PARCOURS ACADÉMIQUE
                 </span>
 
                 <h3>
-                  Confirmer les fonds reçus
+                  Situation de l'étudiant
                 </h3>
 
               </div>
@@ -1821,359 +2993,308 @@ const EnregistrementPaiementsFrais = () => {
             </div>
 
 
-            <div className="cashier-form-grid">
+            <div className="payment-summary-grid">
 
-              <div className="cashier-field">
+              <div>
 
-                <label htmlFor="montant-encaisse">
-                  Montant réellement encaissé
-                </label>
+                <span>
+                  Promotion
+                </span>
 
-                <div className="cash-amount-input">
+                <strong>
+                  {
+                    promotionData?.nom_promotion ||
+                    "—"
+                  }
+                </strong>
 
-                  <input
-                    id="montant-encaisse"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={montantEncaisse}
-                    onChange={(event) =>
-                      setMontantEncaisse(
-                        event.target.value
-                      )
-                    }
-                    disabled={loading}
-                  />
+              </div>
+
+
+              <div>
+
+                <span>
+                  Année académique
+                </span>
+
+                <strong>
+                  {
+                    promotionData?.annee_academique ||
+                    "—"
+                  }
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  Statut du parcours
+                </span>
+
+                <strong>
+                  {
+                    parcoursData?.statut ||
+                    "—"
+                  }
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  Statut du paiement
+                </span>
+
+                <strong>
+                  {
+                    paiementData?.statut ||
+                    "—"
+                  }
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* ==================================================
+              RÉCAPITULATIF DE CONFIRMATION
+              ================================================== */}
+
+          {etape === "validation" &&
+            resultatValidation?.data?.paiement && (
+
+            <div className="payment-details-card payment-confirmation-result">
+
+              <div className="payment-details-header">
+
+                <div>
 
                   <span>
-                    {
-                      paiement.frais.devise
-                    }
+                    VALIDATION TERMINÉE
                   </span>
+
+                  <h3>
+                    Paiement enregistré avec succès
+                  </h3>
+
+                </div>
+
+
+                <div className="verified-status">
+
+                  <span>
+                    ✓
+                  </span>
+
+                  Confirmé
 
                 </div>
 
               </div>
 
 
-              <div className="cashier-field">
+              <div className="payment-summary-grid">
 
-                <label htmlFor="mode-paiement">
-                  Mode de paiement
-                </label>
+                <div>
 
-                <select
-                  id="mode-paiement"
-                  value={modePaiement}
-                  onChange={(event) =>
-                    setModePaiement(
-                      event.target.value
-                    )
+                  <span>
+                    Référence
+                  </span>
+
+                  <strong>
+                    {
+                      resultatValidation
+                        ?.data
+                        ?.paiement
+                        ?.reference_paiement ||
+                      "—"
+                    }
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    Montant confirmé
+                  </span>
+
+                  <strong>
+                    {
+                      formatMontant(
+                        resultatValidation
+                          ?.data
+                          ?.paiement
+                          ?.montant,
+                        "FC"
+                      )
+                    }
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    Date du paiement
+                  </span>
+
+                  <strong>
+                    {
+                      formatDate(
+                        resultatValidation
+                          ?.data
+                          ?.paiement
+                          ?.date_paiement
+                      )
+                    }
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    Date de validation
+                  </span>
+
+                  <strong>
+                    {
+                      formatDate(
+                        resultatValidation
+                          ?.data
+                          ?.paiement
+                          ?.date_validation
+                      )
+                    }
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div className="balance-row">
+
+                <span>
+                  Message serveur
+                </span>
+
+                <strong>
+                  {
+                    resultatValidation?.message ||
+                    "Paiement confirmé avec succès"
                   }
-                  disabled={loading}
-                >
-
-                  <option value="">
-                    Sélectionner
-                  </option>
-
-                  <option value="especes">
-                    Espèces
-                  </option>
-
-                  <option value="virement">
-                    Virement bancaire
-                  </option>
-
-                  <option value="mobile_money">
-                    Mobile Money
-                  </option>
-
-                  <option value="cheque">
-                    Chèque
-                  </option>
-
-                  <option value="autre">
-                    Autre
-                  </option>
-
-                </select>
+                </strong>
 
               </div>
 
             </div>
 
-
-            <label className="confirmation-checkbox">
-
-              <input
-                type="checkbox"
-                checked={confirmation}
-                onChange={(event) =>
-                  setConfirmation(
-                    event.target.checked
-                  )
-                }
-                disabled={loading}
-              />
-
-              <span className="custom-checkbox">
-                {confirmation
-                  ? "✓"
-                  : ""}
-              </span>
-
-              <span>
-
-                Je confirme avoir effectivement
-                reçu le montant indiqué avant
-                de valider cette opération.
-
-              </span>
-
-            </label>
-
-          </div>
+          )}
 
 
           {/* ==================================================
               ACTIONS
-          ================================================== */}
+              ================================================== */}
 
           <div className="confirmation-actions">
 
             <button
               type="button"
               className="cancel-action"
-              onClick={annulerOperation}
+              onClick={
+                nouvelleRecherche
+              }
               disabled={loading}
             >
-              Annuler
-            </button>
 
-
-            <button
-              type="button"
-              className="validate-payment-button"
-              onClick={validerPaiement}
-              disabled={
-                loading ||
-                !confirmation ||
-                !modePaiement ||
-                !montantEncaisse
-              }
-            >
-
-              <span>
-                ✓
-              </span>
-
-              {loading
-                ? "Validation en cours..."
-                : "Valider l'encaissement"}
+              Nouvelle recherche
 
             </button>
 
-          </div>
 
-        </div>
+            {etape === "verification" && (
 
-      )}
+              <>
 
+                <button
+                  type="button"
+                  className="reject-payment-button"
+                  onClick={
+                    rejeterPaiement
+                  }
+                  disabled={loading}
+                >
 
-      {/* ======================================================
-          SUCCÈS
-      ====================================================== */}
+                  <span>
+                    {loading
+                      ? "..."
+                      : "×"}
+                  </span>
 
-      {etape === "succes" &&
-        resultat && (
+                  {loading
+                    ? "Rejet en cours..."
+                    : "Rejeter le paiement"}
 
-        <div className="success-workspace">
-
-          <div className="success-icon">
-            ✓
-          </div>
-
-
-          <span className="success-label">
-            OPÉRATION ENREGISTRÉE
-          </span>
-
-
-          <h2>
-            Paiement validé avec succès
-          </h2>
+                </button>
 
 
-          <p>
-            L'opération a été enregistrée
-            dans Academic Platform.
-          </p>
+                <button
+                  type="button"
+                  className="validate-payment-button"
+                  onClick={
+                    validerPaiement
+                  }
+                  disabled={loading}
+                >
+
+                  <span>
+                    {loading
+                      ? "..."
+                      : "✓"}
+                  </span>
+
+                  {loading
+                    ? "Confirmation en cours..."
+                    : "Confirmer le paiement"}
+
+                </button>
+
+              </>
+
+            )}
 
 
-          <div className="success-receipt">
+            {etape === "validation" && (
 
-            <div>
+              <button
+                type="button"
+                className="validate-payment-button"
+                disabled
+              >
 
-              <span>
-                Étudiant
-              </span>
+                <span>
+                  ✓
+                </span>
 
-              <strong>
-                {
-                  paiement?.etudiant?.nomComplet
-                }
-              </strong>
+                Paiement confirmé
 
-            </div>
+              </button>
 
-
-            <div>
-
-              <span>
-                Matricule
-              </span>
-
-              <strong>
-                {
-                  paiement?.etudiant?.matricule
-              }
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Frais
-              </span>
-
-              <strong>
-                {
-                  paiement?.frais?.libelle
-                }
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Montant
-              </span>
-
-              <strong className="receipt-amount">
-                {
-                  formatMontant(
-                    resultat.montant,
-                    paiement?.frais?.devise ||
-                    "FC"
-                  )
-                }
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Référence
-              </span>
-
-              <strong>
-                {
-                  resultat.reference
-                }
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                N° transaction
-              </span>
-
-              <strong>
-                {
-                  resultat.transaction
-                }
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Mode
-              </span>
-
-              <strong>
-                {
-                  resultat.modePaiement
-                }
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Date
-              </span>
-
-              <strong>
-                {
-                  formatDate(
-                    resultat.date
-                  )
-                }
-              </strong>
-
-            </div>
+            )}
 
           </div>
-
-
-          <div className="student-sync-message">
-
-            <span>
-              ✓
-            </span>
-
-            <div>
-
-              <strong>
-                Situation de l'étudiant mise à jour
-              </strong>
-
-              <p>
-                L'étudiant pourra voir cette
-                opération dans son espace académique
-                après synchronisation.
-
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <button
-            type="button"
-            className="new-payment-button"
-            onClick={nouvelleOperation}
-          >
-
-            + Enregistrer un autre paiement
-
-          </button>
 
         </div>
 
@@ -2182,7 +3303,7 @@ const EnregistrementPaiementsFrais = () => {
 
       {/* ======================================================
           MODAL SCANNER
-      ====================================================== */}
+          ====================================================== */}
 
       {scannerOuvert && (
 
@@ -2195,7 +3316,7 @@ const EnregistrementPaiementsFrais = () => {
               event.currentTarget
             ) {
 
-              stopScanner();
+              void stopScanner();
 
             }
 
@@ -2222,7 +3343,10 @@ const EnregistrementPaiementsFrais = () => {
               <button
                 type="button"
                 className="scanner-close"
-                onClick={stopScanner}
+                onClick={() =>
+                  void stopScanner()
+                }
+                disabled={loading}
               >
                 ×
               </button>
@@ -2232,17 +3356,20 @@ const EnregistrementPaiementsFrais = () => {
 
             <div className="scanner-camera">
 
-              <video
-                ref={videoRef}
-                muted
-                playsInline
+              <div
+                id={QR_READER_ELEMENT_ID}
+                className="payment-qr-reader"
               />
+
 
               <div className="scanner-frame">
 
                 <span className="corner top-left" />
+
                 <span className="corner top-right" />
+
                 <span className="corner bottom-left" />
+
                 <span className="corner bottom-right" />
 
                 <div className="scanner-line" />
@@ -2254,8 +3381,9 @@ const EnregistrementPaiementsFrais = () => {
 
                 <div className="scanner-camera-label">
 
-                  Placez le QR code
-                  dans le cadre
+                  {scannerDemarrage
+                    ? "Initialisation de la caméra..."
+                    : "Placez le QR code dans le cadre"}
 
                 </div>
 
@@ -2272,7 +3400,22 @@ const EnregistrementPaiementsFrais = () => {
                   !
                 </span>
 
-                {scannerErreur}
+                <div>
+
+                  <strong>
+                    Scanner indisponible
+                  </strong>
+
+                  <p>
+                    {scannerErreur}
+                  </p>
+
+                  <small>
+                    Vous pouvez également saisir
+                    directement la référence du paiement.
+                  </small>
+
+                </div>
 
               </div>
 
@@ -2297,7 +3440,21 @@ const EnregistrementPaiementsFrais = () => {
                       event.target.value
                     )
                   }
+                  onKeyDown={(event) => {
+
+                    if (
+                      event.key === "Enter"
+                    ) {
+
+                      void stopScanner();
+
+                      rechercherReference();
+
+                    }
+
+                  }}
                   placeholder="Référence de paiement"
+                  disabled={loading}
                 />
 
 
@@ -2305,11 +3462,12 @@ const EnregistrementPaiementsFrais = () => {
                   type="button"
                   onClick={() => {
 
-                    stopScanner();
+                    void stopScanner();
 
                     rechercherReference();
 
                   }}
+                  disabled={loading}
                 >
                   Rechercher
                 </button>
@@ -2332,3 +3490,4 @@ const EnregistrementPaiementsFrais = () => {
 
 
 export default EnregistrementPaiementsFrais;
+

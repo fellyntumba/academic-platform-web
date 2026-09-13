@@ -29,11 +29,11 @@ const AuthModal = ({ onAuthenticated }) => {
       setError(result.message);
     }
   };
-
+ 
   /* =========================
      Vérification OTP
   ========================= */
-  const handleVerifyOtp = async (e) => {
+  const handleVerifyOtp = async (e) => { 
     e.preventDefault();
     setError("");
 

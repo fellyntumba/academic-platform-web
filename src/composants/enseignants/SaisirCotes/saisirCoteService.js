@@ -12,7 +12,7 @@ export const getPromotionsEnseignantService = async ({enseignantId, typeSession}
       "/enseignant/promotions-get",
       {
         method: "POST",
-        headers: {
+        headers: { 
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -355,5 +355,78 @@ export const obtenirStatistiquesCotesCours = async ({
 };
 
 
+//Ajouter Points à tout Etudiant
+export const ajouterPointsToutEtudiantService = async ({
 
+  promotionVersionId,
+
+  coursId,
+
+  sessionId,
+
+  points
+
+}) => {
+
+  try {
+
+    const response = await apiFetch(
+
+      "/enseignant/ajouter-points-tous-etudiants",
+
+      {
+
+        method: "POST",
+
+        headers: {
+
+          "Content-Type": "application/json"
+
+        },
+
+        body: JSON.stringify({
+
+          promotionVersionId,
+
+          coursId,
+
+          sessionId,
+
+          points
+
+        })
+
+      }
+
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+
+        data.message || "Erreur lors de l'ajout des points."
+
+      );
+
+    }
+
+    return data;
+
+  } catch (error) {
+
+    console.error(
+
+      "Erreur service ajout points étudiants :",
+
+      error
+
+    );
+
+    throw error;
+
+  }
+
+};
 

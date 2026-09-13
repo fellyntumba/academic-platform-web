@@ -2,20 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   isAuthenticated,
-  logout,
+  logout, 
   switchRole
-} from "../accueils/serviceAuth";
+} from "../accueils/serviceAuth"; 
 
-import "./AdminFac.css";
+import "./AdminFac.css"; 
 
 import StatsReussitePromotion from "./StatsReussitePromotion/StatsReussitePromotion";
 import FaculteAnneeForm from "./FaculteAnnee/FaculteAnneeForm";
 import MiseAjourChefMention from "./MiseAjourChefMention/MiseAjourChefMention";
 import Mention from "./mentions/Mention";
+import Communique from "./Communique/Communique";
 import { useContextUniv } from "../../featuresAndInfos/ContextUnivProvider";
 import { ADMIN_ROLES, ROLE_LABELS } from "../accueils/roles";
 
-
+ 
 const configInitialeMenus = [ 
   {
     title: "Gestion des mentions",
@@ -35,6 +36,13 @@ const gestionAnnuelleMenus = [
   {
     title: "Statistiques",
     subMenus: ["Taux de réussite / échec pour l'année acad. en cours"],
+  },
+
+  {
+    title: "Gestion des communiqués",
+    subMenus: [
+      "Créer / Publier un communiqué"
+    ],
   },
 ];
 
@@ -56,17 +64,31 @@ const AdminFac = () => {
 
   //changer le profile actif
   const handleSwitchRole = async (e) => {
-
     const role = e.target.value;
+
+    console.log("=================================");
+    console.log("🔄 CHANGEMENT DE PROFIL");
+    console.log("➡️ Profil demandé :", role);
 
     const result = await switchRole(role);
 
     if (!result.success) {
+      console.error("❌ ÉCHEC CHANGEMENT PROFIL :", result);
       alert(result.message);
       return;
     }
 
-    console.log("ROLE CHANGÉ");
+    console.log("✅ PROFIL CHANGÉ");
+    console.log("➡️ active_role :", result.active_role);
+    console.log("➡️ user reçu du backend :", result.user);
+
+    console.log("🆔 identity_id :", result.user?.identity_id);
+    console.log("👤 identity_type :", result.user?.identity_type);
+    console.log("🏢 admin_id :", result.user?.admin_id);
+    console.log("👨‍🏫 enseignant_id :", result.user?.enseignant_id);
+    console.log("🎯 active_role :", result.user?.active_role);
+
+    console.log("=================================");
 
     window.location.replace("/");
   };
@@ -83,8 +105,17 @@ const AdminFac = () => {
           return;
         }
 
-        setInfoUser(auth.user);
+        console.log("=================================");
+        console.log("🔐 UTILISATEUR APRÈS RECHARGEMENT");
+        console.log("➡️ user :", auth.user);
+        console.log("🆔 identity_id :", auth.user?.identity_id);
+        console.log("👤 identity_type :", auth.user?.identity_type);
+        console.log("🏢 admin_id :", auth.user?.admin_id);
+        console.log("👨‍🏫 enseignant_id :", auth.user?.enseignant_id);
+        console.log("🎯 active_role :", auth.user?.active_role);
+        console.log("=================================");
 
+        setInfoUser(auth.user);
       } catch {
         window.location.replace("/home");
       }
@@ -109,6 +140,8 @@ const AdminFac = () => {
       setActiveView("mentions");
     } else if (title === "Taux de réussite / échec pour l'année acad. en cours") {
       setActiveView("statistiques");
+    }else if (title === "Créer / Publier un communiqué") {
+      setActiveView("communique");
     } else {
       setActiveView(null);
     }
@@ -217,6 +250,8 @@ const AdminFac = () => {
           {activeView === "chefs-mentions" && (
             <MiseAjourChefMention nomFaculte={infoUser?.code_faculte} />
           )}
+
+          {activeView === "communique" && (<Communique nomFaculte={infoUser?.code_faculte} />)}
         </main>
       </div>
       <footer className="dashboard-footer">

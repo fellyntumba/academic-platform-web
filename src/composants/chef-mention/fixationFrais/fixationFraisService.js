@@ -11,7 +11,7 @@ const BASE_URL = "/administration";
    - son montant total
    - les différentes tranches
    - libellé de chaque tranche
-   - montant de chaque tranche
+   - montant de chaque tranche 
    - date d'échéance de chaque tranche
 
    Le backend vérifie notamment qu'une année académique

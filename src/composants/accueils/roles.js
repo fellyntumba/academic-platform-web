@@ -12,3 +12,4 @@ export const ROLE_LABELS = {
   ENSEIGNANT:    "Enseignant",
   COMPTABLE:    "Comptable"
 };
+ 

@@ -152,11 +152,52 @@ export async function logout() {
 }
 
 
-//Changer le profil actif
+// //Changer le profil actif
+// export async function switchRole(active_role) {
+
+//   try {  
+
+//     const res = await apiFetch("/administration/switch-role", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify({
+//         active_role
+//       })
+//     });
+
+//     const data = await res.json();
+
+//     if (!res.ok) {
+//       return {
+//         success: false,
+//         message: data.message || data.error || "Erreur serveur"
+//       };
+//     }
+
+//     return {
+//       success: true,
+//       active_role: data.active_role
+//     };
+
+//   } catch (err) {
+
+//     console.error(err);
+
+//     return {
+//       success: false,
+//       message: "Erreur réseau"
+//     };
+
+//   }
+
+// }
+
+
+// Changer le profil actif
 export async function switchRole(active_role) {
-
   try {
-
     const res = await apiFetch("/administration/switch-role", {
       method: "POST",
       headers: {
@@ -172,27 +213,27 @@ export async function switchRole(active_role) {
     if (!res.ok) {
       return {
         success: false,
-        message: data.message || data.error || "Erreur serveur"
+        message:
+          data.message ||
+          data.error ||
+          "Erreur serveur"
       };
     }
 
     return {
       success: true,
-      active_role: data.active_role
+      active_role: data.active_role,
+      user: data.user || null
     };
 
   } catch (err) {
-
     console.error(err);
 
     return {
       success: false,
       message: "Erreur réseau"
     };
-
   }
-
 }
-
 
 

@@ -13,7 +13,7 @@ const Home = () => {
 
     const { infoUniv, loading } = useContextUniv();
   
-   
+    
 
   if (loading) {
     return <div>Chargement...</div>;

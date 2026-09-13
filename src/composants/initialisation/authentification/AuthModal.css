@@ -15,7 +15,7 @@
   z-index: 1000; /* au-dessus de tout */
   animation: fadeIn 0.4s ease;
 }
- 
+  
 /* Contenu du modal */
 .auth-modal {
   background: #ffffff;

@@ -10,14 +10,14 @@ import { getAnneeAcademiqueEnCoursService, getNombreRecoursEnAttenteService } fr
 
 import Recours from "./Recours/Recours";
 import SaisirCotes from "./SaisirCotes/SaisirCotes";
-import Documents from "./Documents/Documents";
+import Communiques from "./Communiques/Communiques";
 import { useContextUniv } from "../../featuresAndInfos/ContextUnivProvider";
 import { ADMIN_ROLES, ROLE_LABELS } from "../accueils/roles";
 
   
 const Enseignants = () => { 
 
-
+  
   const [infoUser, setInfoUser] = useState(null);
   const [annee, setAnnee] = useState("");
   const [activeView, setActiveView] = useState(null);
@@ -31,7 +31,7 @@ const Enseignants = () => {
   const actions = [
     { name: "Soumettre les cotes des étudiants", icon: "📝" },
     { name: "Traiter les recours des étudiants", icon: "📩", badge: nbRecours },
-    { name: "Envoyer les documents", icon: "📂" },
+    { name: "Envoyer un communiqué", icon: "📂" },
   ];
 
 
@@ -57,17 +57,31 @@ const Enseignants = () => {
 
   //changer le profile actif
   const handleSwitchRole = async (e) => {
-
     const role = e.target.value;
+
+    console.log("=================================");
+    console.log("🔄 CHANGEMENT DE PROFIL");
+    console.log("➡️ Profil demandé :", role);
 
     const result = await switchRole(role);
 
     if (!result.success) {
+      console.error("❌ ÉCHEC CHANGEMENT PROFIL :", result);
       alert(result.message);
       return;
     }
 
-    console.log("ROLE CHANGÉ");
+    console.log("✅ PROFIL CHANGÉ");
+    console.log("➡️ active_role :", result.active_role);
+    console.log("➡️ user reçu du backend :", result.user);
+
+    console.log("🆔 identity_id :", result.user?.identity_id);
+    console.log("👤 identity_type :", result.user?.identity_type);
+    console.log("🏢 admin_id :", result.user?.admin_id);
+    console.log("👨‍🏫 enseignant_id :", result.user?.enseignant_id);
+    console.log("🎯 active_role :", result.user?.active_role);
+
+    console.log("=================================");
 
     window.location.replace("/");
   };
@@ -83,8 +97,17 @@ const Enseignants = () => {
           return;
         }
 
-        setInfoUser(auth.user);
+        console.log("=================================");
+        console.log("🔐 UTILISATEUR APRÈS RECHARGEMENT");
+        console.log("➡️ user :", auth.user);
+        console.log("🆔 identity_id :", auth.user?.identity_id);
+        console.log("👤 identity_type :", auth.user?.identity_type);
+        console.log("🏢 admin_id :", auth.user?.admin_id);
+        console.log("👨‍🏫 enseignant_id :", auth.user?.enseignant_id);
+        console.log("🎯 active_role :", auth.user?.active_role);
+        console.log("=================================");
 
+        setInfoUser(auth.user);
       } catch {
         window.location.replace("/home");
       }
@@ -98,9 +121,9 @@ const Enseignants = () => {
 useEffect(() => {
   const loadRecoursCount = async () => {
     try {
-      if (!infoUser?.id) return;
+      if (!infoUser?.enseignant_id) return;
 
-      const result = await getNombreRecoursEnAttenteService(infoUser.id);
+      const result = await getNombreRecoursEnAttenteService(infoUser.enseignant_id);
 
       setNbRecours(result.total || 0);
 
@@ -124,19 +147,20 @@ const handleActionClick = async (actionName) => {
       return;
     }
     setAnnee(result.data.libelle)
+
     if (actionName === "Soumettre les cotes des étudiants") {
       setActiveView("saisir-cotes");
     } 
     else if (actionName === "Traiter les recours des étudiants") {
       setActiveView("recours");
     }
-    // else if (actionName === "Envoyer les documents") {
-    //   setActiveView("documents");
-    // }
+    else if (actionName === "Envoyer un communiqué") {
+      setActiveView("communiques");
+    }
 
   } catch (error) {
     showMessage(error.message, "error");
-
+ 
   }
 
 };
@@ -218,7 +242,7 @@ const handleActionClick = async (actionName) => {
         )}
 
 
-              {activeView === "saisir-cotes" && (
+      {activeView === "saisir-cotes" && (
         <div className="component-wrapper fade-in">
 
           <button
@@ -228,7 +252,7 @@ const handleActionClick = async (actionName) => {
             ← Retour
           </button>
 
-          <SaisirCotes id_enseignant={infoUser.id} annee= {annee}/>
+          <SaisirCotes id_enseignant={infoUser.enseignant_id} annee= {annee}/>
 
         </div>
       )}
@@ -243,12 +267,12 @@ const handleActionClick = async (actionName) => {
             ← Retour
           </button>
 
-          <Recours id_enseignant={infoUser.id} annee= {annee}/>
+          <Recours id_enseignant={infoUser.enseignant_id} annee= {annee}/>
 
         </div>
       )}
 
-      {activeView === "documents" && (
+      {activeView === "communiques" && (
         <div className="component-wrapper fade-in">
 
           <button
@@ -258,7 +282,7 @@ const handleActionClick = async (actionName) => {
             ← Retour
           </button>
 
-          <Documents id_enseignant={infoUser.id} annee={annee} />
+          <Communiques id_enseignant={infoUser.enseignant_id} annee={annee} />
 
         </div>
       )}

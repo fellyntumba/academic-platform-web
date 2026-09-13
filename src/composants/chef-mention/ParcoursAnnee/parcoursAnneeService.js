@@ -124,7 +124,7 @@ export async function getParcours({code_mention}) {
 ========================= */
 export const getParcoursVersionByCodeAnneePasseeService = async ({ code_parcours }) => {
   try {
- 
+  
     const response = await apiFetch(`${BASE_URL}/parcours-version/annee-passee`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

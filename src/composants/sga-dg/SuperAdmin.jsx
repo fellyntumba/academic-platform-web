@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  isAuthenticated,
+  isAuthenticated, 
   logout,
   switchRole
 } from "../accueils/serviceAuth";
@@ -16,6 +16,7 @@ import FacultesForm from "./fac/FacultesForm";
 import ComptableForm from "./miseAjourCptables/ComptableForm";
 import AnneeAcademique from "./anneeAcademique/AnneeAcademique";
 import SuperAdminManager from "./SuperAdminManager/SuperAdminManager";
+import Communique from "./Communique/Communique";
 import AdminFacForm from "./miseAjourAdmin/AdminFacForm";
 
 import { useContextUniv } from "../../featuresAndInfos/ContextUnivProvider";
@@ -73,6 +74,12 @@ const menuItems = [
       "Créer / Désactiver Super Admin"
     ]
   },
+  {
+  title: "Gestion des communiqués",
+  subMenus: [
+    "Créer / Publier un communiqué"
+  ],
+},
 ];
 
 
@@ -279,6 +286,10 @@ const SuperAdmin = () => {
 
       setActiveView("super-admin-manager");
     }
+
+    else if (title === "Créer / Publier un communiqué") {
+      setActiveView("communique");
+    } 
 
     else {
 
@@ -599,6 +610,8 @@ const SuperAdmin = () => {
           {activeView === "nbre-etudiants" && (
             <EtudiantsFaculte />
           )}
+
+          {activeView === "communique" && (<Communique />)}
 
 
           {activeView === "super-admin-manager" && (
