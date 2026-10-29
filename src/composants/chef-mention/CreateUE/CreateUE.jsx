@@ -488,6 +488,7 @@ const CreateUE = ({ code_mention }) => {
             type="text"
             list="liste-ue-annee-passee"
             value={nomUE}
+            placeholder="Intitulé de l'UE"
             onChange={handleUEChange}
           />
 

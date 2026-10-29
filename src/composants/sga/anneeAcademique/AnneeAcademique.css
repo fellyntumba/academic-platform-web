@@ -1,0 +1,550 @@
+/* =========================================================
+   PAGE
+========================================================= */
+
+.annee-wrapper {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 24px 50px;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.annee-header {
+  margin-bottom: 28px;
+}
+
+.annee-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.annee-header h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 750;
+}
+
+.annee-header p {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   ÉTAT ACTUEL
+========================================================= */
+
+.annee-status-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 19px 21px;
+  margin-bottom: 34px;
+  border: 1px solid #e5e7eb;
+  border-radius: 17px;
+  background: #ffffff;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+  transition: all 0.2s ease;
+}
+
+.annee-status-card.active {
+  border-color: #bbf7d0;
+  background: #fafffb;
+}
+
+.annee-status-card.inactive {
+  border-color: #bfdbfe;
+  background: #fbfdff;
+}
+
+.annee-status-card.loading {
+  background: #fafafa;
+}
+
+.annee-status-icon {
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.annee-status-card.active .annee-status-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.annee-status-card.inactive .annee-status-icon {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.annee-status-card.loading .annee-status-icon {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.annee-status-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.annee-status-label {
+  display: block;
+  margin-bottom: 3px;
+  color: #9ca3af;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+.annee-status-content strong {
+  display: block;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.annee-status-content p {
+  margin: 3px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.annee-status-badge {
+  flex-shrink: 0;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.6px;
+}
+
+.annee-status-card.active .annee-status-badge {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.annee-status-card.inactive .annee-status-badge {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.annee-spinner {
+  width: 19px;
+  height: 19px;
+  border: 2px solid #d1d5db;
+  border-top-color: #6b7280;
+  border-radius: 50%;
+  animation: annee-spin 0.7s linear infinite;
+}
+
+.button-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: annee-spin 0.7s linear infinite;
+}
+
+@keyframes annee-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.annee-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 17px;
+}
+
+.annee-section-header span {
+  display: block;
+  margin-bottom: 5px;
+  color: #6b7280;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.annee-section-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 21px;
+  font-weight: 750;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.annee-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* =========================================================
+   CARTE
+========================================================= */
+
+.annee-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.annee-card:not(.disabled-card):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 27px rgba(15, 23, 42, 0.08);
+  border-color: #dbeafe;
+}
+
+.annee-card.danger:not(.disabled-card):hover {
+  border-color: #fecaca;
+}
+
+.annee-card.disabled-card {
+  opacity: 0.68;
+}
+
+/* =========================================================
+   HAUT CARTE
+========================================================= */
+
+.annee-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 21px;
+}
+
+.annee-card-icon {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  font-size: 14px;
+}
+
+.annee-card-icon.launch {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.annee-card-icon.close {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.annee-card-status {
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 8px;
+  font-weight: 750;
+  letter-spacing: 0.7px;
+}
+
+.annee-card:not(.disabled-card)
+  .annee-card-icon.launch
+  + .annee-card-status {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.annee-card.danger:not(.disabled-card)
+  .annee-card-icon.close
+  + .annee-card-status {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* =========================================================
+   CONTENU
+========================================================= */
+
+.annee-card-content {
+  min-height: 112px;
+}
+
+.annee-card-content h3 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.annee-card-content p {
+  max-width: 470px;
+  margin: 0;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+/* =========================================================
+   FOOTER CARTE
+========================================================= */
+
+.annee-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding-top: 17px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.annee-card-info {
+  color: #9ca3af;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   BOUTONS
+========================================================= */
+
+.annee-action-button {
+  min-width: 145px;
+  height: 39px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 15px;
+  border: 0;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.annee-action-button.launch {
+  background: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.annee-action-button.close {
+  background: #dc2626;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.18);
+}
+
+.annee-action-button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.annee-action-button.launch:not(:disabled):hover {
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28);
+}
+
+.annee-action-button.close:not(:disabled):hover {
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.25);
+}
+
+.annee-action-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+.annee-notification {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1000;
+  width: min(390px, calc(100vw - 32px));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.15);
+  animation: notification-in 0.25s ease-out;
+}
+
+.annee-notification.success {
+  border-color: #bbf7d0;
+}
+
+.annee-notification.error {
+  border-color: #fecaca;
+}
+
+.annee-notification-icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.annee-notification.success
+  .annee-notification-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.annee-notification.error
+  .annee-notification-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.annee-notification-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.annee-notification-content strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #111827;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.annee-notification-content span {
+  display: block;
+  color: #6b7280;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.annee-notification-close {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.annee-notification-close:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+@keyframes notification-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 850px) {
+  .annee-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .annee-card-content {
+    min-height: auto;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .annee-wrapper {
+    padding: 24px 16px 40px;
+  }
+
+  .annee-header h1 {
+    font-size: 25px;
+  }
+
+  .annee-status-card {
+    align-items: flex-start;
+  }
+
+  .annee-status-badge {
+    display: none;
+  }
+
+  .annee-card {
+    padding: 18px;
+  }
+
+  .annee-card-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .annee-action-button {
+    width: 100%;
+  }
+
+  .annee-notification {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+

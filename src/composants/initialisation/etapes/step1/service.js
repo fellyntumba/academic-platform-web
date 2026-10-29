@@ -11,7 +11,7 @@ export const createSga = async ({ name, email, telephone, titre }) => {
       },
       body: JSON.stringify({ name, email, telephone, titre }),
     });
- 
+  
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Erreur lors de la création du Super Admin");

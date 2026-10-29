@@ -1,217 +1,1069 @@
+
+/* ==========================================================================
+   PAGE
+   ========================================================================== */
+
 .home {
+  --univ-primary: #2563eb;
+  --univ-secondary: #f97316;
+
   min-height: 100vh;
-  background: #f5f7fa;
-  color: #111;
-  font-family: "Inter", sans-serif;
+
   display: flex;
   flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 28px;
+
+  background:
+    radial-gradient(
+      circle at 8% 10%,
+      color-mix(
+        in srgb,
+        var(--univ-primary) 8%,
+        transparent
+      ),
+      transparent 30%
+    ),
+    #f5f7fb;
+
+  color: #111827;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-/* ===========================
-   HEADER
-=========================== */
 
-.home-header {
-  height: 75px;
-  padding: 0 30px;
-  display: flex;
-  align-items: center;
+/* ==========================================================================
+   CONTENEUR
+   ========================================================================== */
+
+.home-conteneur {
+  width: 100%;
+  max-width: 1120px;
+  min-height: 680px;
+
+  display: grid;
+
+  grid-template-columns:
+    0.95fr
+    1.05fr;
+
+  overflow: hidden;
+
   background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 24px 70px
+    rgba(15, 23, 42, 0.10);
 }
 
-.header-left {
+
+/* ==========================================================================
+   PANNEAU UNIVERSITAIRE
+   ========================================================================== */
+
+.home-presentation {
+  position: relative;
+
   display: flex;
-  align-items: center;
-  gap: 15px;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  overflow: hidden;
+
+  padding: 42px 48px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--univ-primary) 92%,
+        #000000
+      ),
+      var(--univ-primary) 58%,
+      color-mix(
+        in srgb,
+        var(--univ-primary) 78%,
+        #000000
+      )
+    );
 }
 
-.logo {
-  width: 45px;
-  height: 45px;
+
+
+
+/* ==========================================================================
+   MARQUE / LOGO
+   ========================================================================== */
+
+.home-marque {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  min-height: 120px;
+}
+
+
+.home-logo {
+  display: block;
+
+  width: 190px;
+  height: 110px;
+
+  max-width: 70%;
+
   object-fit: contain;
-  border-radius: 8px;
-  background: #f5f5f5;
-  padding: 5px;
+
+  filter:
+    drop-shadow(
+      0 8px 18px
+      rgba(0, 0, 0, 0.12)
+    );
 }
 
-.university-info {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
 
-.university-info h1 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #1f2937;
-}
+.home-logo-fallback {
+  width: 92px;
+  height: 92px;
 
-.subtitle {
-  font-size: 0.75rem;
-  color: #6b7280;
-}
+  display: grid;
 
-/* ===========================
-   CORPS
-=========================== */
+  place-items: center;
 
-.home-body {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-}
+  border-radius: 22px;
 
-/* ===========================
-   FOOTER
-=========================== */
-
-.home-footer {
-  height: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background: #ffffff;
-  border-top: 1px solid #e0e0e0;
-  color: #777;
-  font-size: 0.9rem;
+
+  color: var(--univ-primary);
+
+  font-size: 24px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.14);
 }
 
 
-/* ===========================
-   Carte d'authentification
-=========================== */
+/* ==========================================================================
+   IDENTITÉ UNIVERSITÉ
+   ========================================================================== */
 
-.auth-card {
-  width: 400px;
-  max-width: 95%;
-  background: #fff;
-  padding: 35px 30px;
-  border-radius: 15px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-  text-align: center;
-  animation: scaleUp .4s ease;
+.home-identite {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 480px;
+
+  margin: 0 auto;
 }
 
-.auth-card h2 {
-  margin-bottom: 25px;
-  color: #0072ff;
-  font-size: 1.4rem;
+
+.home-label {
+  display: inline-block;
+
+  margin-bottom: 17px;
+
+  color:
+    rgba(255, 255, 255, 0.70);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
 }
 
-.auth-card form {
+
+.home-identite h1 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size:
+    clamp(
+      30px,
+      3.1vw,
+      42px
+    );
+
+  line-height: 1.10;
+
+  letter-spacing: -0.035em;
+
+  font-weight: 750;
+}
+
+
+.home-identite p {
+  max-width: 430px;
+
+  margin: 20px 0 0;
+
+  color:
+    rgba(255, 255, 255, 0.80);
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* ==========================================================================
+   INFORMATIONS UNIVERSITÉ
+   ========================================================================== */
+
+.home-meta {
   display: flex;
-  flex-direction: column;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 22px;
 }
 
-.auth-card input {
-  width: 100%;
-  padding: 12px 15px;
-  margin-bottom: 15px;
+
+.home-meta span {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  min-height: 29px;
+
+  padding: 0 10px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.15);
+
   border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  box-sizing: border-box;
-  transition: .3s;
-}
 
-.auth-card input:focus {
-  border-color: #0072ff;
-  outline: none;
-  box-shadow: 0 0 8px rgba(0,114,255,.25);
-}
+  background:
+    rgba(255, 255, 255, 0.08);
 
-.auth-card button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(90deg,#4facfe,#00f2fe);
-  color: white;
-  font-size: 14px;
+  color:
+    rgba(255, 255, 255, 0.78);
+
+  font-size: 10px;
+
   font-weight: 600;
+}
+
+
+.home-meta svg {
+  flex-shrink: 0;
+}
+
+
+/* ==========================================================================
+   FOOTER PANNEAU
+   ========================================================================== */
+
+.home-presentation-footer {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  color:
+    rgba(255, 255, 255, 0.70);
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+
+.home-presentation-footer span {
+  min-height: 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 15px;
+}
+
+
+.home-presentation-footer span + span {
+  border-left:
+    1px solid
+    rgba(255, 255, 255, 0.22);
+}
+
+
+/* ==========================================================================
+   PANNEAU AUTHENTIFICATION
+   ========================================================================== */
+
+.home-auth {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 55px;
+}
+
+
+.home-auth-interieur {
+  width: 100%;
+
+  max-width: 420px;
+}
+
+
+/* ==========================================================================
+   EN-TÊTE AUTHENTIFICATION
+   ========================================================================== */
+
+.home-auth-entete {
+  margin-bottom: 30px;
+}
+
+
+.home-auth-icone {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  border: 1px solid;
+
+  border-radius: 13px;
+}
+
+
+.home-auth-petit-titre {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.10em;
+
+  text-transform: uppercase;
+}
+
+
+.home-auth-entete h2 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 31px;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.035em;
+}
+
+
+.home-auth-entete p {
+  margin: 12px 0 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+
+  line-height: 1.65;
+}
+
+
+/* ==========================================================================
+   MESSAGES
+   ========================================================================== */
+
+.home-message {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-bottom: 20px;
+
+  padding: 12px 13px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+.home-message svg {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+}
+
+
+.home-message-erreur {
+  color: #b91c1c;
+
+  background: #fef2f2;
+
+  border:
+    1px solid
+    #fecaca;
+}
+
+
+.home-message-succes {
+  color: #047857;
+
+  background: #ecfdf5;
+
+  border:
+    1px solid
+    #a7f3d0;
+}
+
+
+/* ==========================================================================
+   FORMULAIRE
+   ========================================================================== */
+
+.home-auth-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 22px;
+}
+
+
+.home-champ {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.home-champ label {
+  color: #374151;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+.home-input-wrapper {
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 0 15px;
+
+  border:
+    1px solid
+    #d1d5db;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.home-input-wrapper:focus-within {
+  border-color:
+    var(--univ-primary);
+
+  box-shadow:
+    0 0 0 4px
+    color-mix(
+      in srgb,
+      var(--univ-primary) 10%,
+      transparent
+    );
+}
+
+
+.home-input-wrapper svg {
+  flex-shrink: 0;
+
+  color: #9ca3af;
+}
+
+
+.home-input-wrapper input {
+  width: 100%;
+
+  border: 0;
+
+  outline: 0;
+
+  background: transparent;
+
+  color: #111827;
+
+  font-size: 14px;
+}
+
+
+.home-input-wrapper input::placeholder {
+  color: #9ca3af;
+}
+
+
+/* ==========================================================================
+   OTP
+   ========================================================================== */
+
+.home-input-otp input {
+  font-size: 22px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.35em;
+}
+
+
+.home-aide {
+  color: #9ca3af;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* ==========================================================================
+   BOUTON PRINCIPAL
+   ========================================================================== */
+
+.home-auth-button {
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
   cursor: pointer;
-  transition: .3s;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
 }
 
-.auth-card button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,.15);
+
+.home-auth-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 22px
+    color-mix(
+      in srgb,
+      var(--univ-primary) 22%,
+      transparent
+    );
 }
 
-.auth-card button:disabled {
-  opacity: .7;
+
+.home-auth-button:disabled {
+  opacity: 0.65;
+
   cursor: not-allowed;
 }
 
-.error-message {
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 8px;
-  background: #fff1f1;
-  border: 1px solid #e63946;
-  color: #e63946;
-  font-size: .9rem;
-}
 
-@keyframes scaleUp {
-  from {
-    opacity: 0;
-    transform: scale(.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+/* ==========================================================================
+   BOUTON SECONDAIRE
+   ========================================================================== */
 
-.auth-card-message {
-  margin: -8px 0 22px;
+.home-secondary-button {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 4px;
+
+  border: 0;
+
+  background: transparent;
+
   color: #6b7280;
-  font-size: 0.92rem;
-  line-height: 1.5;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.home-secondary-button:hover:not(:disabled) {
+  color:
+    var(--univ-primary);
+}
+
+
+.home-secondary-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* ==========================================================================
+   SÉCURITÉ
+   ========================================================================== */
+
+.home-security {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-top: 34px;
+
+  padding-top: 22px;
+
+  border-top:
+    1px solid
+    #eef0f3;
+
+  color: #9ca3af;
+
+  font-size: 10px;
+
+  line-height: 1.55;
+}
+
+
+.home-security svg {
+  flex-shrink: 0;
+
+  color: #10b981;
+}
+
+
+/* ==========================================================================
+   SPINNER
+   ========================================================================== */
+
+.home-spinner {
+  animation:
+    home-rotation
+    0.8s
+    linear
+    infinite;
+}
+
+
+@keyframes home-rotation {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* ==========================================================================
+   FOOTER GLOBAL
+   ========================================================================== */
+
+.home-footer {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  width: 100%;
+
+  max-width: 1120px;
+
+  padding-top: 18px;
+
+  color: #9ca3af;
+
+  font-size: 10px;
+
   text-align: center;
 }
 
-/* ===========================
-   RESPONSIVE
-=========================== */
 
-@media (max-width: 768px) {
-  .home-header {
-    padding: 0 20px;
-  }
+.home-footer-separator {
+  color: #d1d5db;
+}
 
-  .home-body {
+
+/* ==========================================================================
+   CHARGEMENT INITIAL
+   ========================================================================== */
+
+.home-loading {
+  min-height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  background: #f5f7fb;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+
+.home-loading-spinner {
+  width: 28px;
+  height: 28px;
+
+  border:
+    3px solid
+    #e5e7eb;
+
+  border-top-color:
+    var(--univ-primary, #2563eb);
+
+  border-radius: 50%;
+
+  animation:
+    home-rotation
+    0.8s
+    linear
+    infinite;
+}
+
+
+/* ==========================================================================
+   TABLETTE
+   ========================================================================== */
+
+@media (max-width: 900px) {
+
+  .home {
     padding: 20px;
   }
 
-  .home-footer {
-    height: auto;
-    padding: 12px;
-    text-align: center;
+
+  .home-conteneur {
+    max-width: 650px;
+
+    min-height: auto;
+
+    grid-template-columns: 1fr;
   }
+
+
+  .home-presentation {
+    min-height: 420px;
+
+    padding: 36px;
+  }
+
+
+  .home-marque {
+    min-height: 105px;
+  }
+
+
+  .home-logo {
+    width: 180px;
+
+    height: 95px;
+  }
+
+
+  .home-identite {
+    margin-top: 35px;
+  }
+
+
+  .home-identite h1 {
+    font-size: 34px;
+  }
+
+
+  .home-auth {
+    padding: 45px 34px;
+  }
+
 }
+
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 700px) {
+
+  .home {
+    padding: 0;
+  }
+
+
+  .home-conteneur {
+    min-height: 100dvh;
+
+    border: 0;
+
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+
+  .home-presentation {
+    min-height: auto;
+
+    padding: 30px 28px;
+  }
+
+
+  .home-marque {
+    min-height: 95px;
+  }
+
+
+  .home-logo {
+    width: 165px;
+
+    height: 85px;
+  }
+
+
+  .home-identite {
+    margin-top: 35px;
+  }
+
+
+  .home-identite h1 {
+    font-size: 30px;
+  }
+
+
+  .home-identite p {
+    font-size: 13px;
+  }
+
+
+  .home-presentation-footer {
+    margin-top: 38px;
+  }
+
+
+  .home-auth {
+    align-items: flex-start;
+
+    padding: 38px 28px;
+  }
+
+
+  .home-auth-interieur {
+    max-width: none;
+  }
+
+
+  .home-auth-entete h2 {
+    font-size: 27px;
+  }
+
+
+  .home-footer {
+    display: none;
+  }
+
+}
+
+
+/* ==========================================================================
+   PETIT MOBILE
+   ========================================================================== */
 
 @media (max-width: 480px) {
-  .home-header {
-    padding: 0 15px;
+
+  .home-presentation {
+    padding: 27px 20px 25px;
   }
 
-  .logo {
-    width: 40px;
-    height: 40px;
+
+  .home-marque {
+    min-height: 85px;
   }
 
-  .university-info h1 {
-    font-size: 1rem;
+
+  .home-logo {
+    width: 150px;
+
+    height: 78px;
   }
 
-  .subtitle {
-    font-size: 0.7rem;
+
+  .home-identite {
+    margin-top: 28px;
   }
+
+
+  .home-identite h1 {
+    font-size: 27px;
+
+    line-height: 1.13;
+  }
+
+
+  .home-identite p {
+    font-size: 12.5px;
+  }
+
+
+  .home-meta {
+    margin-top: 17px;
+  }
+
+
+  .home-presentation-footer {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+    margin-top: 30px;
+  }
+
+
+  .home-presentation-footer span {
+    padding: 0;
+  }
+
+
+  .home-presentation-footer span + span {
+    border-left: 0;
+  }
+
+
+  .home-auth {
+    padding: 32px 20px;
+  }
+
+
+  .home-auth-entete h2 {
+    font-size: 25px;
+  }
+
+
+  .home-input-otp input {
+    letter-spacing: 0.25em;
+  }
+
 }
+
+
+/* ==========================================================================
+   TRÈS PETIT MOBILE
+   ========================================================================== */
+
+@media (max-width: 380px) {
+
+  .home-presentation {
+    padding: 24px 18px;
+  }
+
+
+  .home-logo {
+    width: 135px;
+
+    height: 70px;
+  }
+
+
+  .home-identite h1 {
+    font-size: 25px;
+  }
+
+
+  .home-auth {
+    padding: 30px 18px;
+  }
+
+}
+

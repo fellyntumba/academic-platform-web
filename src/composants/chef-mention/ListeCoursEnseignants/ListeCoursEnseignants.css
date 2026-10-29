@@ -1,136 +1,167 @@
+/* =========================================================
+   CONTENEUR PRINCIPAL
+========================================================= */
 .liste-dropdown {
   width: 100%;
   max-width: 900px;
-  background: #ffffff;
+  margin: 0 auto;
   padding: 25px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
 
 .liste-dropdown h2 {
-  color: #0072ff;
-  margin-bottom: 15px;
+  color: #2563eb;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 22px;
+  line-height: 1.4;
 }
 
-.liste-scrollable {
-  max-height: 350px; /* 🔹 Hauteur fixe */
-  overflow-y: auto;  /* 🔹 Scroll interne */
-  margin-bottom: 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+/* =========================================================
+   FILTRE : ANNÉE ACADÉMIQUE
+========================================================= */
+.liste-annee-filter {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto 18px;
+  padding: 18px;
+  box-sizing: border-box;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  text-align: left;
 }
 
-.liste-scrollable::-webkit-scrollbar {
-  width: 8px;
+.liste-annee-filter-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 23px;
 }
 
-.liste-scrollable::-webkit-scrollbar-thumb {
-  background: #0072ff;
-  border-radius: 4px;
-}
-.enseignant-card{
-
-    background:white;
-
-    border-left:6px solid #0072ff;
-
-    border-radius:12px;
-
-    padding:18px;
-
-    margin-bottom:18px;
-
-    text-align:left;
-
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-
+.liste-annee-filter-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
 }
 
-.enseignant-header{
-
-    font-size:20px;
-
-    font-weight:bold;
-
-    color:#0072ff;
-
-    margin-bottom:15px;
-
+.liste-annee-filter-content label {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
 }
 
-.promotion-block{
-
-    margin-left:18px;
-
-    margin-bottom:15px;
-
+.liste-annee-filter-content select {
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 35px 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffffff;
+  color: #1e293b;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.promotion-title{
-
-    font-weight:600;
-
-    color:#333;
-
-    margin-bottom:8px;
-
+.liste-annee-filter-content select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-.cours-list{
-
-    margin-left:28px;
-
+.liste-annee-filter-content select:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
 }
 
-.cours-list li{
-
-    margin-bottom:6px;
-
-    color:#444;
-
+/* =========================================================
+   ANNÉE SÉLECTIONNÉE
+========================================================= */
+.liste-annee-selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 560px;
+  margin: 0 auto 20px;
+  padding: 12px 16px;
+  box-sizing: border-box;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 9px;
+  text-align: left;
 }
 
-.empty-list{
-
-    padding:30px;
-
-    color:#888;
-
-    text-align:center;
-
+.liste-annee-selected span {
+  color: #475569;
+  font-size: 13px;
 }
 
-.annee-title{
-
-    font-size:16px;
-
-    font-weight:500;
-
-    color:#555;
-
+.liste-annee-selected strong {
+  color: #1d4ed8;
+  font-size: 14px;
+  font-weight: 700;
 }
 
+/* Ancienne classe conservée */
+.annee-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+}
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
 .notification {
   position: fixed;
   bottom: 20px;
   left: 50%;
-  transform: translateX(-50%);
-  padding: 14px 25px;
-  border-radius: 30px;
-  color: white;
-  font-weight: 600;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  animation: slideUp 0.3s ease;
   z-index: 1000;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: 14px 22px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  overflow-wrap: anywhere;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  animation: slideUp 0.3s ease;
 }
 
 .notification.success {
-  background: linear-gradient(90deg, #00c853, #00e676);
+  background: linear-gradient(90deg, #15803d, #16a34a);
 }
 
 .notification.error {
-  background: linear-gradient(90deg, #d32f2f, #ff5252);
+  background: linear-gradient(90deg, #b91c1c, #dc2626);
 }
 
 @keyframes slideUp {
@@ -145,6 +176,169 @@
   }
 }
 
+/* =========================================================
+   CHARGEMENT DES AFFECTATIONS
+========================================================= */
+.liste-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 28px 15px;
+  color: #475569;
+  font-size: 14px;
+}
+
+.liste-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 3px solid #dbeafe;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: listeSpin 0.75s linear infinite;
+}
+
+@keyframes listeSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   ZONE DÉFILANTE
+========================================================= */
+.liste-scrollable {
+  max-height: 350px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #f8fafc;
+  text-align: left;
+  scrollbar-width: thin;
+  scrollbar-color: #2563eb #e2e8f0;
+}
+
+.liste-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.liste-scrollable::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 4px;
+}
+
+.liste-scrollable::-webkit-scrollbar-thumb {
+  background: #2563eb;
+  border-radius: 4px;
+}
+
+.liste-scrollable::-webkit-scrollbar-thumb:hover {
+  background: #1d4ed8;
+}
+
+/* =========================================================
+   CARTE ENSEIGNANT
+========================================================= */
+.enseignant-card {
+  margin-bottom: 16px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 5px solid #2563eb;
+  border-radius: 12px;
+  text-align: left;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.enseignant-card:last-child {
+  margin-bottom: 0;
+}
+
+.enseignant-card:hover {
+  border-left-color: #f59e0b;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.09);
+}
+
+.enseignant-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #1d4ed8;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   PROMOTIONS ET SEMESTRES
+========================================================= */
+.promotion-block {
+  margin: 0 0 15px 12px;
+  padding-left: 12px;
+  border-left: 2px solid #e2e8f0;
+}
+
+.promotion-block:last-child {
+  margin-bottom: 0;
+}
+
+.promotion-title {
+  margin-bottom: 9px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   LISTE DES COURS
+========================================================= */
+.cours-list {
+  margin: 0;
+  padding-left: 24px;
+}
+
+.cours-list li {
+  margin-bottom: 7px;
+  padding-left: 3px;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.cours-list li:last-child {
+  margin-bottom: 0;
+}
+
+.cours-list li::marker {
+  color: #2563eb;
+}
+
+/* =========================================================
+   LISTE VIDE
+========================================================= */
+.empty-list {
+  padding: 30px 18px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* =========================================================
+   TABLEAUX : STYLES EXISTANTS CONSERVÉS
+========================================================= */
 .liste-table {
   width: 100%;
   border-collapse: collapse;
@@ -158,8 +352,8 @@
 }
 
 .liste-table th {
-  background: #0072ff;
-  color: white;
+  background: #2563eb;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -167,23 +361,51 @@
   background: #f8f9fa;
 }
 
+/* =========================================================
+   BOUTON DE TÉLÉCHARGEMENT
+========================================================= */
 .download-btn {
-  padding: 10px 25px;
-  border-radius: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+  min-height: 43px;
+  padding: 11px 24px;
   border: none;
-  background: linear-gradient(90deg, #00e6ff, #0072ff);
-  color: white;
+  border-radius: 9px;
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
 }
 
-.download-btn:hover {
+.download-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.24);
 }
 
-/* Animation fade-in */
+.download-btn:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.3);
+  outline-offset: 3px;
+}
+
+.download-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* =========================================================
+   ANIMATION D'APPARITION
+========================================================= */
 .fade-in {
   opacity: 0;
   transform: translateY(10px);
@@ -196,3 +418,147 @@
     transform: translateY(0);
   }
 }
+
+/* =========================================================
+   RESPONSIVE : TABLETTES
+========================================================= */
+@media (max-width: 768px) {
+  .liste-dropdown {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .liste-dropdown h2 {
+    font-size: 19px;
+  }
+
+  .liste-scrollable {
+    max-height: 420px;
+    padding: 9px;
+  }
+
+  .enseignant-card {
+    padding: 15px;
+  }
+
+  .enseignant-header {
+    font-size: 16px;
+  }
+
+  .promotion-block {
+    margin-left: 5px;
+    padding-left: 10px;
+  }
+
+  .notification {
+    bottom: 15px;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE : MOBILES
+========================================================= */
+@media (max-width: 480px) {
+  .liste-dropdown {
+    padding: 13px;
+    border-radius: 10px;
+  }
+
+  .liste-dropdown h2 {
+    font-size: 17px;
+    margin-bottom: 17px;
+  }
+
+  .liste-annee-filter {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .liste-annee-filter-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 19px;
+  }
+
+  .liste-annee-filter-content label {
+    font-size: 12px;
+  }
+
+  .liste-annee-filter-content select {
+    min-height: 41px;
+    font-size: 13px;
+  }
+
+  .liste-annee-selected {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+    padding: 11px 12px;
+  }
+
+  .liste-scrollable {
+    max-height: 450px;
+    padding: 7px;
+  }
+
+  .enseignant-card {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .enseignant-header {
+    font-size: 15px;
+  }
+
+  .promotion-title,
+  .cours-list li {
+    font-size: 13px;
+  }
+
+  .promotion-block {
+    margin-left: 0;
+    padding-left: 9px;
+  }
+
+  .cours-list {
+    padding-left: 20px;
+  }
+
+  .download-btn {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+
+  .liste-loading {
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+
+  .empty-list {
+    padding: 22px 10px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITÉ : RÉDUCTION DES ANIMATIONS
+========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .liste-spinner,
+  .notification {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .enseignant-card,
+  .download-btn {
+    transition: none;
+  }
+}
+
+

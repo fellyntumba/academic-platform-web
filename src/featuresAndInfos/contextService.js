@@ -1,4 +1,4 @@
-import { apiFetch } from "./apiService";
+import { apiFetch } from "../composants/accueils/apiService";
 
 export async function getContext() {
   try {
@@ -17,4 +17,5 @@ export async function getContext() {
     return [];
   }
 }
+
 

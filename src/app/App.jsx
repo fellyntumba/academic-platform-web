@@ -1,163 +1,504 @@
-// import React, { useEffect, useState } from "react";
-// import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+
+// import React, {
+//   useEffect,
+//   useState,
+// } from "react";
+
+// import {
+//   BrowserRouter,
+//   Routes,
+//   Route,
+//   Navigate,
+// } from "react-router-dom";
+
 // import { checkSetupStatus } from "./service";
-// import SetupWizard from "../composants/initialisation/setupWizard/SetupWizard";
+
+// import SetupWizard
+//   from "../composants/initialisation/setupWizard/SetupWizard";
+
 // import Loader from "./loader/Loader";
-// import Home from "../composants/accueils/Home"; 
-// import SuperAdmin from "../composants/sga-dg/SuperAdmin"; 
-// import AdminFac from "../composants/administrateurs-fac/AdminFac";
-// import Enseignants from "../composants/enseignants/Enseignants";
-// import ChefMention from "../composants/chef-mention/ChefMention";
-// import { isAuthenticated } from "../composants/accueils/serviceAuth";
-// // import ProtectedRoute from "../ProtectedRoute";
+
+// import Home
+//   from "../composants/accueils/Home";
+
+// import Sga
+//   from "../composants/sga/Sga";
+
+// import AdminFac
+//   from "../composants/administrateurs-fac/AdminFac";
+
+// import Enseignants
+//   from "../composants/enseignants/Enseignants";
+
+// import ChefMention
+//   from "../composants/chef-mention/ChefMention";
+
+// import Comptable
+//   from "../composants/comptables/Comptable";
+
+// import {
+//   isAuthenticated,
+// } from "../composants/accueils/serviceAuth";
+
 
 // function App() {
-//   const [loading, setLoading] = useState(true);
-//   const [setupStatus, setSetupStatus] = useState(null);
-//   const [user, setUser] = useState(null);
-//   const [loadingAuth, setLoadingAuth] = useState(true);
 
-//   //
+//   // ============================================================
+//   // ÉTATS
+//   // ============================================================
+
+//   const [loading, setLoading] =
+//     useState(true);
+
+//   const [setupStatus, setSetupStatus] =
+//     useState(null);
+
+//   const [user, setUser] =
+//     useState(null);
+
+//   const [loadingAuth, setLoadingAuth] =
+//     useState(true);
+
+
+//   // ============================================================
+//   // CHARGER L'ÉTAT DE CONFIGURATION
+//   // ============================================================
+
 //   const loadStatus = async () => {
-//     setLoading(true);
-//     const data = await checkSetupStatus();
-//     setSetupStatus(data);
-//     setLoading(false);
+
+//     try {
+
+//       const data =
+//         await checkSetupStatus();
+
+//       console.log(
+//         "[APP] Setup status :",
+//         data
+//       );
+
+//       setSetupStatus(data);
+
+//       return data;
+
+//     } catch (error) {
+
+//       console.error(
+//         "[APP] Erreur vérification configuration :",
+//         error
+//       );
+
+//       return null;
+
+//     }
 //   };
 
 
-//   //
+//   // ============================================================
+//   // VÉRIFIER L'AUTHENTIFICATION
+//   // ============================================================
+
 //   const loadAuth = async () => {
 
 //     try {
 
-//         const auth = await isAuthenticated();
+//       const auth =
+//         await isAuthenticated();
 
-//         setUser(
-//             auth?.authenticated
-//                 ? auth.user
-//                 : null
-//         );
+//       console.log(
+//         "[APP] Authentification :",
+//         auth
+//       );
+
+
+//       const authenticatedUser =
+//         auth?.authenticated
+//           ? auth.user
+//           : null;
+
+
+//       setUser(
+//         authenticatedUser
+//       );
+
+
+//       return authenticatedUser;
+
+//     } catch (error) {
+
+//       console.error(
+//         "[APP] Erreur authentification :",
+//         error
+//       );
+
+//       setUser(null);
+
+//       return null;
 
 //     } finally {
 
-//         setLoadingAuth(false);
-
+//       setLoadingAuth(false);
 //     }
+//   };
 
-// };
 
-//   //
-//  useEffect(() => {
+//   // ============================================================
+//   // INITIALISATION
+//   // ============================================================
+
+//   useEffect(() => {
 
 //     const init = async () => {
+
+//       setLoading(true);
+
 //       await Promise.all([
 //         loadStatus(),
-//         loadAuth()
+//         loadAuth(),
 //       ]);
+
+//       setLoading(false);
 //     };
 
 //     init();
 
 //   }, []);
 
-//   if (loading || loadingAuth) {
+
+//   // ============================================================
+//   // AUTHENTIFICATION RÉUSSIE DANS SETUP
+//   // ============================================================
+
+//   const handleAuthenticated = (authenticatedUser) => {
+
+//     console.log(
+//       "[APP] Utilisateur authentifié :",
+//       authenticatedUser
+//     );
+
+//     setUser(
+//       authenticatedUser
+//     );
+//   };
+
+
+//   // ============================================================
+//   // SETUP TERMINÉ
+//   // ============================================================
+
+//   const handleSetupCompleted = async () => {
+
+//     console.log(
+//       "[APP] Configuration terminée. Actualisation..."
+//     );
+
+
+//     const status =
+//       await loadStatus();
+
+
+//     // ----------------------------------------------------------
+//     // Actualiser également la session
+//     // ----------------------------------------------------------
+
+//     const authenticatedUser =
+//       await loadAuth();
+
+
+//     console.log(
+//       "[APP] Configuration après actualisation :",
+//       status
+//     );
+
+
+//     console.log(
+//       "[APP] Utilisateur après actualisation :",
+//       authenticatedUser
+//     );
+//   };
+
+
+//   // ============================================================
+//   // LOADER
+//   // ============================================================
+
+//   if (
+//     loading ||
+//     loadingAuth
+//   ) {
+
 //     return <Loader />;
 //   }
 
-//   const setupFinished = setupStatus?.facultes === true;
+
+//   // ============================================================
+//   // NORMALISER LE SETUP STATUS
+//   // ============================================================
+
+//   const status =
+//     setupStatus?.data ??
+//     setupStatus ??
+//     {};
 
 
+//   // ============================================================
+//   // CONFIGURATION TERMINÉE ?
+//   // ============================================================
 
+//   const setupFinished =
+//     status.facultes === true;
+
+
+//   console.log(
+//     "[APP] setupFinished :",
+//     setupFinished
+//   );
+
+
+//   // ============================================================
+//   // ROUTES
+//   // ============================================================
 
 //   return (
-//     <BrowserRouter>
-//       <Routes>
-//         {/* Racine */}
-//         <Route
-//           path="/" 
-//           element={
-//               !setupFinished ? (
-//                 <Navigate to="/setup" replace />
-//               ) : !user ? (
-//                 <Navigate to="/home" replace />
-//               ) : user.active_role === "SGA" ? (
-//                 <Navigate to="/super-admin" replace />
-//               ) : user.active_role === "ADMIN_FAC" ? (
-//                 <Navigate to="/admin-fac" replace />
-//               ) : user.active_role === "ADMIN_MENTION" ? (
-//                 <Navigate to="/admin-mention" replace />
-//               ) : user.active_role === "ENSEIGNANT" ? (
-//                 <Navigate to="/enseignant" replace />
-//               ) : (
-//                 <Navigate to="/home" replace />
-//               )
-//           }
-//           />
 
-//         {/* Setup */}
+//     <BrowserRouter>
+
+//       <Routes>
+
+
+//         {/* ======================================================
+//             RACINE
+//         ====================================================== */}
+
+//         <Route
+//           path="/"
+//           element={
+
+//             !setupFinished ? (
+
+//               <Navigate
+//                 to="/setup"
+//                 replace
+//               />
+
+//             ) : user ? (
+
+//               user.active_role === "SGA" ? (
+
+//                 <Navigate
+//                   to="/sga"
+//                   replace
+//                 />
+
+//               ) : user.active_role === "ADMIN_FAC" ? (
+
+//                 <Navigate
+//                   to="/admin-fac"
+//                   replace
+//                 />
+
+//               ) : user.active_role === "ADMIN_MENTION" ? (
+
+//                 <Navigate
+//                   to="/admin-mention"
+//                   replace
+//                 />
+
+//               ) : user.active_role === "ENSEIGNANT" ? (
+
+//                 <Navigate
+//                   to="/enseignant"
+//                   replace
+//                 />
+
+//               ) : user.active_role === "COMPTABLE" ? (
+
+//                 <Navigate
+//                   to="/comptable"
+//                   replace
+//                 />
+
+//               ) : (
+
+//                 <Navigate
+//                   to="/home"
+//                   replace
+//                 />
+
+//               )
+
+//             ) : (
+
+//               <Navigate
+//                 to="/home"
+//                 replace
+//               />
+
+//             )
+
+//           }
+//         />
+
+
+//         {/* ======================================================
+//             SETUP
+//         ====================================================== */}
+
 //         <Route
 //           path="/setup"
 //           element={
+
 //             setupFinished ? (
-//               <Navigate to="/home" replace/>
+
+//               <Navigate
+//                 to="/home"
+//                 replace
+//               />
+
 //             ) : (
+
 //               <SetupWizard
 //                 setupStatus={setupStatus}
-//                 onCompleted={loadStatus} // 🔑 HARMONIE
+
+//                 onAuthenticated={
+//                   handleAuthenticated
+//                 }
+
+//                 onCompleted={
+//                   handleSetupCompleted
+//                 }
 //               />
+
 //             )
+
 //           }
 //         />
 
-//         {/* Home */}
+
+//         {/* ======================================================
+//             HOME
+//         ====================================================== */}
+
 //         <Route
 //           path="/home"
 //           element={
+
 //             !setupFinished ? (
-//               <Navigate to="/setup" replace />
+
+//               <Navigate
+//                 to="/setup"
+//                 replace
+//               />
+
 //             ) : user ? (
-//               <Navigate to="/" replace />
+
+//               <Navigate
+//                 to="/"
+//                 replace
+//               />
+
 //             ) : (
+
 //               <Home />
+
 //             )
+
 //           }
 //         />
 
-//         {/* Super Admin */}
-//         <Route path="/super-admin" element={<SuperAdmin />} />
 
-//         {/* Admin Fac */}
-//         <Route path="/admin-fac" element={<AdminFac />} /> 
+//         {/* ======================================================
+//             SGA
+//         ====================================================== */}
 
-//         {/* Chef mention*/}
-//         <Route path="/admin-mention" element={<ChefMention />} /> 
+//         <Route
+//           path="/sga"
+//           element={
+//             <Sga />
+//           }
+//         />
 
-//         {/* Enseignant*/}
-//         <Route path="/enseignant" element={<Enseignants />} />
+
+//         {/* ======================================================
+//             ADMIN FACULTÉ
+//         ====================================================== */}
+
+//         <Route
+//           path="/admin-fac"
+//           element={
+//             <AdminFac />
+//           }
+//         />
+
+
+//         {/* ======================================================
+//             ADMIN MENTION
+//         ====================================================== */}
+
+//         <Route
+//           path="/admin-mention"
+//           element={
+//             <ChefMention />
+//           }
+//         />
+
+
+//         {/* ======================================================
+//             ENSEIGNANT
+//         ====================================================== */}
+
+//         <Route
+//           path="/enseignant"
+//           element={
+//             <Enseignants />
+//           }
+//         />
+
+
+//         {/* ======================================================
+//             COMPTABLE
+//         ====================================================== */}
+
+//         <Route
+//           path="/comptable"
+//           element={
+//             <Comptable />
+//           }
+//         />
+
 //       </Routes>
+
 //     </BrowserRouter>
 //   );
 // }
 
+
 // export default App;
 
 
-import React, { useEffect, useState } from "react";
+
+
+import React, {
+  useEffect,
+  useCallback,
+  useState,
+} from "react";
+
 import {
   BrowserRouter,
   Routes,
   Route,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 
 import { checkSetupStatus } from "./service";
 
 import SetupWizard from "../composants/initialisation/setupWizard/SetupWizard";
+
 import Loader from "./loader/Loader";
 
 import Home from "../composants/accueils/Home";
-import SuperAdmin from "../composants/sga-dg/SuperAdmin";
+import Sga from "../composants/sga/Sga";
 import AdminFac from "../composants/administrateurs-fac/AdminFac";
 import Enseignants from "../composants/enseignants/Enseignants";
 import ChefMention from "../composants/chef-mention/ChefMention";
@@ -165,129 +506,168 @@ import Comptable from "../composants/comptables/Comptable";
 
 import { isAuthenticated } from "../composants/accueils/serviceAuth";
 
-// import ProtectedRoute from "../ProtectedRoute";
-
-
 function App() {
+  // ============================================================
+  // ÉTATS
+  // ============================================================
 
   const [loading, setLoading] = useState(true);
   const [setupStatus, setSetupStatus] = useState(null);
-
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
 
+  // Nouveau : protège le wizard pendant l'animation de fin.
+  const [setupTransition, setSetupTransition] = useState(false);
 
-  /* ============================================================
-     VÉRIFICATION CONFIGURATION UNIVERSITÉ
-  ============================================================ */
+  // ============================================================
+  // CHARGER L'ÉTAT DE CONFIGURATION
+  // ============================================================
 
   const loadStatus = async () => {
-
-    setLoading(true);
-
     try {
-
       const data = await checkSetupStatus();
+
+      console.log("[APP] Setup status :", data);
 
       setSetupStatus(data);
 
+      return data;
     } catch (error) {
-
       console.error(
-        "Erreur lors de la vérification de la configuration :",
+        "[APP] Erreur vérification configuration :",
         error
       );
 
-    } finally {
-
-      setLoading(false);
-
+      return null;
     }
   };
 
-
-  /* ============================================================
-     VÉRIFICATION AUTHENTIFICATION
-  ============================================================ */
+  // ============================================================
+  // VÉRIFIER L'AUTHENTIFICATION
+  // ============================================================
 
   const loadAuth = async () => {
-
     try {
-
       const auth = await isAuthenticated();
 
-      setUser(
-        auth?.authenticated
-          ? auth.user
-          : null
-      );
+      console.log("[APP] Authentification :", auth);
 
+      const authenticatedUser = auth?.authenticated
+        ? auth.user
+        : null;
+
+      setUser(authenticatedUser);
+
+      return authenticatedUser;
     } catch (error) {
-
       console.error(
-        "Erreur lors de la vérification de l'authentification :",
+        "[APP] Erreur authentification :",
         error
       );
 
       setUser(null);
 
+      return null;
     } finally {
-
       setLoadingAuth(false);
-
     }
-
   };
 
-
-  /* ============================================================
-     INITIALISATION
-  ============================================================ */
+  // ============================================================
+  // INITIALISATION
+  // ============================================================
 
   useEffect(() => {
-
     const init = async () => {
+      setLoading(true);
 
       await Promise.all([
         loadStatus(),
-        loadAuth()
+        loadAuth(),
       ]);
 
+      setLoading(false);
     };
 
     init();
-
   }, []);
 
+  // ============================================================
+  // AUTHENTIFICATION RÉUSSIE DANS SETUP
+  // ============================================================
 
-  /* ============================================================
-     LOADER INITIAL
-  ============================================================ */
+  // useCallback stabilise la fonction et évite de relancer
+  // inutilement la vérification de session dans SetupWizard.
+  const handleAuthenticated = useCallback(
+    (authenticatedUser) => {
+      console.log(
+        "[APP] Utilisateur authentifié :",
+        authenticatedUser
+      );
+
+      setUser(authenticatedUser);
+    },
+    []
+  );
+
+  // ============================================================
+  // DÉBUT DE LA TRANSITION DE FIN
+  // ============================================================
+
+  const handleSetupCompleting = useCallback(() => {
+    setSetupTransition(true);
+  }, []);
+
+  // ============================================================
+  // SETUP TERMINÉ : ACTUALISATION APRÈS LES 5 SECONDES
+  // ============================================================
+
+  const handleSetupCompleted = async () => {
+    console.log(
+      "[APP] Animation terminée. Actualisation..."
+    );
+
+    try {
+      // Actualiser le statut de configuration.
+      await loadStatus();
+
+      // Actualiser la session sans changer la logique existante.
+      await loadAuth();
+    } finally {
+      // La redirection est maintenant autorisée.
+      setSetupTransition(false);
+    }
+  };
+
+  // ============================================================
+  // LOADER
+  // ============================================================
 
   if (loading || loadingAuth) {
     return <Loader />;
   }
 
+  // ============================================================
+  // NORMALISER LE SETUP STATUS
+  // ============================================================
 
-  /* ============================================================
-     ÉTAT DE CONFIGURATION
-  ============================================================ */
+  const status = setupStatus?.data ?? setupStatus ?? {};
 
-  const setupFinished =
-    setupStatus?.facultes === true;
+  // ============================================================
+  // CONFIGURATION TERMINÉE ?
+  // ============================================================
 
+  const setupFinished = status.facultes === true;
 
-  /* ============================================================
-     ROUTES
-  ============================================================ */
+  console.log("[APP] setupFinished :", setupFinished);
+
+  // ============================================================
+  // ROUTES
+  // ============================================================
 
   return (
-
     <BrowserRouter>
-
       <Routes>
-
-
         {/* ======================================================
             RACINE
         ====================================================== */}
@@ -295,171 +675,94 @@ function App() {
         <Route
           path="/"
           element={
-
             !setupFinished ? (
-
-              <Navigate
-                to="/setup"
-                replace
-              />
-
-            ) : !user ? (
-
-              <Navigate
-                to="/home"
-                replace
-              />
-
-            ) : user.active_role === "SGA" ? (
-
-              <Navigate
-                to="/super-admin"
-                replace
-              />
-
-            ) : user.active_role === "ADMIN_FAC" ? (
-
-              <Navigate
-                to="/admin-fac"
-                replace
-              />
-
-            ) : user.active_role === "ADMIN_MENTION" ? (
-
-              <Navigate
-                to="/admin-mention"
-                replace
-              />
-
-            ) : user.active_role === "ENSEIGNANT" ? (
-
-              <Navigate
-                to="/enseignant"
-                replace
-              />
-
-            ) : user.active_role === "COMPTABLE" ? (
-
-              /*
-               * NOUVEAU RÔLE
-               */
-              <Navigate
-                to="/comptable"
-                replace
-              />
-
+              <Navigate to="/setup" replace />
+            ) : user ? (
+              user.active_role === "SGA" ? (
+                <Navigate to="/sga" replace />
+              ) : user.active_role === "ADMIN_FAC" ? (
+                <Navigate to="/admin-fac" replace />
+              ) : user.active_role === "ADMIN_MENTION" ? (
+                <Navigate to="/admin-mention" replace />
+              ) : user.active_role === "ENSEIGNANT" ? (
+                <Navigate to="/enseignant" replace />
+              ) : user.active_role === "COMPTABLE" ? (
+                <Navigate to="/comptable" replace />
+              ) : (
+                <Navigate to="/home" replace />
+              )
             ) : (
-
-              /*
-               * Rôle inconnu :
-               * comportement conservé.
-               */
-              <Navigate
-                to="/home"
-                replace
-              />
-
+              <Navigate to="/home" replace />
             )
-
           }
         />
 
-
         {/* ======================================================
             SETUP
+            Ne pas rediriger pendant l'animation.
         ====================================================== */}
 
         <Route
           path="/setup"
           element={
-
-            setupFinished ? (
-
-              <Navigate
-                to="/home"
-                replace
-              />
-
+            setupFinished && !setupTransition ? (
+              <Navigate to="/home" replace />
             ) : (
-
               <SetupWizard
                 setupStatus={setupStatus}
-                onCompleted={loadStatus}
+                onAuthenticated={handleAuthenticated}
+                onCompleting={handleSetupCompleting}
+                onCompleted={handleSetupCompleted}
               />
-
             )
-
           }
         />
 
-
         {/* ======================================================
-            HOME / AUTHENTIFICATION
+            HOME
         ====================================================== */}
 
         <Route
           path="/home"
           element={
-
-            !setupFinished ? (
-
-              <Navigate
-                to="/setup"
-                replace
-              />
-
+            setupTransition ? (
+              <Navigate to="/setup" replace />
+            ) : !setupFinished ? (
+              <Navigate to="/setup" replace />
             ) : user ? (
-
-              <Navigate
-                to="/"
-                replace
-              />
-
+              <Navigate to="/" replace />
             ) : (
-
               <Home />
-
             )
-
           }
         />
 
-
         {/* ======================================================
-            SUPER ADMIN / SGA
+            SGA
         ====================================================== */}
 
         <Route
-          path="/super-admin"
-          element={
-            <SuperAdmin />
-          }
+          path="/sga"
+          element={<Sga />}
         />
 
-
         {/* ======================================================
-            ADMINISTRATION FACULTÉ
+            ADMIN FACULTÉ
         ====================================================== */}
 
         <Route
           path="/admin-fac"
-          element={
-            <AdminFac />
-          }
+          element={<AdminFac />}
         />
 
-
         {/* ======================================================
-            ADMINISTRATION MENTION
+            ADMIN MENTION
         ====================================================== */}
 
         <Route
           path="/admin-mention"
-          element={
-            <ChefMention />
-          }
+          element={<ChefMention />}
         />
-
 
         {/* ======================================================
             ENSEIGNANT
@@ -467,11 +770,8 @@ function App() {
 
         <Route
           path="/enseignant"
-          element={
-            <Enseignants />
-          }
+          element={<Enseignants />}
         />
-
 
         {/* ======================================================
             COMPTABLE
@@ -479,17 +779,13 @@ function App() {
 
         <Route
           path="/comptable"
-          element={
-            <Comptable />
-          }
+          element={<Comptable />}
         />
-
       </Routes>
-
     </BrowserRouter>
-
   );
 }
 
 export default App;
+
 

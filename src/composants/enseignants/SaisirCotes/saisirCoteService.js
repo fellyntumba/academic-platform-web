@@ -7,7 +7,7 @@ import { apiFetch } from "../../accueils/apiService";
 export const getPromotionsEnseignantService = async ({enseignantId, typeSession}) => {
 
   try { 
-
+ 
     const response = await apiFetch(
       "/enseignant/promotions-get",
       {
@@ -318,7 +318,7 @@ export const obtenirStatistiquesCotesCours = async ({
   typeSession,
   enseignantId
 }) => {
-
+ 
   try {
 
     const response = await apiFetch(

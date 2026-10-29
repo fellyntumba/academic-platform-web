@@ -1,40 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
+import "./ChefMention.css";
+
 import {
   isAuthenticated,
-  logout, 
-  switchRole ,
-  
+  logout,
+  switchRole,
 } from "../accueils/serviceAuth";
-import "./ChefMention.css";
+
+import { getMediaUrl } from "../accueils/apiService";
+
 import { getAnneeAcademiqueEnCoursService } from "./chefMentionService";
- 
+
 import MentionAnnee from "./MentionAnnee/MentionAnnee";
 import PromotionAnnee from "./PromotionAnnee/PromotionAnnee";
 import Promotions from "./Promotions/Promotions";
 import ParcoursAnnee from "./ParcoursAnnee/ParcoursAnnee";
 import Parcours from "./Parcours/Parcours";
-// import CreateModifyCourses from "./CreateModifyCourses/CreateModifyCourses";
 import AffecterCours from "./AffecterCours/AffecterCours";
 import ListeCoursEnseignants from "./ListeCoursEnseignants/ListeCoursEnseignants";
 import SuiviEnvoiNotes from "./SuiviEnvoiNotes/SuiviEnvoiNotes";
-// import PeriodeNotes from "./PeriodeNotes/PeriodeNotes";
-import PeriodeRecours from "./PeriodeRecours/PeriodeRecours"; 
-
+import PeriodeRecours from "./PeriodeRecours/PeriodeRecours";
 import StatsReussitePromotion from "./StatsReussitePromotion/StatsReussitePromotion";
 import CreateSession from "./createSession/createSession";
 import EtudiantsInscrits from "./EtudiantsInscrits/EtudiantsInscrits";
-import EtudiantsOrdres from "./EtudiantsOrdres/EtudiantsOrdres";
 import SuiviRecours from "./SuiviRecours/SuiviRecours";
 import CreateUE from "./CreateUE/CreateUE";
 import FixationFraisAcademiques from "./fixationFrais/FixationFraisAcademiques";
 import RessourcesAcces from "./RessourcesAcces/RessourcesAcces";
 import Communique from "./Communique/Communique";
-import { useContextUniv } from "../../featuresAndInfos/ContextUnivProvider";
-import { ADMIN_ROLES, ROLE_LABELS } from "../accueils/roles";
+import ModelesDocuments from "./ModelesDocuments/ModelesDocuments";
 
-  
-  
+
+import { useContextUniv } from "../../featuresAndInfos/ContextUnivProvider";
+
+import {
+  ROLE_LABELS,
+  isValidRole,
+} from "../accueils/roles";
+
+// ============================================================================
+// MENUS — LOGIQUE MÉTIER CONSERVÉE
+// ============================================================================
+
 const menuItems = [
   {
     title: "Gestion de la mention-année",
@@ -68,483 +76,814 @@ const menuItems = [
     title: "Gestion des étudiants",
     subMenus: [
       "Enregistrer étudiants régulièrement inscrits",
-      "Enregistrer étudiants en ordre avec frais",
     ],
   },
   {
     title: "Gestion des sessions",
-    subMenus: [
-      "Lancer les sessions"
-      
-    ],
+    subMenus: ["Lancer les sessions"],
   },
   {
     title: "Gestion des notes",
-    subMenus: [
-      "Suivre les notes envoyées/Pub des resultats"
-    ],
+    subMenus: ["Suivre les notes envoyées/Pub des resultats"],
   },
   {
     title: "Gestion des ressources",
-    subMenus: [
-      "Créer / Modifier une ressource"
-      
-    ],
+    subMenus: ["Créer / Modifier une ressource"],
   },
   {
     title: "Gestion des recours",
     subMenus: [
       "Lancer période d'envoi des recours",
       "Suivre les recours envoyés",
-
     ],
   },
-  
   {
     title: "Statistiques",
     subMenus: ["Taux de réussite / échec par promotion"],
   },
-
   {
     title: "Gestion des frais académiques",
-    subMenus: [
-      "Fixer les frais académiques",
-    ],
+    subMenus: ["Fixer les frais académiques"],
   },
-
   {
     title: "Gestion des communiqués",
+    subMenus: ["Créer / Publier un communiqué"],
+  },
+
+  // NOUVEAU MENU : MODÈLES DE DOCUMENTS
+  {
+    title: "Gestion des modèles de documents",
     subMenus: [
-      "Créer / Publier un communiqué"
+      "Configurer les modèles de documents de l'année",
     ],
   },
 ];
 
+// Correspondance entre les sous-menus et les vues.
+// Les identifiants des vues existantes restent inchangés.
+const viewBySubMenu = {
+  "Créer / Modifier la mention-année": "mention-année",
+  "Créer / Modifier un parcours": "parcours",
+  "Créer / Modifier un parcours-année": "parcours-année",
+  "Créer / Modifier les promotions": "promotions",
+  "Créer / Modifier une promotions-année": "promotions-année",
+  "Créer / Modifier / Supprimer les unités d'enseignement":
+    "unites-ens",
+  "Affecter les cours": "affecter-cours",
+  "Voir liste enseignants et ses cours": "liste-cours-enseignants",
+  "Enregistrer étudiants régulièrement inscrits":
+    "enregistrer-etudiants-inscrits",
+  "Suivre les notes envoyées/Pub des resultats": "suivi-notes",
+  "Lancer période d'envoi des recours": "periode-recour",
+  "Suivre les recours envoyés": "suivi-recours",
+  "Taux de réussite / échec par promotion": "statistiques",
+  "Lancer les sessions": "sessions",
+  "Fixer les frais académiques": "fixer-frais-academiques",
+  "Créer / Modifier une ressource": "ressource",
+  "Créer / Publier un communiqué": "communique",
+  "Configurer les modèles de documents de l'année":
+    "modeles-documents",
+};
+
+const configurationInitiale = [1, 3];
+
+const configurationAnnuelle = [
+  0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+  14, // Gestion des modèles de documents
+];
+
+// ============================================================================
+// COMPOSANT CHEF DE MENTION
+// ============================================================================
 
 const ChefMention = () => {
+  // --------------------------------------------------------------------------
+  // ÉTATS
+  // --------------------------------------------------------------------------
 
   const [activeMenu, setActiveMenu] = useState(null);
   const [activeView, setActiveView] = useState(null);
   const [infoUser, setInfoUser] = useState(null);
-  const { infoUniv, loading } = useContextUniv();
   const [annee, setAnnee] = useState("");
-  // const [annee, setAnnee] = useState("");
+  const [switchingRole, setSwitchingRole] = useState(false);
 
-  const navigate = useNavigate();
+  // --------------------------------------------------------------------------
+  // CONTEXTE UNIVERSITÉ
+  // --------------------------------------------------------------------------
 
-  //Deconnexionn
+  const { infoUniv } = useContextUniv();
+
+  const universityName =
+    infoUniv?.nameUniversity || "Academic Platform";
+
+  const primaryColor =
+    infoUniv?.primaryColor || "#2563eb";
+
+  const secondaryColor =
+    infoUniv?.secondaryColor || "#f97316";
+
+  const logoUrl = getMediaUrl(infoUniv?.logoUniversity);
+
+  // --------------------------------------------------------------------------
+  // DÉCONNEXION
+  // --------------------------------------------------------------------------
+
   const handleQuit = async () => {
-
-    await logout();
-
-    // recharge l'application pour refaire isAuthenticated()
-    window.location.replace("/home");
-
+    try {
+      await logout();
+    } catch (error) {
+      console.error(
+        "Erreur lors de la déconnexion :",
+        error
+      );
+    } finally {
+      window.location.replace("/home");
+    }
   };
 
-  //Charger année academique 
-  useEffect(()=>{
-    const loadAnnee = async () =>{
+  // --------------------------------------------------------------------------
+  // CHARGEMENT DE L'ANNÉE ACADÉMIQUE
+  // --------------------------------------------------------------------------
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadAnnee = async () => {
       try {
-    
-        const result = await getAnneeAcademiqueEnCoursService();
-    
-        if (!result || !result.data) {
-          showMessage("Aucune année académique en cours.", "error");
+        const result =
+          await getAnneeAcademiqueEnCoursService();
+
+        if (cancelled) return;
+
+        if (!result?.data?.libelle) {
+          setAnnee("");
+
+          window.alert(
+            "Aucune année académique en cours."
+          );
+
           return;
         }
-        setAnnee(result.data.libelle)
-    
+
+        setAnnee(result.data.libelle);
       } catch (error) {
-        showMessage(error.message, "error");
-    
+        if (cancelled) return;
+
+        console.error(
+          "Erreur de chargement de l'année académique :",
+          error
+        );
+
+        setAnnee("");
+
+        window.alert(
+          error?.message ||
+            "Impossible de récupérer l'année académique en cours."
+        );
       }
-    }
+    };
+
     loadAnnee();
-  }, [])
 
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-  //changer le profile actif
-  const handleSwitchRole = async (e) => {
+  // --------------------------------------------------------------------------
+  // AUTHENTIFICATION ET RÉCUPÉRATION DE L'UTILISATEUR
+  // --------------------------------------------------------------------------
 
-    const role = e.target.value;
-
-    console.log("=================================");
-    console.log("🔄 CHANGEMENT DE PROFIL");
-    console.log("➡️ Profil demandé :", role);
-
-    const result = await switchRole(role);
-
-    if (!result.success) {
-      console.error("❌ ÉCHEC CHANGEMENT PROFIL :", result);
-      alert(result.message);
-      return;
-    }
-
-    console.log("✅ PROFIL CHANGÉ");
-    console.log("➡️ active_role :", result.active_role);
-    console.log("➡️ user reçu du backend :", result.user);
-
-    console.log("🆔 identity_id :", result.user?.identity_id);
-    console.log("👤 identity_type :", result.user?.identity_type);
-    console.log("🏢 admin_id :", result.user?.admin_id);
-    console.log("👨‍🏫 enseignant_id :", result.user?.enseignant_id);
-    console.log("🎯 active_role :", result.user?.active_role);
-
-    console.log("=================================");
-
-    window.location.replace("/");
-  };
-
-  //Recuperer info user 
   useEffect(() => {
+    let cancelled = false;
+
     const loadUser = async () => {
       try {
         const auth = await isAuthenticated();
 
-        if (!auth.authenticated) {
+        if (cancelled) return;
+
+        if (!auth?.authenticated || !auth?.user) {
           window.location.replace("/home");
           return;
         }
 
-        console.log("=================================");
-        console.log("👑 INTERFACE CHEF MENTION");
-        console.log("🔐 UTILISATEUR APRÈS RECHARGEMENT");
-        console.log("➡️ user :", auth.user);
-
-        console.log("🆔 identity_id :", auth.user?.identity_id);
-        console.log("👤 identity_type :", auth.user?.identity_type);
-        console.log("🏢 admin_id :", auth.user?.admin_id);
-        console.log("👨‍🏫 enseignant_id :", auth.user?.enseignant_id);
-        console.log("🎯 active_role :", auth.user?.active_role);
-        console.log("🏛️ code_faculte :", auth.user?.code_faculte);
-        console.log("📚 code_mention :", auth.user?.code_mention);
-
-        console.log("=================================");
-
         setInfoUser(auth.user);
+      } catch (error) {
+        if (cancelled) return;
 
-      } catch {
+        console.error(
+          "Erreur lors de la récupération de l'utilisateur :",
+          error
+        );
+
         window.location.replace("/home");
       }
     };
 
     loadUser();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-//Recuperer annee acad
-  // useEffect(() => {
-  //   const getAnnee = async () => {
-      
-  //       const result = await getAnneeAcademiqueEnCoursService();
+  // --------------------------------------------------------------------------
+  // CHANGEMENT DU PROFIL ACTIF
+  // --------------------------------------------------------------------------
 
-  //       if (!result || !result.data) {
-  //         showMessage("Aucune année académique en cours.", "error");
-  //         return;
-  //       }
-  //       setAnnee(result.data.libelle)
-      
-  //     };
-  //   getAnnee();
-  // }, []); 
+  const handleSwitchRole = async (event) => {
+    const role = event.target.value;
 
-//Recuperer info user
-// {infoUser && console.log(infoUser);}
+    if (
+      !role ||
+      role === infoUser?.active_role ||
+      switchingRole
+    ) {
+      return;
+    }
 
+    if (!isValidRole(role)) {
+      window.alert("Profil sélectionné invalide.");
+      return;
+    }
+
+    setSwitchingRole(true);
+
+    try {
+      const result = await switchRole(role);
+
+      if (!result?.success) {
+        window.alert(
+          result?.message ||
+            "Impossible de changer de profil."
+        );
+
+        return;
+      }
+
+      window.location.replace("/");
+    } catch (error) {
+      console.error(
+        "Erreur lors du changement de profil :",
+        error
+      );
+
+      window.alert(
+        error?.message ||
+          "Impossible de changer de profil."
+      );
+    } finally {
+      setSwitchingRole(false);
+    }
+  };
+
+  // --------------------------------------------------------------------------
+  // OUVERTURE / FERMETURE DES MENUS
+  // --------------------------------------------------------------------------
 
   const toggleMenu = (index) => {
-    setActiveMenu(activeMenu === index ? null : index);
+    setActiveMenu((current) =>
+      current === index ? null : index
+    );
   };
 
+  // --------------------------------------------------------------------------
+  // SÉLECTION D'UNE ACTION
+  // --------------------------------------------------------------------------
 
   const handleSubMenuClick = (title) => {
+    const nextView = viewBySubMenu[title];
 
-    if (title === "Créer / Modifier la mention-année") setActiveView("mention-année");
-    else if (title === "Créer / Modifier un parcours") setActiveView("parcours");
-    else if (title === "Créer / Modifier un parcours-année") setActiveView("parcours-année");
-    else if (title === "Créer / Modifier les promotions") setActiveView("promotions");
-    else if (title === "Créer / Modifier une promotions-année") setActiveView("promotions-année");
-    else if (title === "Créer / Modifier / Supprimer les unités d'enseignement") setActiveView("unites-ens");
-    else if (title === "Affecter les cours") setActiveView("affecter-cours");
-    else if (title === "Voir liste enseignants et ses cours") setActiveView("liste-cours-enseignants");
-    else if (title === "Enregistrer étudiants régulièrement inscrits") setActiveView("enregistrer-etudiants-inscrits");
-    else if (title === "Enregistrer étudiants en ordre avec frais") setActiveView("enregistrer-etudiants-ordres");
-    else if (title === "Suivre les notes envoyées/Pub des resultats") setActiveView("suivi-notes");
-    // else if (title === "Lancer / Clôturer période d'envoi des notes") setActiveView("periode-notes");
-    else if (title === "Lancer période d'envoi des recours") setActiveView("periode-recour");
-    else if (title === "Suivre les recours envoyés") setActiveView("suivi-recours");
-    else if (title === "Taux de réussite / échec par promotion") setActiveView("statistiques");
-    // else if (title === "Créer / Modifier les semestres") setActiveView("semestres");
-    else if (title === "Lancer les sessions") setActiveView("sessions");
-    else if (title === "Fixer les frais académiques") setActiveView("fixer-frais-academiques");
-    else if (title === "Créer / Modifier une ressource") setActiveView("ressource");
-    else if (title === "Créer / Publier un communiqué") setActiveView("communique");
-    else setActiveView(null);
+    if (!nextView) {
+      console.warn(
+        "Aucune vue associée à cette action :",
+        title
+      );
 
+      return;
+    }
+
+    setActiveView(nextView);
   };
 
+  // --------------------------------------------------------------------------
+  // TITRE DE LA VUE ACTIVE
+  // --------------------------------------------------------------------------
+
+  const activeViewTitle = Object.entries(
+    viewBySubMenu
+  ).find(([, view]) => view === activeView)?.[0];
+
+  // --------------------------------------------------------------------------
+  // INITIALES UTILISATEUR
+  // --------------------------------------------------------------------------
+
+  const initials =
+    infoUser?.nom
+      ?.trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((word) => word[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase() || "CM";
+
+  // --------------------------------------------------------------------------
+  // RENDU
+  // --------------------------------------------------------------------------
 
   return (
-    <div className="admin-fac-dashboard"> 
+    <div
+      className="chef-mention-dashboard"
+      style={{
+        "--univ-primary": primaryColor,
+        "--univ-secondary": secondaryColor,
+      }}
+    >
+      {/* ====================================================================
+          EN-TÊTE
+      ==================================================================== */}
 
-      <header className="home-header" style={{
-        borderBottom: `3px solid ${infoUniv?.primaryColor || "#3b82f6"}`}}>
+      <header className="home-header">
         <div className="header-left">
-          <img
-            src={infoUniv?.logoUniversity}
-            alt="Logo université"
-            className="logo"
-            onError={(e) => {
-              e.target.src = "/default-logo.png"; // fallback si logo cassé
-            }}
-          /> 
+          <div className="header-logo-container">
+            <img
+              src={logoUrl || "/default-logo.png"}
+              alt={`Logo ${universityName}`}
+              className="logo"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = "/default-logo.png";
+              }}
+            />
+          </div>
+
           <div className="university-info">
-            <h1>{infoUniv?.nameUniversity || "Academic Platform"}</h1>
-            <span className="subtitle">academic Platform</span>
+            <h1>{universityName}</h1>
+
+            <span className="subtitle">
+              Administration académique
+            </span>
+
+            <div className="university-meta">
+              <span>ESPACE ACADÉMIQUE</span>
+
+              {infoUser?.code_mention && (
+                <>
+                  <span className="meta-separator">|</span>
+                  <span>{infoUser.code_mention}</span>
+                </>
+              )}
+
+              {annee && (
+                <>
+                  <span className="meta-separator">|</span>
+                  <span>{annee}</span>
+                </>
+              )}
+            </div>
           </div>
         </div>
-        <button className="quit-btn" onClick={handleQuit}>Quitter</button>
+
+        <button
+          type="button"
+          className="quit-btn"
+          onClick={handleQuit}
+        >
+          Quitter
+        </button>
       </header>
 
+      {/* ====================================================================
+          CORPS PRINCIPAL
+      ==================================================================== */}
+
       <div className="dashboard-body">
+        {/* ==================================================================
+            SIDEBAR
+        ================================================================== */}
 
-        <nav className="sidebar">
-
+        <nav
+          className="sidebar"
+          aria-label="Navigation de la mention"
+        >
           {/* CONFIGURATION INITIALE */}
 
-          <div className="menu-card">
-
-            <div className="menu-card-title">
-              Configuration initiale 
+          <section className="menu-card">
+            <div className="menu-card-header">
+              Configuration initiale
             </div>
 
-            <div className="menu-card-desc">
-              Ces menus servent à configurer les parcours et promotions.
-            </div>
+            <p className="menu-card-desc">
+              Configurez les parcours et les promotions.
+            </p>
 
-            {[1,3].map((i) => {
+            <div className="menu-list">
+              {configurationInitiale.map((index) => {
+                const item = menuItems[index];
+                const isOpen = activeMenu === index;
+                const isActive =
+                  item.subMenus.includes(activeViewTitle);
 
-              const item = menuItems[i];
-
-              return (
-                <div key={item.title} className="menu-item">
-
+                return (
                   <div
-                    className="menu-title"
-                    onClick={() => toggleMenu(i)}
+                    key={item.title}
+                    className={`menu-item ${
+                      isOpen ? "menu-item-open" : ""
+                    } ${
+                      isActive ? "menu-item-active" : ""
+                    }`}
                   >
-                    {item.title} {activeMenu === i ? "▲" : "▼"}
+                    <button
+                      type="button"
+                      className="menu-title"
+                      onClick={() => toggleMenu(index)}
+                      aria-expanded={isOpen}
+                    >
+                      <span className="menu-title-text">
+                        {item.title}
+                      </span>
+
+                      <span
+                        className="menu-arrow"
+                        aria-hidden="true"
+                      >
+                        {isOpen ? "▲" : "▼"}
+                      </span>
+                    </button>
+
+                    {isOpen && (
+                      <ul className="sub-menu">
+                        {item.subMenus.map((sub) => (
+                          <li
+                            key={sub}
+                            className={`sub-menu-item ${
+                              activeViewTitle === sub
+                                ? "sub-menu-item-active"
+                                : ""
+                            }`}
+                          >
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleSubMenuClick(sub)
+                              }
+                            >
+                              {sub}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-
-                  {activeMenu === i && (
-                    <ul className="sub-menu">
-                      {item.subMenus.map((sub, index) => (
-                        <li
-                          key={index}
-                          className="sub-menu-item"
-                          onClick={() => handleSubMenuClick(sub)}
-                        >
-                          {sub}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                </div>
-              );
-
-            })}
-
-          </div>
-
+                );
+              })}
+            </div>
+          </section>
 
           {/* CONFIGURATION ANNUELLE */}
 
-          <div className="menu-card">
-
-            <div className="menu-card-title">
+          <section className="menu-card">
+            <div className="menu-card-header">
               Configuration annuelle
             </div>
 
-            <div className="menu-card-desc">
-              Ces paramètres doivent être mis à jour à chaque année académique.
-            </div>
+            <p className="menu-card-desc">
+              Gérez les activités et paramètres de l'année académique.
+            </p>
 
-            {[0,2,4,5,6,7,8,9,10,11,12,13].map((i) => {
+            <div className="menu-list">
+              {configurationAnnuelle.map((index) => {
+                const item = menuItems[index];
+                const isOpen = activeMenu === index;
+                const isActive =
+                  item.subMenus.includes(activeViewTitle);
 
-              const item = menuItems[i];
-
-              return (
-                <div key={item.title} className="menu-item">
-
+                return (
                   <div
-                    className="menu-title"
-                    onClick={() => toggleMenu(i)}
+                    key={item.title}
+                    className={`menu-item ${
+                      isOpen ? "menu-item-open" : ""
+                    } ${
+                      isActive ? "menu-item-active" : ""
+                    }`}
                   >
-                    {item.title} {activeMenu === i ? "▲" : "▼"}
+                    <button
+                      type="button"
+                      className="menu-title"
+                      onClick={() => toggleMenu(index)}
+                      aria-expanded={isOpen}
+                    >
+                      <span className="menu-title-text">
+                        {item.title}
+                      </span>
+
+                      <span
+                        className="menu-arrow"
+                        aria-hidden="true"
+                      >
+                        {isOpen ? "▲" : "▼"}
+                      </span>
+                    </button>
+
+                    {isOpen && (
+                      <ul className="sub-menu">
+                        {item.subMenus.map((sub) => (
+                          <li
+                            key={sub}
+                            className={`sub-menu-item ${
+                              activeViewTitle === sub
+                                ? "sub-menu-item-active"
+                                : ""
+                            }`}
+                          >
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleSubMenuClick(sub)
+                              }
+                            >
+                              {sub}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-
-                  {activeMenu === i && (
-                    <ul className="sub-menu">
-                      {item.subMenus.map((sub, index) => (
-                        <li
-                          key={index}
-                          className="sub-menu-item"
-                          onClick={() => handleSubMenuClick(sub)}
-                        >
-                          {sub}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                </div>
-              );
-
-            })}
-
-          </div>
-
+                );
+              })}
+            </div>
+          </section>
         </nav>
 
+        {/* ==================================================================
+            CONTENU PRINCIPAL
+        ================================================================== */}
 
         <main className="dashboard-content">
+          {/* ACCUEIL */}
 
           {activeView === null && (
-            <>
-              <h2>{infoUser?.code_mention}</h2>
-              <p>Veuillez sélectionner une action dans le menu à gauche.</p>
-            </>
+            <section className="dashboard-welcome">
+              <div className="dashboard-welcome-accent" />
+
+              <span className="dashboard-eyebrow">
+                ADMINISTRATION DE MENTION
+              </span>
+
+              <h2>
+                {infoUser?.code_mention ||
+                  "Espace chef de mention"}
+              </h2>
+
+              <p>
+                Sélectionnez une fonctionnalité dans le menu
+                pour gérer les parcours, les promotions, les cours,
+                les étudiants et les activités académiques de votre
+                mention.
+              </p>
+            </section>
           )}
 
-          {/* {activeView === "semestres" && <CreateSemestres />} */}
-          {activeView === "sessions" && <CreateSession code_mention={infoUser?.code_mention}/>}
-          {activeView === "unites-ens" && <CreateUE code_mention={infoUser?.code_mention} />}
-          {activeView === "affecter-cours" && <AffecterCours code_mention={infoUser?.code_mention}/>}
-          {activeView === "liste-cours-enseignants" && <ListeCoursEnseignants code_mention={infoUser?.code_mention}/>}
-          {activeView === "enregistrer-etudiants-inscrits" && <EtudiantsInscrits code_mention={infoUser?.code_mention} />}
-          {activeView === "enregistrer-etudiants-ordres" && <EtudiantsOrdres />}
-          {activeView === "suivi-notes" && <SuiviEnvoiNotes code_mention={infoUser?.code_mention}/>}
-          {activeView === "periode-recour" && <PeriodeRecours code_mention={infoUser?.code_mention}/>}
-          {activeView === "suivi-recours" && <SuiviRecours code_mention={infoUser?.code_mention}/>}
-          {/* {activeView === "deliberation" && <Deliberation code_mention={infoUser?.code_mention} annee={annee}/>} */}
-          {activeView === "statistiques" && <StatsReussitePromotion code_mention={infoUser?.code_mention} />}
-          {activeView === "mention-année" &&  <MentionAnnee code_mention={infoUser?.code_mention} />}
-          {activeView === "parcours" &&  <Parcours code_mention={infoUser?.code_mention} />}
-          {activeView === "parcours-année" && <ParcoursAnnee code_mention={infoUser?.code_mention} />}
-          {activeView === "promotions" && <Promotions code_mention={infoUser?.code_mention} />}
-          {activeView === "promotions-année" && <PromotionAnnee code_mention={infoUser?.code_mention} />}
-          {activeView === "fixer-frais-academiques" && <FixationFraisAcademiques code_mention={infoUser?.code_mention} annee= {annee}/>}
-          {activeView === "ressource" && <RessourcesAcces code_mention={infoUser?.code_mention} annee= {annee}/>}
-          {activeView === "communique" && (<Communique code_mention={infoUser?.code_mention}/>)}
-          
-          
+          {/* MODULE ACTIF */}
 
-
-        </main>
-
-      </div>
-  
-
-
-            <footer className="dashboard-footer">
-      
-              <div className="footer-center">
-                Plateforme académique intelligente et sécurisée
+          {activeView !== null && (
+            <section className="chef-mention-module">
+              <div className="module-toolbar module-toolbar-compact">
+                <button
+                  type="button"
+                  className="back-btn"
+                  onClick={() => setActiveView(null)}
+                >
+                  <span aria-hidden="true">←</span>
+                  Retour
+                </button>
               </div>
-      
-      
-              {infoUser && (
-      
-                <div className="footer-user-card">
-      
-      
-                  {/* Avatar */}
-                  <div className="footer-avatar">
-                    {infoUser.nom
-                      ?.split(" ")
-                      .map(word => word[0])
-                      .join("")
-                      .substring(0,2)
-                      .toUpperCase()
-                    }
-                  </div>
-      
-      
-      
-                  {/* Informations utilisateur */}
-                  <div className="footer-user-info">
-      
-      
-                    <div className="footer-user-name">
-                      {infoUser.nom}
-                    </div>
-      
-      
-                    <div className="footer-user-detail">
-      
-                      {infoUser.code_faculte && (
-                        <>
-                          {infoUser.code_faculte}
-                        </>
-                      )}
-      
-                      {infoUser.code_mention && (
-                        <>
-                          &nbsp; | &nbsp;
-                          {infoUser.code_mention}
-                        </>
-                      )}
-      
-                    </div>
-      
-      
-      
-                    <div className="footer-role-row">
-      
-                      <span className="role-label">
-                        Profil :
-                      </span>
-      
-      
-                      <select
-                        value={infoUser.active_role}
-                        onChange={handleSwitchRole}
-                      >
-      
-                        {infoUser.roles 
-                          ?.map(role => (
-      
-                            <option
-                              key={role}
-                              value={role}
-                            >
-                              {ROLE_LABELS[role]} 
-                            </option>
-      
-                          ))
-                        }
-      
-      
-                      </select>
-      
-      
-                    </div>
-      
-      
-                  </div>
-      
-      
-                </div>
-      
-              )}
-      
-      
-            </footer>
 
+              <div className="admin-fac-module-content">
+                {/* SESSIONS */}
+
+                {activeView === "sessions" && (
+                  <CreateSession
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* UNITÉS D'ENSEIGNEMENT */}
+
+                {activeView === "unites-ens" && (
+                  <CreateUE
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* AFFECTATION DES COURS */}
+
+                {activeView === "affecter-cours" && (
+                  <AffecterCours
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* LISTE DES ENSEIGNANTS ET DES COURS */}
+
+                {activeView === "liste-cours-enseignants" && (
+                  <ListeCoursEnseignants
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* ÉTUDIANTS INSCRITS */}
+
+                {activeView === "enregistrer-etudiants-inscrits" && (
+                  <EtudiantsInscrits
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* ÉTUDIANTS EN ORDRE */}
+
+                {activeView === "enregistrer-etudiants-ordres" && (
+                  <EtudiantsOrdres />
+                )}
+
+                {/* SUIVI DES NOTES */}
+
+                {activeView === "suivi-notes" && (
+                  <SuiviEnvoiNotes
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* PÉRIODE DES RECOURS */}
+
+                {activeView === "periode-recour" && (
+                  <PeriodeRecours
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* SUIVI DES RECOURS */}
+
+                {activeView === "suivi-recours" && (
+                  <SuiviRecours
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* STATISTIQUES */}
+
+                {activeView === "statistiques" && (
+                  <StatsReussitePromotion
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* MENTION-ANNÉE */}
+
+                {activeView === "mention-année" && (
+                  <MentionAnnee
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* PARCOURS */}
+
+                {activeView === "parcours" && (
+                  <Parcours
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* PARCOURS-ANNÉE */}
+
+                {activeView === "parcours-année" && (
+                  <ParcoursAnnee
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* PROMOTIONS */}
+
+                {activeView === "promotions" && (
+                  <Promotions
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* PROMOTIONS-ANNÉE */}
+
+                {activeView === "promotions-année" && (
+                  <PromotionAnnee
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+                {/* FRAIS ACADÉMIQUES */}
+
+                {activeView === "fixer-frais-academiques" && (
+                  <FixationFraisAcademiques
+                    code_mention={infoUser?.code_mention}
+                    annee={annee}
+                  />
+                )}
+
+                {/* RESSOURCES */}
+
+                {activeView === "ressource" && (
+                  <RessourcesAcces
+                    code_mention={infoUser?.code_mention}
+                    annee={annee}
+                  />
+                )}
+
+                {/* COMMUNIQUÉS */}
+
+                {activeView === "communique" && (
+                  <Communique
+                    code_mention={infoUser?.code_mention}
+                  />
+                )}
+
+              
+                {activeView === "modeles-documents" && (
+                 <ModelesDocuments code_mention={infoUser?.code_mention}/>
+                )}
+              </div>
+            </section>
+          )}
+        </main>
+      </div>
+
+      {/* ====================================================================
+          PIED DE PAGE
+      ==================================================================== */}
+
+      <footer className="dashboard-footer">
+        <div className="footer-center">
+          Plateforme académique intelligente et sécurisée
+        </div>
+
+        {infoUser && (
+          <div className="footer-user-card">
+            <div className="footer-avatar">
+              {initials}
+            </div>
+
+            <div className="footer-user-info">
+              <div className="footer-user-name">
+                {infoUser.nom}
+              </div>
+
+              <div className="footer-user-detail">
+                {infoUser.code_faculte && (
+                  <span>{infoUser.code_faculte}</span>
+                )}
+
+                {infoUser.code_mention && (
+                  <>
+                    {infoUser.code_faculte && (
+                      <span>&nbsp; | &nbsp;</span>
+                    )}
+
+                    <span>{infoUser.code_mention}</span>
+                  </>
+                )}
+              </div>
+
+              <div className="footer-role-row">
+                <label
+                  className="role-label"
+                  htmlFor="chef-mention-role"
+                >
+                  Profil :
+                </label>
+
+                <select
+                  id="chef-mention-role"
+                  value={infoUser.active_role || ""}
+                  onChange={handleSwitchRole}
+                  disabled={
+                    switchingRole ||
+                    !infoUser.roles ||
+                    infoUser.roles.length <= 1
+                  }
+                  aria-label="Profil actif"
+                >
+                  {infoUser.roles?.map((role) => (
+                    <option key={role} value={role}>
+                      {ROLE_LABELS[role] || role}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
+      </footer>
     </div>
   );
-
 };
 
 export default ChefMention;

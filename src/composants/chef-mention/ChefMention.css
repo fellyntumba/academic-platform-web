@@ -1,449 +1,1245 @@
-.admin-fac-dashboard {
+/* ==========================================================================
+   CHEF MENTION — VARIABLES ET STRUCTURE GÉNÉRALE
+   ========================================================================== */
+
+.chef-mention-dashboard {
+  --univ-primary: #2563eb;
+  --univ-secondary: #f97316;
+
+  --sga-text: #111827;
+  --sga-muted: #6b7280;
+  --sga-border: #e5e7eb;
+  --sga-background: #f5f7fa;
+  --sga-surface: #ffffff;
+
   min-height: 100vh;
+  height: auto;
+
   display: flex;
   flex-direction: column;
-  font-family: "Inter", sans-serif;
-  background: #f5f7fa;
-  color: #111;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: var(--sga-background);
+  color: var(--sga-text);
+
+  overflow-x: clip;
+  overflow-y: visible;
+
+  -webkit-font-smoothing: antialiased;
 }
 
-.home-header {
-  height: 75px;
-  padding: 0 30px;
+.chef-mention-dashboard *,
+.chef-mention-dashboard *::before,
+.chef-mention-dashboard *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   EN-TÊTE
+   ========================================================================== */
+
+.chef-mention-dashboard .home-header {
+  min-height: 76px;
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
 
+  gap: 20px;
+  padding: 12px 30px;
+
+  background: var(--sga-surface);
+  border-bottom: 3px solid var(--univ-primary);
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.chef-mention-dashboard .header-left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ==========================================================================
+   LOGO UNIVERSITÉ
+   ========================================================================== */
+
+.chef-mention-dashboard .header-logo-container {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 18%, #e5e7eb);
+
+  border-radius: 10px;
   background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
-/* Bloc gauche */
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
+.chef-mention-dashboard .logo {
+  display: block;
 
-/* Logo */
-.logo {
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
+
   object-fit: contain;
-  border-radius: 8px;
-  background: #f5f5f5;
-  padding: 5px;
+  border-radius: 7px;
 }
 
-/* Infos université */
-.university-info {
+/* ==========================================================================
+   INFORMATIONS UNIVERSITÉ
+   ========================================================================== */
+
+.chef-mention-dashboard .university-info {
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
+
   line-height: 1.2;
 }
 
-.university-info h1 { 
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #1f2937;
+.chef-mention-dashboard .university-info h1 {
   margin: 0;
+
+  overflow: hidden;
+
+  color: #1f2937;
+
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.35;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.subtitle {
-  font-size: 0.75rem;
-  color: #6b7280;
+.chef-mention-dashboard .subtitle {
+  margin-top: 3px;
+
+  overflow: hidden;
+
+  color: var(--sga-muted);
+
+  font-size: 11px;
+  line-height: 1.4;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.quit-btn {
-  margin-left: auto;
-  padding: 8px 20px;
-  border-radius: 20px;
-  border: none;
-  background: linear-gradient(90deg, #ff4d4d, #c70000);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.quit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-}
-
-.quit-btn:active {
-  transform: scale(0.97);
-}
-.back-btn {
-  background: linear-gradient(90deg, #00e6ff, #0072ff);
-  color: white;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.back-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.dashboard-body {
+.chef-mention-dashboard .university-meta {
   display: flex;
-  flex: 1;
-}
+  align-items: center;
+  flex-wrap: wrap;
 
-.sidebar {
-  width: 250px;
-  background: #fff;
-  border-right: 1px solid #e0e0e0;
-  padding: 20px;
-}
-
-.menu-item {
-  margin-bottom: 15px;
-}
-
-.menu-title {
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.menu-title:hover {
-  background: linear-gradient(90deg, #4facfe, #00f2fe);
-  color: white;
-}
-
-.sub-menu {
-  list-style: none;
-  padding-left: 15px;
+  gap: 6px;
   margin-top: 5px;
+
+  color: var(--univ-primary);
+
+  font-size: 10px;
+  font-weight: 700;
 }
 
-.sub-menu-item {
-  padding: 6px 10px;
-  border-radius: 6px;
+.chef-mention-dashboard .meta-separator {
+  color: #d1d5db;
+}
+
+/* ==========================================================================
+   BOUTON QUITTER
+   ========================================================================== */
+
+.chef-mention-dashboard .quit-btn {
+  min-height: 38px;
+  flex-shrink: 0;
+
+  padding: 0 17px;
+
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+
+  background: #fffafa;
+  color: #b91c1c;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
   cursor: pointer;
-  transition: all 0.2s ease;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.sub-menu-item:hover {
-  background: #0072ff;
-  color: white;
+.chef-mention-dashboard .quit-btn:hover {
+  transform: translateY(-1px);
+
+  background: #fef2f2;
+  border-color: #fca5a5;
+
+  box-shadow: 0 5px 14px rgba(185, 28, 28, 0.1);
 }
 
-.dashboard-content {
-  flex: 1;
+.chef-mention-dashboard .quit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   CORPS PRINCIPAL
+   Le défilement vertical reste celui de la page
+   ========================================================================== */
+
+.chef-mention-dashboard .dashboard-body {
+  flex: 1 0 auto;
+
+  min-height: 0;
+  min-width: 0;
+
+  display: flex;
+  align-items: stretch;
+
+  overflow: visible;
+}
+
+/* ==========================================================================
+   BARRE LATÉRALE
+   ========================================================================== */
+
+.chef-mention-dashboard .sidebar {
+  width: 280px;
+  flex-shrink: 0;
+
+  min-width: 0;
+  min-height: 0;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;   /* centrage vertical */
-  align-items: center;       /* centrage horizontal */
-  text-align: center;
-  padding: 40px;
-  background: #f8fafc;       /* léger gris très moderne */
+  align-items: stretch;
+
+  gap: 0;
+  padding: 20px;
+
+  background: #ffffff;
+  border-right: 1px solid var(--sga-border);
+
+  overflow: visible;
 }
 
-.dashboard-content h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #0072ff;
-  margin-bottom: 12px;
+/* ==========================================================================
+   CARTES DE MENUS
+   Aucun défilement vertical imbriqué
+   ========================================================================== */
+
+.chef-mention-dashboard .menu-card {
+  min-width: 0;
+
+  margin-bottom: 16px;
+  padding: 12px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 12%, #e5e7eb);
+
+  border-radius: 14px;
+
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 3%,
+    #ffffff
+  );
+
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+
+  max-height: none;
+  overflow: visible;
 }
 
-.dashboard-content p {
-  font-size: 1rem;
-  color: #555;
-  max-width: 420px;
+/* ==========================================================================
+   TITRES DES CARTES
+   ========================================================================== */
+
+.chef-mention-dashboard .menu-card-header {
+  padding: 4px 5px 0;
+
+  color: var(--univ-primary);
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.chef-mention-dashboard .menu-card-desc {
+  margin: 7px 5px 13px;
+
+  color: var(--sga-muted);
+
+  font-size: 10px;
   line-height: 1.6;
 }
 
-.dashboard-footer{
+.chef-mention-dashboard .menu-list {
+  min-width: 0;
+  min-height: 0;
 
-    min-height:90px;
-
-    background:#fff;
-
-    border-top:1px solid #e5e7eb;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    position:relative;
-
-    padding:10px 25px;
-
-    box-sizing:border-box;
-
+  overflow: visible;
 }
 
-.footer-center{
-    font-size:.95rem;
-    color:#666;
-    font-weight:500;
-}
-
-.footer-user-card {
-
-    position:absolute;
-
-    right:25px;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-
-    height:70px;
-
-
-    display:flex;
-
-    align-items:center;
-
-
-    gap:12px;
-
-    padding:8px 14px;
-
-
-    background:#ffffff;
-
-    border-radius:16px;
-
-    border:1px solid #e5e7eb;
-
-
-    box-shadow:
-    0 4px 12px rgba(0,0,0,.08);
-
-
-    box-sizing:border-box;
-
-}
-
-
-
-/* Avatar */
-
-.footer-avatar {
-
-    width:42px;
-
-    height:42px;
-
-    border-radius:50%;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:
-    linear-gradient(
-        135deg,
-        #0072ff,
-        #00c6ff
-    );
-
-    color:white;
-
-    font-weight:700;
-
-    font-size:.9rem;
-
-}
-
-
-
-/* Bloc texte */
-
-.footer-user-info {
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    gap:3px;
-
-    min-width:160px;
-
-}
-
-
-
-/* Nom */
-
-.footer-user-name {
-
-    font-weight:700;
-
-    color:#1f2937;
-
-    font-size:.9rem;
-
-}
-
-
-
-/* Faculté */
-
-.footer-user-detail {
-
-    font-size:.75rem;
-
-    color:#6b7280;
-
-    margin-top:3px;
-
-}
-
-
-
-/* Profil */
-
-.footer-role-row {
-
-    display:flex;
-
-    align-items:center;
-
-    gap:6px;
-
-    margin-top:4px;
-
-}
-
-
-.role-label {
-
-    font-size:.75rem;
-
-    color:#6b7280;
-
-}
-
-
-
-.footer-role-row select {
-
-    width:170px;
-
-    height:26px;
-
-    border-radius:14px;
-
-    border:1px solid #d1d5db;
-
-    padding:3px 8px;
-
-    font-size:.72rem;
-
-    font-weight:600;
-
-    background:#f8fafc;
-
-    cursor:pointer;
-
-    color:#0072ff;
-
-}
-
-
-
-.footer-role-row select:hover {
-
-    border-color:#0072ff;
-
-}
-
-
-.footer-role-row select:focus {
-
-    outline:none;
-
-    box-shadow:
-    0 0 0 3px rgba(0,114,255,.15);
-
-}
-/* ================= MENU CARDS ================= */
-
-.menu-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.menu-card-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #0072ff;
+/* ==========================================================================
+   MENUS PRINCIPAUX
+   ========================================================================== */
+
+.chef-mention-dashboard .menu-item {
+  min-width: 0;
   margin-bottom: 5px;
 }
 
-.menu-card-desc {
-  font-size: 0.75rem;
-  color: #666;
-  margin-bottom: 12px;
-  line-height: 1.4;
+.chef-mention-dashboard .menu-title {
+  width: 100%;
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+  padding: 9px 10px;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  background: transparent;
+  color: #374151;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.5;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
-.menu-card {
+
+.chef-mention-dashboard .menu-title-text {
+  min-width: 0;
+  flex: 1;
+
+  overflow-wrap: anywhere;
+}
+
+.chef-mention-dashboard .menu-title:hover {
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 8%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+
+  border-color: color-mix(
+    in srgb,
+    var(--univ-primary) 15%,
+    transparent
+  );
+}
+
+.chef-mention-dashboard .menu-item-active > .menu-title,
+.chef-mention-dashboard .menu-item-open > .menu-title {
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 10%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+
+  border-color: color-mix(
+    in srgb,
+    var(--univ-primary) 20%,
+    transparent
+  );
+}
+
+.chef-mention-dashboard .menu-arrow {
+  flex-shrink: 0;
+
+  color: var(--univ-secondary);
+  font-size: 9px;
+}
+
+/* ==========================================================================
+   SOUS-MENUS
+   ========================================================================== */
+
+.chef-mention-dashboard .sub-menu {
+  list-style: none;
+
+  margin: 4px 0 7px;
+  padding: 3px 0 3px 10px;
+
+  border-left: 2px solid
+    color-mix(in srgb, var(--univ-primary) 22%, #e5e7eb);
+}
+
+.chef-mention-dashboard .sub-menu-item {
+  margin-bottom: 2px;
+  padding: 0;
+
+  border-radius: 7px;
+  overflow-wrap: anywhere;
+}
+
+.chef-mention-dashboard .sub-menu-item button {
+  width: 100%;
+
+  display: block;
+
+  padding: 8px 10px;
+
+  border: 1px solid transparent;
+  border-radius: 7px;
+
+  background: transparent;
+  color: var(--sga-muted);
+
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    padding-left 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.chef-mention-dashboard .sub-menu-item button:hover {
+  padding-left: 13px;
+
+  background: color-mix(
+    in srgb,
+    var(--univ-secondary) 10%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+}
+
+.chef-mention-dashboard .sub-menu-item-active button {
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 8%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+
+  border-color: color-mix(
+    in srgb,
+    var(--univ-primary) 16%,
+    transparent
+  );
+
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   CONTENU PRINCIPAL
+   ========================================================================== */
+
+.chef-mention-dashboard .dashboard-content {
+  flex: 1 1 auto;
+
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: stretch;
+  justify-content: flex-start;
+
+  padding: 40px;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      color-mix(
+        in srgb,
+        var(--univ-primary) 5%,
+        transparent
+      ),
+      transparent 32%
+    ),
+    #f8fafc;
+
+  overflow: visible;
+  overscroll-behavior: auto;
+}
+
+/* ==========================================================================
+   ÉCRAN D'ACCUEIL
+   ========================================================================== */
+
+.chef-mention-dashboard .dashboard-welcome {
+  position: relative;
+
+  width: 100%;
+  max-width: 620px;
+
+  margin: auto;
+  padding: 34px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 12%, #e5e7eb);
+
+  border-radius: 18px;
   background: #ffffff;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 
-  /* scroll de la carte */
-  max-height: 280px;
-  overflow-y: auto;
-}
-/* Carte annuelle */
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.06);
 
-.menu-card.annual {
-  border-left: none;
+  text-align: center;
+  overflow: hidden;
 }
 
-/* Amélioration menu */
+.chef-mention-dashboard .dashboard-welcome-accent {
+  width: 56px;
+  height: 4px;
 
-.menu-item {
+  margin: 0 auto 20px;
+
+  border-radius: 20px;
+
+  background: linear-gradient(
+    90deg,
+    var(--univ-primary),
+    var(--univ-secondary)
+  );
+}
+
+.chef-mention-dashboard .dashboard-eyebrow {
+  display: block;
   margin-bottom: 8px;
+
+  color: var(--univ-primary);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.5;
 }
 
-.menu-title {
-  font-size: 0.9rem;
+.chef-mention-dashboard .dashboard-welcome h2 {
+  margin: 0 0 12px;
+
+  color: #111827;
+
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 750;
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+
+  overflow-wrap: anywhere;
 }
-/* Responsive */
+
+.chef-mention-dashboard .dashboard-welcome p {
+  max-width: 480px;
+
+  margin: 0 auto;
+
+  color: var(--sga-muted);
+
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* ==========================================================================
+   MODULE MÉTIER
+   ========================================================================== */
+
+.chef-mention-dashboard .chef-mention-module {
+  width: 100%;
+
+  min-width: 0;
+  height: auto;
+  max-height: none;
+
+  padding: 24px;
+
+  border: 1px solid var(--sga-border);
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.045);
+
+  overflow: visible;
+
+  animation: chefMentionFadeIn 0.22s ease-out;
+}
+
+/* ==========================================================================
+   BARRE D'OUTILS
+   ========================================================================== */
+
+.chef-mention-dashboard .module-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 16px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid #eef2f7;
+}
+
+.chef-mention-dashboard .module-toolbar-compact {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+}
+
+/* ==========================================================================
+   CONTENU DES MODULES
+   Aucun défilement vertical imbriqué
+   ========================================================================== */
+
+.chef-mention-dashboard .admin-fac-module-content {
+  width: 100%;
+
+  min-width: 0;
+  height: auto;
+  max-height: none;
+
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+/* ==========================================================================
+   BOUTON RETOUR
+   ========================================================================== */
+
+.chef-mention-dashboard .back-btn {
+  min-height: 38px;
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+  padding: 0 14px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 20%, #e5e7eb);
+
+  border-radius: 9px;
+
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 5%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.chef-mention-dashboard .back-btn:hover {
+  transform: translateY(-1px);
+
+  border-color: var(--univ-primary);
+
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 10%,
+    #ffffff
+  );
+}
+
+.chef-mention-dashboard .back-btn:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   PIED DE PAGE — IDENTIQUE À ADMINFAC
+   ========================================================================== */
+
+.chef-mention-dashboard .dashboard-footer {
+  min-height: 86px;
+  flex-shrink: 0;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 25px;
+
+  background: #ffffff;
+  border-top: 1px solid var(--sga-border);
+}
+
+.chef-mention-dashboard .footer-center {
+  color: var(--sga-muted);
+
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ==========================================================================
+   CARTE UTILISATEUR DU FOOTER
+   ========================================================================== */
+
+.chef-mention-dashboard .footer-user-card {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+
+  transform: translateY(-50%);
+
+  min-height: 64px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+  padding: 8px 12px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 12%, #e5e7eb);
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
+}
+
+/* Avatar */
+
+.chef-mention-dashboard .footer-avatar {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    var(--univ-primary),
+    var(--univ-secondary)
+  );
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  box-shadow: 0 5px 15px
+    color-mix(in srgb, var(--univ-primary) 18%, transparent);
+}
+
+/* Informations utilisateur */
+
+.chef-mention-dashboard .footer-user-info {
+  min-width: 170px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 3px;
+}
+
+.chef-mention-dashboard .footer-user-name {
+  color: #1f2937;
+
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+.chef-mention-dashboard .footer-user-detail {
+  color: var(--sga-muted);
+
+  font-size: 10px;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+/* Sélecteur de profil */
+
+.chef-mention-dashboard .footer-role-row {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.chef-mention-dashboard .role-label {
+  flex-shrink: 0;
+
+  color: var(--sga-muted);
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.chef-mention-dashboard .footer-role-row select {
+  width: 155px;
+  min-width: 0;
+  height: 29px;
+
+  padding: 3px 8px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 22%, #d1d5db);
+
+  border-radius: 8px;
+
+  outline: none;
+
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 3%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.chef-mention-dashboard .footer-role-row select:hover {
+  border-color: var(--univ-primary);
+}
+
+.chef-mention-dashboard .footer-role-row select:focus-visible {
+  border-color: var(--univ-primary);
+
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--univ-primary) 12%, transparent);
+}
+
+.chef-mention-dashboard .footer-role-row select:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   ACCESSIBILITÉ CLAVIER
+   ========================================================================== */
+
+.chef-mention-dashboard .menu-title:focus-visible,
+.chef-mention-dashboard .sub-menu-item button:focus-visible,
+.chef-mention-dashboard .quit-btn:focus-visible,
+.chef-mention-dashboard .back-btn:focus-visible {
+  outline: 2px solid var(--univ-primary);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   TABLETTES
+   ========================================================================== */
+
+@media (max-width: 1000px) {
+  .chef-mention-dashboard .home-header {
+    padding: 12px 20px;
+  }
+
+  .chef-mention-dashboard .sidebar {
+    width: 250px;
+    padding: 16px;
+  }
+
+  .chef-mention-dashboard .dashboard-content {
+    padding: 28px;
+  }
+
+  .chef-mention-dashboard .footer-user-card {
+    right: 15px;
+  }
+
+  .chef-mention-dashboard .footer-user-info {
+    min-width: 150px;
+  }
+
+  .chef-mention-dashboard .footer-role-row select {
+    width: 145px;
+  }
+}
+
+/* ==========================================================================
+   TABLETTES ET PETITS ÉCRANS
+   ========================================================================== */
+
 @media (max-width: 768px) {
-  .dashboard-body {
+  .chef-mention-dashboard .dashboard-body {
     flex-direction: column;
   }
 
-  .sidebar {
+  .chef-mention-dashboard .sidebar {
     width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+    padding: 14px;
+
     border-right: none;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--sga-border);
+
+    overflow: visible;
   }
 
-  .dashboard-content {
+  .chef-mention-dashboard .menu-card {
+    min-width: 0;
+    margin-bottom: 0;
+
+    max-height: none;
+    overflow: visible;
+  }
+
+  .chef-mention-dashboard .dashboard-content {
+    min-height: 0;
+    padding: 24px 18px;
+
+    overflow: visible;
+  }
+
+  .chef-mention-dashboard .chef-mention-module {
     padding: 20px;
+  }
+
+  .chef-mention-dashboard .dashboard-footer {
+    min-height: auto;
+
+    flex-direction: column;
+    gap: 14px;
+
+    padding: 15px;
+  }
+
+  .chef-mention-dashboard .footer-user-card {
+    position: static;
+
+    width: min(100%, 430px);
+
+    justify-content: flex-start;
+
+    transform: none;
+  }
+
+  .chef-mention-dashboard .footer-user-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chef-mention-dashboard .footer-role-row select {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 560px) {
+  .chef-mention-dashboard .home-header {
+    min-height: auto;
+
+    align-items: flex-start;
+
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .chef-mention-dashboard .header-left {
+    min-width: 0;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .chef-mention-dashboard .header-logo-container {
+    width: 42px;
+    height: 42px;
+  }
+
+  .chef-mention-dashboard .logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .chef-mention-dashboard .university-info h1 {
+    font-size: 14px;
+  }
+
+  .chef-mention-dashboard .subtitle {
+    max-width: 220px;
+    font-size: 9px;
+  }
+
+  .chef-mention-dashboard .university-meta {
+    font-size: 9px;
+  }
+
+  .chef-mention-dashboard .quit-btn {
+    min-height: 34px;
+    padding: 0 11px;
+
+    border-radius: 8px;
+    font-size: 10px;
+  }
+
+  .chef-mention-dashboard .sidebar {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .chef-mention-dashboard .menu-card {
+    width: 100%;
+    max-height: none;
+  }
+
+  .chef-mention-dashboard .menu-card-desc {
+    font-size: 9px;
+  }
+
+  .chef-mention-dashboard .menu-title {
+    min-height: 40px;
+    font-size: 11px;
+  }
+
+  .chef-mention-dashboard .sub-menu-item button {
+    font-size: 10px;
+  }
+
+  .chef-mention-dashboard .dashboard-content {
+    min-height: 0;
+    padding: 18px 12px;
+  }
+
+  .chef-mention-dashboard .dashboard-welcome {
+    padding: 25px 18px;
+    border-radius: 14px;
+  }
+
+  .chef-mention-dashboard .dashboard-welcome h2 {
+    font-size: 23px;
+  }
+
+  .chef-mention-dashboard .dashboard-welcome p {
+    font-size: 12px;
+  }
+
+  .chef-mention-dashboard .chef-mention-module {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .chef-mention-dashboard .module-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .chef-mention-dashboard .module-toolbar-compact {
+    align-items: flex-end;
+    flex-direction: row;
+  }
+
+  .chef-mention-dashboard .module-toolbar-compact .back-btn {
+    width: auto;
+  }
+
+  .chef-mention-dashboard .dashboard-footer {
+    padding: 17px 14px;
+    gap: 15px;
+  }
+
+  .chef-mention-dashboard .footer-user-card {
+    width: 100%;
+    border-radius: 12px;
+  }
+}
+
+/* ==========================================================================
+   TRÈS PETIT MOBILE
+   ========================================================================== */
+
+@media (max-width: 380px) {
+  .chef-mention-dashboard .home-header {
+    padding: 11px;
+    gap: 8px;
+  }
+
+  .chef-mention-dashboard .header-left {
+    gap: 8px;
+  }
+
+  .chef-mention-dashboard .header-logo-container {
+    width: 38px;
+    height: 38px;
+  }
+
+  .chef-mention-dashboard .logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .chef-mention-dashboard .university-info h1 {
+    font-size: 12px;
+  }
+
+  .chef-mention-dashboard .subtitle {
+    max-width: 170px;
+    font-size: 8px;
+  }
+
+  .chef-mention-dashboard .university-meta {
+    display: none;
+  }
+
+  .chef-mention-dashboard .quit-btn {
+    padding: 0 9px;
+    font-size: 9px;
+  }
+
+  .chef-mention-dashboard .dashboard-content {
+    padding: 15px 10px;
+  }
+
+  .chef-mention-dashboard .dashboard-welcome {
+    padding: 22px 15px;
+  }
+
+  .chef-mention-dashboard .dashboard-welcome h2 {
+    font-size: 21px;
+  }
+
+  .chef-mention-dashboard .footer-user-card {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .chef-mention-dashboard .footer-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 10px;
+  }
+
+  .chef-mention-dashboard .footer-user-name {
+    font-size: 11px;
+  }
+
+  .chef-mention-dashboard .footer-role-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .chef-mention-dashboard .footer-role-row select {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   ANIMATION
+   ========================================================================== */
+
+@keyframes chefMentionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITÉ — MOUVEMENTS RÉDUITS
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .chef-mention-dashboard *,
+  .chef-mention-dashboard *::before,
+  .chef-mention-dashboard *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

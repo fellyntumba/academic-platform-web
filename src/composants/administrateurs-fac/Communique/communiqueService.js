@@ -126,7 +126,7 @@ export const createCommuniqueService = async ({
   return data;
 };
 
-
+ 
 
 // ============================================================
 // RÉCUPÉRER LA VERSION D'UNE FACULTÉ

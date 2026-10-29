@@ -1,80 +1,95 @@
 import React, { useState, useEffect } from "react";
 import "./EtudiantsInscrits.css";
+
 import {
   importEtudiantsInscrits,
   getPromotionsService,
   inscrireEtudiantService
 } from "./etudiantsInscritsService";
 
-const EtudiantsInscrits = ({code_mention}) => {
-  const [selectedFile, setSelectedFile] = useState(null);  
-  const [promotion, setPromotion] = useState("");    
+const EtudiantsInscrits = ({ code_mention }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  // L'identifiant envoyé est celui de promotions_versions.id_version.
+  const [promotionVersionId, setPromotionVersionId] = useState("");
+  const [promotionVersionIdManuelle, setPromotionVersionIdManuelle] =
+    useState("");
+
   const [ancienMatricule, setAncienMatricule] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listPromos, setListPromos] = useState([]);
+
   const [nom, setNom] = useState("");
   const [postnom, setPostnom] = useState("");
   const [prenom, setPrenom] = useState("");
   const [sexe, setSexe] = useState("");
-  const [promotionManuelle, setPromotionManuelle] = useState("");
-  
-  
+
   /* ============================= */
-  /* 🔹 Gestion notification 4s    */
+  /* Gestion des notifications     */
   /* ============================= */
+
   const showMessage = (msg, type = "success") => {
     setMessage(msg);
     setMessageType(type);
 
-    setTimeout(() => {    
+    setTimeout(() => {
       setMessage("");
       setMessageType("");
     }, 4000);
   };
 
+  /* ============================= */
+  /* Charger les promotions        */
+  /* ============================= */
 
-  // ===============================
-  // Charger les promotions au démarrage
-  // ===============================
   useEffect(() => {
     const loadPromotions = async () => {
       try {
         const promoData = await getPromotionsService({ code_mention });
         const promos = promoData.data || promoData;
-        setListPromos(promos);
-      } catch {
-        showMessage("Erreur chargement promotions", "error");
-      } finally {
-        setLoading(false);
+
+        setListPromos(Array.isArray(promos) ? promos : []);
+      } catch (error) {
+        showMessage(
+          error.message || "Erreur chargement promotions",
+          "error"
+        );
       }
     };
+
     loadPromotions();
   }, [code_mention]);
 
+  /* ============================= */
+  /* Gestion du fichier Excel      */
+  /* ============================= */
 
-  /* ============================= */
-  /* 🔹 Gestion fichier             */
-  /* ============================= */
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+    setSelectedFile(e.target.files[0] || null);
     setMessage("");
     setErrors([]);
   };
 
   /* ============================= */
-  /* 🔹 Upload réel                 */
+  /* Importation Excel             */
   /* ============================= */
-  const handleUpload = async () => {
 
+  const handleUpload = async () => {
     if (!selectedFile) {
-      return showMessage("Veuillez sélectionner un fichier Excel.", "error");
+      return showMessage(
+        "Veuillez sélectionner un fichier Excel.",
+        "error"
+      );
     }
 
-    if (!promotion) {
-      return showMessage("Veuillez sélectionner une promotion.", "error");
+    if (!promotionVersionId) {
+      return showMessage(
+        "Veuillez sélectionner une promotion.",
+        "error"
+      );
     }
 
     try {
@@ -82,17 +97,22 @@ const EtudiantsInscrits = ({code_mention}) => {
       setMessage("");
       setErrors([]);
 
-      const result = await importEtudiantsInscrits(selectedFile, promotion );
+      const result = await importEtudiantsInscrits(
+        selectedFile,
+        promotionVersionId
+      );
 
-      showMessage(`Import terminé : ${result.inserted} inséré(s), ${result.updated} mis à jour.`, "success");
+      showMessage(
+        `Import terminé : ${result.inserted} inséré(s), ${result.updated} mis à jour.`,
+        "success"
+      );
 
       if (result.errors && result.errors.length > 0) {
         setErrors(result.errors);
       }
 
       setSelectedFile(null);
-      setSelectedFile("");
-
+      setPromotionVersionId("");
     } catch (error) {
       showMessage(error.message, "error");
     } finally {
@@ -100,6 +120,9 @@ const EtudiantsInscrits = ({code_mention}) => {
     }
   };
 
+  /* ============================= */
+  /* Inscription manuelle          */
+  /* ============================= */
 
   const handleAddStudent = async () => {
     if (
@@ -108,7 +131,7 @@ const EtudiantsInscrits = ({code_mention}) => {
       !postnom.trim() ||
       !prenom.trim() ||
       !sexe ||
-      !promotionManuelle
+      !promotionVersionIdManuelle
     ) {
       return showMessage(
         "Veuillez renseigner tous les champs.",
@@ -117,7 +140,6 @@ const EtudiantsInscrits = ({code_mention}) => {
     }
 
     try {
-
       setLoading(true);
 
       const result = await inscrireEtudiantService({
@@ -126,7 +148,7 @@ const EtudiantsInscrits = ({code_mention}) => {
         postnom,
         prenom,
         sexe,
-        nom_promotion: promotionManuelle
+        promotionVersionId: promotionVersionIdManuelle
       });
 
       showMessage(
@@ -134,34 +156,28 @@ const EtudiantsInscrits = ({code_mention}) => {
         "success"
       );
 
-      // Réinitialisation du formulaire
+      // Réinitialisation du formulaire.
       setAncienMatricule("");
       setNom("");
       setPostnom("");
       setPrenom("");
       setSexe("");
-      setPromotionManuelle("");
-
+      setPromotionVersionIdManuelle("");
     } catch (error) {
-
       showMessage(
         error.message || "Erreur lors de l'inscription.",
         "error"
       );
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
-
-// {listPromos && console.log(listPromos);}
 
   return (
     <div className="etudiants-container fade-in">
-      <h2>Enregistrement des étudiants régulièrement inscrits</h2>
+      <h2>
+        Enregistrement des étudiants régulièrement inscrits
+      </h2>
 
       {message && (
         <div className={`notification ${messageType}`}>
@@ -170,44 +186,63 @@ const EtudiantsInscrits = ({code_mention}) => {
       )}
 
       <div className="consigne-box">
-        ⚠️ <strong>Consigne :</strong> Veuillez importer uniquement un fichier Excel (.xlsx, .xls) contenant obligatoirement les colonnes <strong> "code", "nom", "postnom" et "sexe"</strong>.
+        ⚠️ <strong>Consigne :</strong> Veuillez importer uniquement
+        un fichier Excel (.xlsx, .xls) contenant obligatoirement les
+        colonnes <strong>code, nom, postnom, prenom et sexe</strong>.
       </div>
 
-      {/* Upload Excel */}
+      {/* Importation Excel */}
       <div className="card-section">
         <h3>Enregistrement via fichier Excel</h3>
-        <input type="file" accept=".xlsx, .xls" onChange={handleFileChange} />
+
+        <input
+          type="file"
+          accept=".xlsx, .xls"
+          onChange={handleFileChange}
+        />
 
         <div className="upload-row">
+          <select
+            value={promotionVersionId}
+            onChange={(e) => setPromotionVersionId(e.target.value)}
+          >
+            <option value="">
+              -- Sélectionner une promotion --
+            </option>
 
-            <select value={promotion} onChange={(e) => setPromotion(e.target.value)}>
-              <option value="">-- Sélectionner une promotion --</option>
             {listPromos.map((p) => (
-              <option key={p.id_version} value={p.nom_promotion}>
+              <option
+                key={p.id_version}
+                value={p.id_version}
+              >
                 {p.nom_promotion}
               </option>
             ))}
           </select>
 
-            <button
-              className="primary-btn"
-              onClick={handleUpload}
-              disabled={loading}
-            >
-              {loading ? "Import en cours..." : "Enregistrer la liste"}
+          <button
+            className="primary-btn"
+            onClick={handleUpload}
+            disabled={loading}
+          >
+            {loading ? "Import en cours..." : "Enregistrer la liste"}
           </button>
-
         </div>
       </div>
 
-      {/* Affichage erreurs */}
+      {/* Erreurs de l'importation */}
       {errors.length > 0 && (
         <div className="error-box">
           <details>
-            <summary>⚠️ Erreurs détectées : {errors.length}</summary>
+            <summary>
+              ⚠️ Erreurs détectées : {errors.length}
+            </summary>
+
             <ul>
               {errors.map((err, index) => (
-                <li key={index}>Ligne {err.ligne} : {err.message}</li>
+                <li key={index}>
+                  Ligne {err.ligne} : {err.message}
+                </li>
               ))}
             </ul>
           </details>
@@ -216,14 +251,12 @@ const EtudiantsInscrits = ({code_mention}) => {
 
       <div className="separator">OU</div>
 
-      {/* Ajout manuel */}
+      {/* Inscription manuelle */}
       <div className="card-section">
         <h3>Enregistrement manuel d'un étudiant</h3>
 
         <div className="manual-form">
-
           <div className="manual-column">
-
             <input
               type="text"
               placeholder="Code"
@@ -244,11 +277,9 @@ const EtudiantsInscrits = ({code_mention}) => {
               value={postnom}
               onChange={(e) => setPostnom(e.target.value)}
             />
-
           </div>
 
           <div className="manual-column">
-
             <input
               type="text"
               placeholder="Prénom"
@@ -266,33 +297,34 @@ const EtudiantsInscrits = ({code_mention}) => {
             </select>
 
             <select
-              value={promotionManuelle}
-              onChange={(e) => setPromotionManuelle(e.target.value)}
+              value={promotionVersionIdManuelle}
+              onChange={(e) =>
+                setPromotionVersionIdManuelle(e.target.value)
+              }
             >
               <option value="">-- Promotion --</option>
 
               {listPromos.map((p) => (
                 <option
                   key={p.id_version}
-                  value={p.nom_promotion}
+                  value={p.id_version}
                 >
                   {p.nom_promotion}
                 </option>
               ))}
-
             </select>
-
           </div>
-
         </div>
 
         <button
           className="primary-btn"
           onClick={handleAddStudent}
+          disabled={loading}
         >
-          Enregistrer l'étudiant
+          {loading
+            ? "Enregistrement en cours..."
+            : "Enregistrer l'étudiant"}
         </button>
-
       </div>
     </div>
   );

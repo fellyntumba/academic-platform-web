@@ -322,3 +322,123 @@
     gap: 10px 12px;
   }
 }
+
+
+
+
+/* ============================================================
+   TERMINAISON DE LA CONFIGURATION
+   ============================================================ */
+
+.setup-completion {
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  text-align: center;
+  animation: completion-appear 0.45s ease-out both;
+}
+
+.completion-icon {
+  width: 82px;
+  height: 82px;
+  margin-bottom: 24px;
+}
+
+.completion-check {
+  width: 100%;
+  height: 100%;
+}
+
+.completion-circle {
+  fill: #ecfdf3;
+  stroke: #16a34a;
+  stroke-width: 2.5;
+  stroke-dasharray: 176;
+  stroke-dashoffset: 176;
+  animation: completion-circle-draw 0.7s ease-out forwards;
+}
+
+.completion-tick {
+  fill: none;
+  stroke: #16a34a;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 42;
+  stroke-dashoffset: 42;
+  animation: completion-tick-draw 0.45s 0.45s ease-out forwards;
+}
+
+.setup-completion h2 {
+  margin: 0 0 12px;
+  color: #166534;
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 700;
+}
+
+.setup-completion p {
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.completion-loader {
+  width: 30px;
+  height: 30px;
+  margin-top: 30px;
+  border: 3px solid #dbeafe;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: completion-spin 0.8s linear infinite;
+}
+
+.completion-caption {
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+@keyframes completion-circle-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes completion-tick-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes completion-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes completion-appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .setup-completion,
+  .completion-circle,
+  .completion-tick,
+  .completion-loader {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}
+

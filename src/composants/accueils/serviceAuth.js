@@ -1,237 +1,277 @@
+
 import { apiFetch } from "./apiService";
-const BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000/api/administration`;
+
+
+// ============================================================
+// AUTHENTIFICATION
+// ============================================================
+
+const BASE_URL =
+  `${window.location.protocol}//${window.location.hostname}:3000/api/authentifications`;
+
  
-//Envoi OTP
-export async function sendOtp({email}) {
+// ============================================================
+// ENVOYER UN OTP
+// ============================================================
+
+export async function sendOtp({ email }) {
+
   try {
+
     const res = await fetch(`${BASE_URL}/send-otp`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      credentials: "include",
+
+      body: JSON.stringify({
+        email,
+      }),
     });
- 
+
     const data = await res.json();
 
     if (!res.ok) {
+
       return {
         success: false,
-        message: data.message
+        message:
+          data.message ||
+          "Impossible d'envoyer le code OTP.",
       };
     }
 
     return {
       success: true,
-      message: data.message
+      message:
+        data.message ||
+        "Code OTP envoyé avec succès.",
     };
 
   } catch (error) {
-    return { success: false, message: "Erreur réseau" };
+
+    console.error("SEND OTP ERROR:", error);
+
+    return {
+      success: false,
+      message: "Erreur réseau.",
+    };
   }
 }
+ 
 
+// ============================================================
+// VÉRIFIER OTP
+// ============================================================
 
-//Vérification OTP
-export async function verifyOtp({email, otp}) {
+export async function verifyOtp({
+  email,
+  otp,
+}) {
+
   try {
+
     const res = await fetch(`${BASE_URL}/verify-otp`, {
       method: "POST",
+
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, otp }),
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        email,
+        otp,
+      }),
     });
 
     const data = await res.json();
 
     if (!res.ok) {
+
       return {
-        success: false, 
-        message: data.message
+        success: false,
+        message:
+          data.message ||
+          "Code OTP invalide.",
       };
-    } 
+    }
+
     return {
       success: true,
       message: data.message,
-      user: data.user
+      user: data.data?.utilisateur || null,
     };
 
   } catch (error) {
-    return { success: false, message: "Erreur réseau" };
+
+    console.error("VERIFY OTP ERROR:", error);
+
+    return {
+      success: false,
+      message: "Erreur réseau.",
+    };
   }
 }
 
 
-//Pour verifier si user est authentifié 
+// ============================================================
+// VÉRIFIER L'AUTHENTIFICATION
+// ============================================================
+
 export async function isAuthenticated() {
+
   try {
 
-    const res = await apiFetch("/administration/me");
+    const res = await apiFetch(
+      "/authentifications/me"
+    );
 
     const data = await res.json();
 
     if (!res.ok) {
+
       return {
         authenticated: false,
-        user: null
+        user: null,
       };
     }
 
     return {
-      authenticated: data.authenticated,
-      user: data.user
+      authenticated:
+        data.authenticated === true,
+
+      user:
+        data.user || null,
     };
 
-  } catch (err) {
+  } catch (error) {
 
-    if (err.message === "NOT_AUTHENTICATED") {
+    if (error.message === "NOT_AUTHENTICATED") {
+
       return {
         authenticated: false,
-        user: null
+        user: null,
       };
     }
 
-    console.error("Erreur isAuthenticated :", err);
+    console.error(
+      "IS AUTHENTICATED ERROR:",
+      error
+    );
 
     return {
       authenticated: false,
-      user: null
+      user: null,
     };
   }
 }
 
 
-//Logout
+// ============================================================
+// DÉCONNEXION
+// ============================================================
+
 export async function logout() {
 
   try {
 
-    const res = await apiFetch("/administration/logout", {
-
-      method: "POST",
-
-    });
-
-    console.log("LOGOUT STATUS:", res.status);
-
-    console.log("LOGOUT OK:", res.ok);
+    const res = await apiFetch(
+      "/authentifications/logout",
+      {
+        method: "POST",
+      }
+    );
 
     if (!res.ok) {
 
       let data = null;
 
       try {
-
         data = await res.json();
-
       } catch {
-
-        // La réponse peut ne pas contenir de JSON.
-
+        // Réponse éventuellement sans JSON.
       }
 
       throw new Error(
-
         data?.message ||
-
         data?.error ||
-
         `La déconnexion a échoué (${res.status}).`
-
       );
-
     }
 
     return true;
 
-  } catch (err) {
+  } catch (error) {
 
-    console.error("LOGOUT ERROR:", err); 
+    console.error(
+      "LOGOUT ERROR:",
+      error
+    );
 
-    throw err;
-
+    throw error;
   }
 }
 
 
-// //Changer le profil actif
-// export async function switchRole(active_role) {
+// ============================================================
+// CHANGER LE PROFIL / RÔLE ACTIF
+// ============================================================
 
-//   try {  
-
-//     const res = await apiFetch("/administration/switch-role", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({
-//         active_role
-//       })
-//     });
-
-//     const data = await res.json();
-
-//     if (!res.ok) {
-//       return {
-//         success: false,
-//         message: data.message || data.error || "Erreur serveur"
-//       };
-//     }
-
-//     return {
-//       success: true,
-//       active_role: data.active_role
-//     };
-
-//   } catch (err) {
-
-//     console.error(err);
-
-//     return {
-//       success: false,
-//       message: "Erreur réseau"
-//     };
-
-//   }
-
-// }
-
-
-// Changer le profil actif
 export async function switchRole(active_role) {
+
   try {
-    const res = await apiFetch("/administration/switch-role", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        active_role
-      })
-    });
+
+    const res = await apiFetch(
+      "/authentifications/switch-role",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          active_role,
+        }),
+      }
+    );
 
     const data = await res.json();
 
     if (!res.ok) {
+
       return {
         success: false,
+
         message:
           data.message ||
           data.error ||
-          "Erreur serveur"
+          "Impossible de changer de profil.",
       };
     }
 
     return {
-      success: true,
-      active_role: data.active_role,
-      user: data.user || null
+        success: true,
+        active_role: data.data?.active_role || active_role,
+        roles: data.data?.roles || [],
+        user: null,
     };
 
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+
+    console.error(
+      "SWITCH ROLE ERROR:",
+      error
+    );
 
     return {
       success: false,
-      message: "Erreur réseau"
+      message: "Erreur réseau.",
     };
   }
 }

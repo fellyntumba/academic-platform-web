@@ -1,0 +1,1393 @@
+/* ==========================================================================
+   SGA — SECRÉTARIAT GÉNÉRAL ACADÉMIQUE
+   Design harmonisé avec ChefMention et AdminFac.
+   Couleurs dynamiques transmises par Sga.jsx.
+   ========================================================================== */
+
+.super-admin-dashboard {
+  --univ-primary: #2563eb;
+  --univ-secondary: #f97316;
+
+  --sga-text: #111827;
+  --sga-muted: #6b7280;
+  --sga-border: #e5e7eb;
+  --sga-background: #f5f7fa;
+  --sga-surface: #ffffff;
+
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  color: var(--sga-text);
+  background: var(--sga-background);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  overflow-x: clip;
+  overflow-y: visible;
+  isolation: isolate;
+}
+
+.super-admin-dashboard *,
+.super-admin-dashboard *::before,
+.super-admin-dashboard *::after {
+  box-sizing: border-box;
+}
+
+.super-admin-dashboard button,
+.super-admin-dashboard input,
+.super-admin-dashboard select,
+.super-admin-dashboard textarea {
+  font: inherit;
+}
+
+.super-admin-dashboard button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.super-admin-dashboard button:focus-visible,
+.super-admin-dashboard select:focus-visible {
+  outline: 2px solid var(--univ-primary);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+.super-admin-dashboard .home-header {
+  position: relative;
+  z-index: 2;
+
+  flex: 0 0 auto;
+  min-height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+  padding: 12px 30px;
+
+  background: var(--sga-surface);
+  border-bottom: 3px solid var(--univ-primary);
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+.super-admin-dashboard .header-left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+/* ==========================================================================
+   LOGO
+   ========================================================================== */
+
+.super-admin-dashboard .header-logo-container {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 18%, #e5e7eb);
+
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.super-admin-dashboard .logo {
+  display: block;
+
+  width: 42px;
+  height: 42px;
+
+  object-fit: contain;
+  border-radius: 7px;
+}
+
+/* ==========================================================================
+   INFORMATIONS UNIVERSITÉ
+   ========================================================================== */
+
+.super-admin-dashboard .university-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  line-height: 1.2;
+}
+
+.super-admin-dashboard .university-info h1 {
+  margin: 0;
+
+  overflow: hidden;
+
+  color: #1f2937;
+
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.35;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.super-admin-dashboard .subtitle {
+  margin-top: 3px;
+
+  overflow: hidden;
+
+  color: var(--sga-muted);
+
+  font-size: 11px;
+  line-height: 1.4;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.super-admin-dashboard .university-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 6px;
+  margin-top: 5px;
+
+  color: var(--univ-primary);
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.super-admin-dashboard .meta-separator {
+  color: #d1d5db;
+}
+
+/* ==========================================================================
+   BOUTON QUITTER
+   ========================================================================== */
+
+.super-admin-dashboard .quit-btn {
+  min-height: 38px;
+  flex-shrink: 0;
+
+  padding: 0 17px;
+
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+
+  background: #fffafa;
+  color: #b91c1c;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.super-admin-dashboard .quit-btn:hover {
+  transform: translateY(-1px);
+
+  background: #fef2f2;
+  border-color: #fca5a5;
+
+  box-shadow: 0 5px 14px rgba(185, 28, 28, 0.1);
+}
+
+.super-admin-dashboard .quit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   CORPS PRINCIPAL
+   Important : aucun conteneur interne ne crée un second scroll vertical.
+   ========================================================================== */
+
+.super-admin-dashboard .dashboard-body {
+  flex: 1 0 auto;
+
+  display: flex;
+  align-items: stretch;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: visible;
+}
+
+/* ==========================================================================
+   BARRE LATÉRALE
+   ========================================================================== */
+
+.super-admin-dashboard .sidebar {
+  width: 280px;
+  flex: 0 0 280px;
+  align-self: stretch;
+
+  min-width: 0;
+  min-height: 0;
+
+  padding: 20px;
+
+  background: #ffffff;
+  border-right: 1px solid var(--sga-border);
+
+  overflow: visible;
+  overscroll-behavior: auto;
+}
+
+/* ==========================================================================
+   CARTES DE MENU
+   ========================================================================== */
+
+.super-admin-dashboard .menu-card {
+  min-width: 0;
+
+  margin: 0 0 16px;
+  padding: 12px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 12%, #e5e7eb);
+
+  border-radius: 14px;
+
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 3%,
+    #ffffff
+  );
+
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+
+  overflow: visible;
+}
+
+.super-admin-dashboard .menu-card:last-child {
+  margin-bottom: 0;
+}
+
+.super-admin-dashboard .menu-card-header {
+  padding: 4px 5px 0;
+
+  color: var(--univ-primary);
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.super-admin-dashboard .menu-card-desc {
+  margin: 7px 5px 13px;
+
+  color: var(--sga-muted);
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   MENUS PRINCIPAUX
+   ========================================================================== */
+
+.super-admin-dashboard .menu-item {
+  min-width: 0;
+  margin-bottom: 5px;
+}
+
+.super-admin-dashboard .menu-item:last-child {
+  margin-bottom: 0;
+}
+
+.super-admin-dashboard .menu-title {
+  width: 100%;
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+  padding: 9px 10px;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  background: transparent;
+  color: #374151;
+
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.5;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.super-admin-dashboard .menu-title-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.super-admin-dashboard .menu-title:hover {
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 8%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+
+  border-color: color-mix(
+    in srgb,
+    var(--univ-primary) 15%,
+    transparent
+  );
+}
+
+.super-admin-dashboard .menu-item-active .menu-title,
+.super-admin-dashboard .menu-title-active {
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 9%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+
+  border-color: color-mix(
+    in srgb,
+    var(--univ-primary) 18%,
+    transparent
+  );
+}
+
+.super-admin-dashboard .menu-chevron {
+  flex-shrink: 0;
+
+  color: var(--univ-secondary);
+  font-size: 11px;
+
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.super-admin-dashboard .menu-chevron-open {
+  transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   SOUS-MENUS
+   ========================================================================== */
+
+.super-admin-dashboard .sub-menu {
+  list-style: none;
+
+  margin: 5px 0 7px;
+  padding: 3px 0 3px 10px;
+
+  border-left: 2px solid
+    color-mix(in srgb, var(--univ-primary) 22%, #e5e7eb);
+}
+
+.super-admin-dashboard .sub-menu li {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.super-admin-dashboard .sub-menu-item {
+  width: 100%;
+  min-height: 36px;
+
+  display: block;
+
+  margin-bottom: 2px;
+  padding: 8px 10px;
+
+  border: 1px solid transparent;
+  border-radius: 7px;
+
+  background: transparent;
+  color: var(--sga-muted);
+
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: left;
+
+  overflow-wrap: anywhere;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+.super-admin-dashboard .sub-menu-item:hover {
+  padding-left: 13px;
+
+  background: color-mix(
+    in srgb,
+    var(--univ-secondary) 9%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+}
+
+.super-admin-dashboard .sub-menu-item-active {
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 8%,
+    #ffffff
+  );
+
+  border-color: color-mix(
+    in srgb,
+    var(--univ-primary) 13%,
+    transparent
+  );
+
+  color: var(--univ-primary);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   CONTENU CENTRAL
+   Le contenu s'étend selon la hauteur réelle du composant sélectionné.
+   ========================================================================== */
+
+.super-admin-dashboard .dashboard-content {
+  flex: 1 1 auto;
+
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 34px;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      color-mix(
+        in srgb,
+        var(--univ-primary) 5%,
+        transparent
+      ),
+      transparent 32%
+    ),
+    #f8fafc;
+
+  overflow: visible;
+  overscroll-behavior: auto;
+}
+
+/* ==========================================================================
+   ACCUEIL
+   ========================================================================== */
+
+.super-admin-dashboard .dashboard-welcome {
+  position: relative;
+
+  width: 100%;
+  max-width: 680px;
+
+  padding: 34px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 12%, #e5e7eb);
+
+  border-radius: 18px;
+  background: #ffffff;
+
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.06);
+
+  text-align: center;
+  overflow: hidden;
+}
+
+.super-admin-dashboard .dashboard-welcome-accent {
+  width: 56px;
+  height: 4px;
+
+  margin: 0 auto 20px;
+
+  border-radius: 20px;
+
+  background: linear-gradient(
+    90deg,
+    var(--univ-primary),
+    var(--univ-secondary)
+  );
+}
+
+.super-admin-dashboard .dashboard-eyebrow {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--univ-primary);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.super-admin-dashboard .dashboard-content h2 {
+  margin: 0 0 12px;
+
+  color: #111827;
+
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 750;
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+}
+
+.super-admin-dashboard .dashboard-content p {
+  max-width: 480px;
+
+  margin: 0 auto;
+
+  color: var(--sga-muted);
+
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* ==========================================================================
+   CARTES D'INFORMATION DE L'ACCUEIL
+   ========================================================================== */
+
+.super-admin-dashboard .welcome-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+  margin-top: 25px;
+
+  text-align: left;
+}
+
+.super-admin-dashboard .welcome-info-card {
+  min-width: 0;
+  padding: 14px;
+
+  border: 1px solid var(--sga-border);
+  border-radius: 11px;
+
+  background: #fbfcfe;
+}
+
+.super-admin-dashboard .welcome-info-label {
+  display: block;
+  margin-bottom: 6px;
+
+  color: var(--sga-muted);
+
+  font-size: 10px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.super-admin-dashboard .welcome-info-card strong {
+  display: block;
+
+  color: #1f2937;
+
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.6;
+
+  overflow-wrap: anywhere;
+}
+
+.super-admin-dashboard .welcome-instruction {
+  margin-top: 20px;
+  padding-top: 16px;
+
+  border-top: 1px solid #f0f2f5;
+
+  color: var(--sga-muted);
+
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   MODULE ACTIF
+   ========================================================================== */
+
+.super-admin-dashboard .sga-module {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  padding: 22px;
+
+  border: 1px solid var(--sga-border);
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.035);
+
+  overflow: visible;
+}
+
+.super-admin-dashboard .module-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+  margin-bottom: 17px;
+}
+
+.super-admin-dashboard .module-heading {
+  min-width: 0;
+}
+
+.super-admin-dashboard .module-eyebrow {
+  display: block;
+  margin-bottom: 5px;
+
+  color: var(--univ-primary);
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.super-admin-dashboard .module-title {
+  margin: 0 0 5px;
+
+  color: #111827;
+
+  font-size: 19px;
+  font-weight: 750;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+
+  overflow-wrap: anywhere;
+}
+
+.super-admin-dashboard .module-description {
+  margin: 0;
+
+  color: var(--sga-muted);
+
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.super-admin-dashboard .back-btn {
+  min-height: 36px;
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+  padding: 8px 12px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 20%, #e5e7eb);
+
+  border-radius: 9px;
+
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 4%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.super-admin-dashboard .back-btn:hover {
+  transform: translateY(-1px);
+
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 9%,
+    #ffffff
+  );
+
+  border-color: var(--univ-primary);
+}
+
+.super-admin-dashboard .back-btn span {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.super-admin-dashboard .module-divider {
+  height: 1px;
+  width: 100%;
+
+  margin-bottom: 20px;
+
+  background: var(--sga-border);
+}
+
+/* ==========================================================================
+   CONTENU DES COMPOSANTS MÉTIER
+   Pas de hauteur fixe ni de scroll vertical imbriqué.
+   Le scroll horizontal reste disponible pour les tableaux larges.
+   ========================================================================== */
+
+.super-admin-dashboard .sga-module-content {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  overflow-x: auto;
+  overflow-y: visible;
+
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Évite qu'un enfant direct force la largeur du dashboard. */
+.super-admin-dashboard .sga-module-content > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.super-admin-dashboard .dashboard-footer {
+  position: relative;
+  z-index: 1;
+
+  flex: 0 0 auto;
+  min-height: 86px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 16px;
+  padding: 10px 25px;
+
+  background: #ffffff;
+  border-top: 1px solid var(--sga-border);
+}
+
+.super-admin-dashboard .footer-center {
+  max-width: 50%;
+
+  color: var(--sga-muted);
+
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ==========================================================================
+   CARTE UTILISATEUR
+   ========================================================================== */
+
+.super-admin-dashboard .footer-user-card {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+
+  transform: translateY(-50%);
+
+  min-width: 0;
+  min-height: 64px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+  padding: 8px 12px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 12%, #e5e7eb);
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
+}
+
+/* ==========================================================================
+   AVATAR
+   ========================================================================== */
+
+.super-admin-dashboard .footer-avatar {
+  width: 40px;
+  height: 40px;
+
+  flex: 0 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    var(--univ-primary),
+    var(--univ-secondary)
+  );
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  box-shadow: 0 5px 15px
+    color-mix(in srgb, var(--univ-primary) 18%, transparent);
+}
+
+/* ==========================================================================
+   INFORMATIONS UTILISATEUR
+   ========================================================================== */
+
+.super-admin-dashboard .footer-user-info {
+  min-width: 170px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 3px;
+}
+
+.super-admin-dashboard .footer-user-name {
+  color: #1f2937;
+
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+.super-admin-dashboard .footer-user-detail {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  color: var(--sga-muted);
+
+  font-size: 10px;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+.super-admin-dashboard .footer-detail-separator {
+  color: #d1d5db;
+}
+
+/* ==========================================================================
+   SÉLECTEUR DE PROFIL
+   ========================================================================== */
+
+.super-admin-dashboard .footer-role-row {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.super-admin-dashboard .role-label {
+  flex-shrink: 0;
+
+  color: var(--sga-muted);
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.super-admin-dashboard .footer-role-row select {
+  width: 155px;
+  min-width: 0;
+  height: 29px;
+
+  padding: 3px 8px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--univ-primary) 22%, #d1d5db);
+
+  border-radius: 8px;
+
+  outline: none;
+
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 3%,
+    #ffffff
+  );
+
+  color: var(--univ-primary);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.super-admin-dashboard .footer-role-row select:hover:not(:disabled) {
+  border-color: var(--univ-primary);
+}
+
+.super-admin-dashboard .footer-role-row select:focus-visible {
+  border-color: var(--univ-primary);
+
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--univ-primary) 12%, transparent);
+}
+
+.super-admin-dashboard .footer-role-row select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.super-admin-dashboard .role-loading {
+  color: var(--univ-primary);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   TABLETTES ET ÉCRANS INTERMÉDIAIRES
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .super-admin-dashboard .home-header {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .super-admin-dashboard .sidebar {
+    width: 260px;
+    flex-basis: 260px;
+    padding: 16px;
+  }
+
+  .super-admin-dashboard .dashboard-content {
+    padding: 26px;
+  }
+
+  .super-admin-dashboard .sga-module {
+    padding: 18px;
+  }
+
+  .super-admin-dashboard .footer-user-card {
+    right: 15px;
+  }
+
+  .super-admin-dashboard .footer-user-info {
+    min-width: 150px;
+  }
+
+  .super-admin-dashboard .footer-role-row select {
+    width: 145px;
+  }
+}
+
+/* ==========================================================================
+   TABLETTE
+   ========================================================================== */
+
+@media (max-width: 850px) {
+  .super-admin-dashboard .dashboard-body {
+    flex-direction: column;
+  }
+
+  .super-admin-dashboard .sidebar {
+    width: 100%;
+    flex: 0 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    align-items: start;
+    gap: 12px;
+
+    padding: 14px;
+
+    border-right: none;
+    border-bottom: 1px solid var(--sga-border);
+
+    overflow: visible;
+  }
+
+  .super-admin-dashboard .menu-card {
+    min-width: 0;
+    margin-bottom: 0;
+  }
+
+  .super-admin-dashboard .dashboard-content {
+    min-height: 380px;
+    padding: 24px 18px;
+  }
+
+  .super-admin-dashboard .dashboard-footer {
+    min-height: 86px;
+  }
+
+  .super-admin-dashboard .footer-center {
+    max-width: 42%;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .super-admin-dashboard .footer-user-card {
+    right: 14px;
+  }
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .super-admin-dashboard .home-header {
+    min-height: auto;
+
+    align-items: flex-start;
+
+    gap: 10px;
+    padding: 13px;
+  }
+
+  .super-admin-dashboard .header-left {
+    min-width: 0;
+    align-items: flex-start;
+
+    gap: 10px;
+  }
+
+  .super-admin-dashboard .header-logo-container {
+    width: 42px;
+    height: 42px;
+  }
+
+  .super-admin-dashboard .logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .super-admin-dashboard .university-info h1 {
+    font-size: 14px;
+  }
+
+  .super-admin-dashboard .subtitle {
+    max-width: 220px;
+    font-size: 9px;
+
+    white-space: normal;
+  }
+
+  .super-admin-dashboard .university-meta {
+    font-size: 9px;
+  }
+
+  .super-admin-dashboard .quit-btn {
+    min-height: 34px;
+    padding: 0 11px;
+
+    border-radius: 8px;
+    font-size: 10px;
+  }
+
+  .super-admin-dashboard .sidebar {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .super-admin-dashboard .menu-card {
+    width: 100%;
+    max-width: none;
+  }
+
+  .super-admin-dashboard .menu-card-desc {
+    font-size: 10px;
+  }
+
+  .super-admin-dashboard .menu-title {
+    min-height: 40px;
+    font-size: 11px;
+  }
+
+  .super-admin-dashboard .sub-menu-item {
+    min-height: 36px;
+    font-size: 10px;
+  }
+
+  .super-admin-dashboard .dashboard-content {
+    min-height: 340px;
+    padding: 18px 12px;
+  }
+
+  .super-admin-dashboard .dashboard-welcome {
+    padding: 25px 18px;
+    border-radius: 14px;
+  }
+
+  .super-admin-dashboard .dashboard-content h2 {
+    font-size: 23px;
+  }
+
+  .super-admin-dashboard .dashboard-content p {
+    font-size: 12px;
+  }
+
+  .super-admin-dashboard .welcome-info-grid {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .super-admin-dashboard .sga-module {
+    padding: 15px 12px;
+    border-radius: 12px;
+  }
+
+  .super-admin-dashboard .module-toolbar {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .super-admin-dashboard .module-title {
+    font-size: 16px;
+  }
+
+  .super-admin-dashboard .module-description {
+    font-size: 10px;
+  }
+
+  .super-admin-dashboard .back-btn {
+    min-height: 33px;
+    padding: 7px 9px;
+    font-size: 10px;
+  }
+
+  .super-admin-dashboard .module-divider {
+    margin-bottom: 15px;
+  }
+
+  .super-admin-dashboard .dashboard-footer {
+    position: static;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+
+    gap: 13px;
+    padding: 16px 12px;
+  }
+
+  .super-admin-dashboard .footer-center {
+    max-width: 100%;
+    margin: 0;
+
+    text-align: center;
+  }
+
+  .super-admin-dashboard .footer-user-card {
+    position: static;
+
+    width: 100%;
+    max-width: 430px;
+
+    align-self: center;
+    justify-content: flex-start;
+
+    transform: none;
+  }
+
+  .super-admin-dashboard .footer-user-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .super-admin-dashboard .footer-role-row select {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+/* ==========================================================================
+   TRÈS PETITS ÉCRANS
+   ========================================================================== */
+
+@media (max-width: 380px) {
+  .super-admin-dashboard .home-header {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .super-admin-dashboard .header-left {
+    gap: 8px;
+  }
+
+  .super-admin-dashboard .header-logo-container {
+    width: 38px;
+    height: 38px;
+  }
+
+  .super-admin-dashboard .logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .super-admin-dashboard .university-info h1 {
+    font-size: 12px;
+  }
+
+  .super-admin-dashboard .subtitle {
+    max-width: 155px;
+    font-size: 8px;
+  }
+
+  .super-admin-dashboard .university-meta {
+    display: none;
+  }
+
+  .super-admin-dashboard .quit-btn {
+    min-height: 31px;
+    padding: 0 8px;
+    font-size: 9px;
+  }
+
+  .super-admin-dashboard .dashboard-content {
+    padding: 14px 9px;
+  }
+
+  .super-admin-dashboard .dashboard-welcome {
+    padding: 22px 14px;
+  }
+
+  .super-admin-dashboard .dashboard-content h2 {
+    font-size: 21px;
+  }
+
+  .super-admin-dashboard .module-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .super-admin-dashboard .back-btn {
+    align-self: flex-start;
+  }
+
+  .super-admin-dashboard .footer-user-card {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .super-admin-dashboard .footer-avatar {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+    font-size: 10px;
+  }
+
+  .super-admin-dashboard .footer-user-name {
+    font-size: 11px;
+  }
+
+  .super-admin-dashboard .footer-role-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .super-admin-dashboard .footer-role-row select {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITÉ : RÉDUCTION DES ANIMATIONS
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .super-admin-dashboard *,
+  .super-admin-dashboard *::before,
+  .super-admin-dashboard *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

@@ -1,0 +1,574 @@
+.facultes-wrapper {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.facultes-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 4px 2px;
+}
+
+.facultes-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.facultes-header-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 22px;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.08);
+}
+
+.facultes-eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: #2563eb;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.facultes-page-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 23px;
+  line-height: 1.2;
+  font-weight: 750;
+}
+
+.facultes-page-header p {
+  margin: 5px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.facultes-count {
+  min-width: 120px;
+  padding: 11px 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  text-align: right;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+.facultes-count span {
+  display: block;
+  color: #9ca3af;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+}
+
+.facultes-count strong {
+  display: block;
+  margin-top: 2px;
+  color: #111827;
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.facultes-top-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.facultes-card {
+  min-width: 0;
+  padding: 21px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.facultes-card:hover {
+  transform: translateY(-2px);
+  border-color: #dbe3ef;
+  box-shadow: 0 9px 24px rgba(15, 23, 42, 0.07);
+}
+
+.facultes-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.facultes-card-icon {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.facultes-card-icon.blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.facultes-card-icon.indigo {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.facultes-card-icon.red {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.facultes-card-eyebrow {
+  display: block;
+  margin-bottom: 3px;
+  color: #9ca3af;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+}
+
+.facultes-card-eyebrow.danger-text {
+  color: #dc2626;
+}
+
+.facultes-card h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.facultes-card-header p {
+  margin: 4px 0 0;
+  color: #9ca3af;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   FORMULAIRES
+========================================================= */
+
+.facultes-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.facultes-form-group label {
+  color: #475569;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.facultes-card input,
+.facultes-card select {
+  width: 100%;
+  min-height: 41px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+  color: #1f2937;
+  font-family: inherit;
+  font-size: 11px;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.facultes-card select {
+  cursor: pointer;
+}
+
+.facultes-card input::placeholder {
+  color: #a1aab5;
+}
+
+.facultes-card input:hover,
+.facultes-card select:hover {
+  border-color: #cbd5e1;
+}
+
+.facultes-card input:focus,
+.facultes-card select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.09);
+}
+
+.facultes-card input:disabled,
+.facultes-card select:disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+/* =========================================================
+   EDITION
+========================================================= */
+
+.facultes-edit-zone {
+  padding: 13px;
+  border: 1px solid #e5e7eb;
+  border-radius: 11px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: editZoneIn 0.2s ease;
+}
+
+@keyframes editZoneIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   BOUTONS
+========================================================= */
+
+.facultes-action-btn {
+  width: 100%;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.facultes-action-btn.primary {
+  background: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.16);
+}
+
+.facultes-action-btn.primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.22);
+}
+
+.facultes-action-btn.secondary {
+  background: #334155;
+  box-shadow: 0 4px 11px rgba(51, 65, 85, 0.14);
+}
+
+.facultes-action-btn.secondary:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.facultes-action-btn.danger {
+  background: #dc2626;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.14);
+}
+
+.facultes-action-btn.danger:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.facultes-action-btn:active {
+  transform: translateY(0);
+}
+
+.facultes-action-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.button-spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: buttonSpin 0.7s linear infinite;
+}
+
+@keyframes buttonSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   DÉSACTIVATION
+========================================================= */
+
+.facultes-full-width {
+  width: 100%;
+}
+
+.facultes-danger-card {
+  border-color: #fee2e2;
+}
+
+.facultes-danger-card:hover {
+  border-color: #fecaca;
+}
+
+.facultes-danger-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  align-items: end;
+  gap: 14px;
+}
+
+.facultes-danger-content .facultes-action-btn {
+  margin-bottom: 0;
+}
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+.notification {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1000;
+  width: min(390px, calc(100vw - 32px));
+  min-height: 66px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 12px;
+  border: 1px solid;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
+  animation: notificationIn 0.25s ease;
+}
+
+.notification.success {
+  border-color: #bbf7d0;
+}
+
+.notification.error {
+  border-color: #fecaca;
+}
+
+.notification-icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.notification.success .notification-icon {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.notification.error .notification-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-content strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #1f2937;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.notification-content span {
+  display: block;
+  color: #64748b;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.notification-close {
+  width: 27px;
+  height: 27px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.notification-close:hover {
+  background: #f1f5f9;
+  color: #1f2937;
+}
+
+@keyframes notificationIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   APPARITION
+========================================================= */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 850px) {
+  .facultes-top-row {
+    grid-template-columns: 1fr;
+  }
+
+  .facultes-danger-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .facultes-wrapper {
+    padding: 18px;
+    gap: 16px;
+  }
+
+  .facultes-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .facultes-count {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  .facultes-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .facultes-wrapper {
+    padding: 14px;
+  }
+
+  .facultes-page-header h2 {
+    font-size: 20px;
+  }
+
+  .facultes-page-header p {
+    font-size: 11px;
+  }
+
+  .facultes-header-icon {
+    width: 43px;
+    height: 43px;
+  }
+
+  .facultes-card-header {
+    gap: 10px;
+  }
+
+  .notification {
+    right: 16px;
+    bottom: 16px;
+    width: calc(100vw - 32px);
+  }
+}
+

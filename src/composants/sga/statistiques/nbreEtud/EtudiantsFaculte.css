@@ -1,0 +1,816 @@
+.students-stats-wrapper {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: statsFadeIn 0.35s ease;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stats-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #0072ff;
+}
+
+.stats-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 750;
+  color: #172033;
+}
+
+.stats-header p {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 0.92rem;
+}
+
+/* =====================================================
+   SÉLECTEUR ANNÉE ACADÉMIQUE
+===================================================== */
+
+.academic-year-selector {
+  width: 100%;
+  padding: 17px 20px;
+  background: #ffffff;
+  border: 1px solid #e7ebf1;
+  border-radius: 16px;
+  box-shadow:
+    0 4px 15px rgba(17, 24, 39, 0.04);
+}
+
+.academic-year-selector-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.academic-year-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #eef5ff;
+  color: #0072ff;
+  font-size: 1.1rem;
+}
+
+.academic-year-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.academic-year-info label {
+  color: #202938;
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
+.academic-year-info span {
+  margin-top: 3px;
+  color: #9299a6;
+  font-size: 0.75rem;
+}
+
+.academic-year-select-wrapper {
+  position: relative;
+  min-width: 190px;
+}
+
+.academic-year-select-wrapper select {
+  width: 100%;
+  min-width: 190px;
+  height: 43px;
+  padding: 0 38px 0 14px;
+  appearance: none;
+  border: 1px solid #dfe5ed;
+  border-radius: 10px;
+  outline: none;
+  background-color: #ffffff;
+
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      #667085 50%
+    ),
+    linear-gradient(
+      135deg,
+      #667085 50%,
+      transparent 50%
+    );
+
+  background-position:
+    calc(100% - 17px) 18px,
+    calc(100% - 12px) 18px;
+
+  background-size:
+    5px 5px,
+    5px 5px;
+
+  background-repeat: no-repeat;
+
+  color: #202938;
+  font-size: 0.87rem;
+  font-weight: 650;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.academic-year-select-wrapper select:hover {
+  border-color: #b9c7da;
+}
+
+.academic-year-select-wrapper select:focus {
+  border-color: #0072ff;
+  box-shadow:
+    0 0 0 3px rgba(0, 114, 255, 0.1);
+}
+
+.academic-year-select-wrapper select:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+/* =====================================================
+   ANNÉE SÉLECTIONNÉE
+===================================================== */
+
+.selected-year-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: -4px;
+  color: #8a93a3;
+  font-size: 0.8rem;
+}
+
+.selected-year-info strong {
+  color: #374151;
+  font-weight: 750;
+}
+
+/* =====================================================
+   TOTAL UNIVERSITÉ
+===================================================== */
+
+.university-total-card {
+  width: 100%;
+  border-radius: 20px;
+  padding: 28px 32px;
+
+  background: linear-gradient(
+    135deg,
+    #006bea 0%,
+    #007cff 100%
+  );
+
+  color: white;
+
+  box-shadow:
+    0 12px 30px rgba(0, 114, 255, 0.18);
+
+  overflow: hidden;
+  position: relative;
+}
+
+.university-total-card::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  right: -60px;
+  top: -70px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.university-total-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.university-total-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  opacity: 0.82;
+}
+
+.university-total-number {
+  margin-top: 5px;
+  font-size: 2.8rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.university-total-description {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.university-total-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+}
+
+.university-total-icon span {
+  font-size: 1.8rem;
+}
+
+/* =====================================================
+   SECTION FACULTÉS
+===================================================== */
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.section-heading h3 {
+  margin: 0;
+  color: #172033;
+  font-size: 1.2rem;
+  font-weight: 750;
+}
+
+.section-heading p {
+  margin: 5px 0 0;
+  color: #8a93a3;
+  font-size: 0.88rem;
+}
+
+.faculty-count {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #eef5ff;
+  color: #006bea;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* =====================================================
+   FACULTÉS
+===================================================== */
+
+.faculty-list {
+  display: grid;
+
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(420px, 1fr)
+  );
+
+  gap: 18px;
+}
+
+.faculty-card {
+  background: #ffffff;
+  border: 1px solid #edf0f5;
+  border-radius: 18px;
+  overflow: hidden;
+
+  box-shadow:
+    0 5px 18px rgba(17, 24, 39, 0.05);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.faculty-card:hover {
+  transform: translateY(-2px);
+  border-color: #dce7f7;
+
+  box-shadow:
+    0 10px 28px rgba(17, 24, 39, 0.08);
+}
+
+/* =====================================================
+   HEADER FACULTÉ
+===================================================== */
+
+.faculty-card-header {
+  padding: 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 18px;
+
+  border-bottom: 1px solid #f0f2f6;
+
+  /*
+   * Le header reste toujours visible.
+   * Seule la liste des promotions défile.
+   */
+  position: relative;
+  z-index: 2;
+  background: #ffffff;
+}
+
+.faculty-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  min-width: 0;
+}
+
+.faculty-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+
+  border-radius: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eef5ff;
+  color: #0072ff;
+
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.faculty-title-wrapper h3 {
+  margin: 0;
+
+  color: #202938;
+
+  font-size: 1rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.faculty-title-wrapper span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #9299a6;
+
+  font-size: 0.78rem;
+}
+
+.faculty-total {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.faculty-total strong {
+  display: block;
+
+  color: #0072ff;
+
+  font-size: 1.45rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.faculty-total span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #9299a6;
+
+  font-size: 0.72rem;
+}
+
+/* =====================================================
+   PROMOTIONS — ZONE SCROLLABLE
+===================================================== */
+
+/*
+ * La carte de la faculté reste normale.
+ *
+ * Lorsque la faculté possède beaucoup de promotions,
+ * seule cette zone devient scrollable.
+ *
+ * Environ 3 promotions sont visibles simultanément.
+ */
+.promotion-list {
+  max-height: 190px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 5px 20px 10px;
+
+  /*
+   * Empêche le scroll de la liste de provoquer
+   * accidentellement le scroll de la page.
+   */
+  overscroll-behavior: contain;
+
+  /*
+   * Firefox
+   */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+/* Chrome / Edge / Safari */
+
+.promotion-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.promotion-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.promotion-list::-webkit-scrollbar-thumb {
+  background: #d1d9e6;
+  border-radius: 10px;
+}
+
+.promotion-list::-webkit-scrollbar-thumb:hover {
+  background: #b8c4d4;
+}
+
+/* =====================================================
+   LIGNE PROMOTION
+===================================================== */
+
+.promotion-row {
+  min-height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-bottom: 1px solid #f3f4f7;
+}
+
+.promotion-row:last-child {
+  border-bottom: none;
+}
+
+.promotion-name {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  color: #454d5c;
+
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.promotion-name > span:last-child {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.promotion-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #0072ff;
+}
+
+.promotion-count {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: baseline;
+
+  gap: 5px;
+}
+
+.promotion-count strong {
+  color: #202938;
+
+  font-size: 0.98rem;
+  font-weight: 750;
+}
+
+.promotion-count span {
+  color: #9299a6;
+
+  font-size: 0.72rem;
+}
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty-stats {
+  padding: 55px 25px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px dashed #dfe4eb;
+
+  border-radius: 18px;
+}
+
+.empty-stats-icon {
+  width: 54px;
+  height: 54px;
+
+  margin: 0 auto 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  background: #f3f5f8;
+  color: #8b94a3;
+
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.empty-stats h3 {
+  margin: 0;
+
+  color: #374151;
+
+  font-size: 1rem;
+}
+
+.empty-stats p {
+  max-width: 480px;
+
+  margin: 8px auto 0;
+
+  color: #8a93a3;
+
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.stats-loading {
+  min-height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  color: #737c8b;
+
+  font-size: 0.9rem;
+}
+
+.stats-spinner {
+  width: 34px;
+  height: 34px;
+
+  border: 3px solid #e7edf5;
+  border-top-color: #0072ff;
+
+  border-radius: 50%;
+
+  animation: statsSpin 0.8s linear infinite;
+}
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.stats-error {
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  background: #fff7f7;
+
+  border: 1px solid #f4d5d5;
+
+  border-radius: 16px;
+}
+
+.stats-error-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #fee2e2;
+  color: #dc2626;
+
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.stats-error h3 {
+  margin: 0;
+
+  color: #991b1b;
+
+  font-size: 0.95rem;
+}
+
+.stats-error p {
+  margin: 4px 0 0;
+
+  color: #b45353;
+
+  font-size: 0.82rem;
+}
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes statsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes statsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+  .faculty-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .students-stats-wrapper {
+    gap: 20px;
+  }
+
+  .stats-header h2 {
+    font-size: 1.55rem;
+  }
+
+  .academic-year-selector-content {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .academic-year-info {
+    flex: 1;
+  }
+
+  .academic-year-select-wrapper {
+    width: 100%;
+
+    margin-left: 58px;
+    margin-top: 2px;
+  }
+
+  .academic-year-select-wrapper select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .university-total-card {
+    padding: 22px;
+  }
+
+  .university-total-number {
+    font-size: 2.3rem;
+  }
+
+  .university-total-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .faculty-card-header {
+    padding: 17px;
+  }
+
+  /*
+   * Un peu moins haut sur mobile.
+   */
+  .promotion-list {
+    max-height: 175px;
+
+    padding-left: 17px;
+    padding-right: 17px;
+  }
+
+  .faculty-total strong {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .faculty-card-header {
+    align-items: flex-start;
+  }
+
+  .faculty-total {
+    margin-top: 2px;
+  }
+
+  .promotion-count {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+  }
+
+  /*
+   * Encore légèrement plus compact sur
+   * les très petits écrans.
+   */
+  .promotion-list {
+    max-height: 165px;
+  }
+}
+

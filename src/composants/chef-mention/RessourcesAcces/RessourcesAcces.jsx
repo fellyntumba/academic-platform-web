@@ -1997,9 +1997,14 @@ const CODES_RESSOURCES = [
     code: "RESULTAT_PREMIER_SEMESTRE",
     libelle: "Résultat premier semestre",
   },
+  
   {
     code: "RESULTAT_ANNUEL",
     libelle: "Résultat annuel",
+  },
+  {
+    code: "INSCRIPTION_MASTER",
+    libelle: "Inscription en master",
   },
   {
     code: "RELEVE_DE_NOTES",
@@ -2799,15 +2804,15 @@ const RessourcesAcces = ({ code_mention }) => {
       return;
     }
 
-    if (!libelle.trim()) {
+    // if (!libelle.trim()) {
 
-      showMessage(
-        "Le libellé de la ressource est requis.",
-        "error"
-      );
+    //   showMessage(
+    //     "Le libellé de la ressource est requis.",
+    //     "error"
+    //   );
 
-      return;
-    }
+    //   return;
+    // }
 
     if (!promotionVersionId) {
 

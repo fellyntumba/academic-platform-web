@@ -1,346 +1,518 @@
 /* ============================================================
-   COMPTABLE DASHBOARD
+   COMPTABLE — VARIABLES GÉNÉRALES
 ============================================================ */
 
 .comptable-dashboard {
+  --univ-primary: #2563eb;
+  --univ-secondary: #f97316;
+
+  --surface: #ffffff;
+  --background: #f5f7fb;
+  --border: #e5e7eb;
+  --text-primary: #1f2937;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: "Inter", sans-serif;
-  background: #f5f7fa;
-  color: #111;
+
+  background: var(--background);
+  color: var(--text-primary);
+
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+.comptable-dashboard *,
+.comptable-dashboard *::before,
+.comptable-dashboard *::after {
+  box-sizing: border-box;
+}
+
+.comptable-dashboard button,
+.comptable-dashboard select {
+  font: inherit;
+}
+
+.comptable-dashboard button:focus-visible,
+.comptable-dashboard select:focus-visible {
+  outline: 3px solid color-mix(
+    in srgb,
+    var(--univ-primary) 30%,
+    transparent
+  );
+  outline-offset: 3px;
 }
 
 
 /* ============================================================
-   HEADER
+   EN-TÊTE
 ============================================================ */
 
 .comptable-dashboard .home-header {
-  height: 75px;
-  min-height: 75px;
-  padding: 0 30px;
+  position: relative;
+  z-index: 5;
+
+  min-height: 82px;
+  padding: 12px 28px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--surface);
+  border-bottom: 3px solid var(--univ-primary);
 
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.04);
-
-  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.035);
 }
-
-
-/* ============================================================
-   BLOC GAUCHE DU HEADER
-============================================================ */
 
 .comptable-dashboard .header-left {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
+
+  min-width: 0;
 }
 
+.comptable-dashboard .header-logo-container {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
 
-/* ============================================================
-   LOGO
-============================================================ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+}
 
 .comptable-dashboard .logo {
-  width: 45px;
-  height: 45px;
+  display: block;
 
-  object-fit: contain;
-
-  border-radius: 8px;
-
-  background: #f5f5f5;
-
+  width: 100%;
+  height: 100%;
   padding: 5px;
 
-  box-sizing: border-box;
+  object-fit: contain;
+  border-radius: 12px;
 }
-
-
-/* ============================================================
-   INFORMATIONS UNIVERSITÉ
-============================================================ */
 
 .comptable-dashboard .university-info {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
-}
+  gap: 2px;
 
+  min-width: 0;
+}
 
 .comptable-dashboard .university-info h1 {
-  font-size: 1.2rem;
-  font-weight: 600;
-
-  color: #1f2937;
-
   margin: 0;
-}
 
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: var(--text-primary);
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: -0.45px;
+  line-height: 1.3;
+}
 
 .comptable-dashboard .subtitle {
-  font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
 }
 
+.comptable-dashboard .university-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 
-/* ============================================================
-   BOUTON QUITTER
-============================================================ */
+  margin-top: 3px;
+
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.comptable-dashboard .university-meta-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background: var(--univ-primary);
+}
 
 .comptable-dashboard .quit-btn {
-  margin-left: auto;
+  min-height: 38px;
+  flex-shrink: 0;
 
-  padding: 8px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 
-  border-radius: 20px;
+  padding: 9px 16px;
 
-  border: none;
+  color: #dc2626;
+  background: #fff5f5;
 
-  background:
-    linear-gradient(
-      90deg,
-      #ff4d4d,
-      #c70000
-    );
+  border: 1px solid #fecaca;
+  border-radius: 10px;
 
-  color: #ffffff;
-
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
 
   cursor: pointer;
 
   transition:
-    all 0.3s ease;
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
-
 
 .comptable-dashboard .quit-btn:hover {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 6px 15px rgba(0, 0, 0, 0.25);
+  background: #fee2e2;
+  border-color: #fca5a5;
+  transform: translateY(-1px);
 }
 
-
 .comptable-dashboard .quit-btn:active {
-  transform: scale(0.97);
+  transform: translateY(0);
+}
+
+.comptable-dashboard .quit-btn-icon {
+  font-size: 16px;
+  line-height: 1;
 }
 
 
 /* ============================================================
-   MENU CARD
+   STRUCTURE PRINCIPALE
+============================================================ */
+
+.comptable-dashboard .dashboard-body {
+  display: flex;
+  align-items: stretch;
+
+  flex: 1;
+  min-height: 0;
+}
+
+.comptable-dashboard .sidebar {
+  width: 302px;
+  min-width: 302px;
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+
+  padding: 22px 16px;
+
+  background: #f8fafc;
+  border-right: 1px solid var(--border);
+}
+
+.comptable-dashboard .sidebar-heading {
+  padding: 0 5px 4px;
+}
+
+.comptable-dashboard .sidebar-heading-label,
+.comptable-dashboard .dashboard-eyebrow {
+  display: inline-block;
+
+  color: var(--univ-primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+
+.comptable-dashboard .sidebar-heading h2 {
+  margin: 7px 0 5px;
+
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: -0.3px;
+}
+
+.comptable-dashboard .sidebar-heading p {
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+
+/* ============================================================
+   CARTE DU MENU
 ============================================================ */
 
 .comptable-dashboard .menu-card {
-  width: 100%;
+  min-width: 0;
 
-  background: #ffffff;
+  display: flex;
+  flex-direction: column;
 
-  border-radius: 12px;
+  padding: 13px 10px 10px;
 
-  padding: 15px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
 
-  margin: 0 0 20px 0;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
 
-  border: 1px solid #e5e7eb;
-
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.05);
-
-  box-sizing: border-box;
-
-  /*
-   * LA CARTE SUIT UNIQUEMENT SON CONTENU.
-   */
-
-  height: auto;
-
-  min-height: 0;
-
-  max-height: none;
-
-  overflow: visible;
-
-  /*
-   * SURTOUT PAS :
-   *
-   * flex: 1;
-   * height: 100%;
-   * overflow-y: auto;
-   */
+  overflow: hidden;
 }
-
-/* ============================================================
-   TITRE DE LA CARTE
-============================================================ */
 
 .comptable-dashboard .menu-card-header {
-  font-size: 0.95rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
 
-  font-weight: 700;
+  padding: 1px 5px 12px;
+  margin-bottom: 4px;
 
-  color: #0072ff;
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.45;
 
-  margin-bottom: 5px;
-
-  line-height: 1.4;
+  border-bottom: 1px solid #f1f5f9;
 }
 
+.comptable-dashboard .menu-card-header::before {
+  content: "";
 
-/* ============================================================
-   DESCRIPTION DE LA CARTE
-============================================================ */
+  width: 4px;
+  min-height: 32px;
+  flex-shrink: 0;
+
+  border-radius: 8px;
+  background: var(--univ-primary);
+}
 
 .comptable-dashboard .menu-card-desc {
-  font-size: 0.75rem;
+  margin: 5px 5px 12px;
 
-  color: #666;
-
-  margin-bottom: 12px;
-
-  line-height: 1.4;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.65;
 }
 
-
-/* ============================================================
-   MENU
-============================================================ */
+.comptable-dashboard .menu-list {
+  min-width: 0;
+}
 
 .comptable-dashboard .menu-item {
-  width: 100%;
-
-  margin-bottom: 8px;
-
-  box-sizing: border-box;
+  margin: 3px 0;
 }
-
-
-.comptable-dashboard .menu-item:last-child {
-  margin-bottom: 0;
-}
-
-
-/* ============================================================
-   TITRE DU MENU
-============================================================ */
 
 .comptable-dashboard .menu-title {
   width: 100%;
+  min-height: 40px;
 
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 
-  font-size: 0.9rem;
+  padding: 9px 10px;
+
+  color: #475569;
+  text-align: left;
+
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.5;
 
   cursor: pointer;
 
-  padding: 10px;
-
-  border-radius: 8px;
-
-  color: #1f2937;
-
-  box-sizing: border-box;
-
   transition:
-    all 0.3s ease;
-
-  /*
-   * Le texte peut revenir à la ligne.
-   */
-
-  white-space: normal;
-
-  overflow-wrap: break-word;
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
 }
-
 
 .comptable-dashboard .menu-title:hover {
-  background:
-    linear-gradient(
-      90deg,
-      #4facfe,
-      #00f2fe
-    );
-
-  color: #ffffff;
+  color: var(--univ-primary);
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 6%,
+    white
+  );
 }
 
+.comptable-dashboard .menu-title-active {
+  color: var(--univ-primary);
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 8%,
+    white
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--univ-primary) 14%,
+    white
+  );
+}
 
-.comptable-dashboard .menu-title:active {
-  transform: scale(0.99);
+.comptable-dashboard .menu-item-open > .menu-title {
+  color: var(--univ-primary);
+  background: #f8fafc;
+}
+
+.comptable-dashboard .menu-title-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.comptable-dashboard .menu-chevron {
+  flex-shrink: 0;
+
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.comptable-dashboard .menu-chevron-open {
+  color: var(--univ-primary);
+  transform: rotate(180deg);
 }
 
 
 /* ============================================================
-   SOUS-MENU
+   SOUS-MENUS
 ============================================================ */
 
 .comptable-dashboard .sub-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
   list-style: none;
 
-  padding-left: 15px;
+  margin: 4px 0 8px;
+  padding: 5px 0 3px 10px;
 
-  margin-top: 5px;
-
-  margin-bottom: 0;
-
-  box-sizing: border-box;
-
-  /*
-   * Aucun scroll.
-   *
-   * Le sous-menu augmente naturellement
-   * la hauteur de la carte.
-   */
-
-  overflow: visible;
+  border-left: 2px solid color-mix(
+    in srgb,
+    var(--univ-primary) 20%,
+    white
+  );
 }
 
-
-/* ============================================================
-   ÉLÉMENT SOUS-MENU
-============================================================ */
+.comptable-dashboard .sub-menu li {
+  margin: 0;
+  padding: 0;
+}
 
 .comptable-dashboard .sub-menu-item {
   width: 100%;
 
-  padding: 6px 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
 
-  border-radius: 6px;
+  padding: 8px 9px;
+
+  color: #64748b;
+  text-align: left;
+
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.55;
 
   cursor: pointer;
 
   transition:
-    all 0.2s ease;
-
-  box-sizing: border-box;
-
-  font-size: 0.84rem;
-
-  line-height: 1.4;
-
-  color: #374151;
-
-  white-space: normal;
-
-  overflow-wrap: break-word;
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
 }
 
-
 .comptable-dashboard .sub-menu-item:hover {
-  background: #0072ff;
+  color: var(--univ-primary);
+  background: #f8fafc;
+}
 
-  color: #ffffff;
+.comptable-dashboard .sub-menu-item-active {
+  color: var(--univ-primary);
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 8%,
+    white
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--univ-primary) 13%,
+    white
+  );
+
+  font-weight: 700;
+}
+
+.comptable-dashboard .sub-menu-dot {
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+
+  margin-top: 5px;
+
+  background: #cbd5e1;
+  border-radius: 50%;
+}
+
+.comptable-dashboard .sub-menu-item-active .sub-menu-dot {
+  background: var(--univ-primary);
+}
+
+.comptable-dashboard .sidebar-footer-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: auto;
+  padding: 12px 5px 0;
+
+  border-top: 1px solid var(--border);
+
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.comptable-dashboard .sidebar-footer-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background: #22c55e;
 }
 
 
@@ -349,545 +521,886 @@
 ============================================================ */
 
 .comptable-dashboard .dashboard-content {
+  min-width: 0;
+  min-height: 440px;
   flex: 1;
 
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  padding: 28px;
+
+  background: var(--background);
+}
+
+.comptable-dashboard .welcome-panel,
+.comptable-dashboard .module-panel {
+  width: 100%;
   min-width: 0;
 
-  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
 
-  flex-direction: column;
-
-  justify-content: center;
-
-  align-items: center;
-
-  text-align: center;
-
-  padding: 40px;
-
-  background: #f8fafc;
-
-  box-sizing: border-box;
-
-  /*
-   * Le contenu principal peut rester
-   * suffisamment grand sans imposer une
-   * hauteur à la carte de gauche.
-   */
-
-  min-height: 500px;
-}
-
-
-.comptable-dashboard .dashboard-content h2 {
-  font-size: 2rem;
-
-  font-weight: 700;
-
-  color: #0072ff;
-
-  margin:
-    0 0 12px;
-}
-
-
-.comptable-dashboard .dashboard-content p {
-  font-size: 1rem;
-
-  color: #555;
-
-  max-width: 420px;
-
-  line-height: 1.6;
-
-  margin: 0;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.035);
 }
 
 
 /* ============================================================
-   COMING SOON
+   ACCUEIL
+============================================================ */
+
+.comptable-dashboard .welcome-panel {
+  padding: 30px;
+}
+
+.comptable-dashboard .welcome-panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.comptable-dashboard .dashboard-title {
+  margin: 9px 0;
+
+  color: var(--text-primary);
+  font-size: clamp(21px, 2.1vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  line-height: 1.3;
+}
+
+.comptable-dashboard .dashboard-description {
+  max-width: 560px;
+
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.comptable-dashboard .welcome-mark {
+  width: 82px;
+  height: 82px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+
+  background: linear-gradient(
+    135deg,
+    var(--univ-primary),
+    var(--univ-secondary)
+  );
+
+  border-radius: 23px;
+
+  box-shadow: 0 10px 22px color-mix(
+    in srgb,
+    var(--univ-primary) 18%,
+    transparent
+  );
+}
+
+.comptable-dashboard .welcome-mark span {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.comptable-dashboard .welcome-divider {
+  height: 1px;
+  margin: 25px 0;
+
+  background: var(--border);
+}
+
+
+/* ============================================================
+   CARTES D'INFORMATIONS
+============================================================ */
+
+.comptable-dashboard .welcome-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.comptable-dashboard .welcome-info-card {
+  min-width: 0;
+  min-height: 120px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 17px;
+
+  background: #f8fafc;
+  border: 1px solid #edf0f5;
+  border-radius: 13px;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.comptable-dashboard .welcome-info-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--univ-primary) 24%,
+    white
+  );
+
+  transform: translateY(-2px);
+}
+
+.comptable-dashboard .welcome-info-label {
+  color: var(--text-secondary);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+}
+
+.comptable-dashboard .welcome-info-card strong {
+  width: 100%;
+
+  overflow-wrap: anywhere;
+
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.comptable-dashboard .welcome-info-description {
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.comptable-dashboard .welcome-instruction {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+
+  margin-top: 22px;
+  padding: 14px 15px;
+
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 5%,
+    white
+  );
+
+  border: 1px solid color-mix(
+    in srgb,
+    var(--univ-primary) 13%,
+    white
+  );
+
+  border-radius: 11px;
+}
+
+.comptable-dashboard .welcome-instruction-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  background: var(--univ-primary);
+
+  border-radius: 50%;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.comptable-dashboard .welcome-instruction p {
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+
+/* ============================================================
+   EN-TÊTE DES MODULES
+============================================================ */
+
+.comptable-dashboard .module-panel {
+  overflow: hidden;
+}
+
+.comptable-dashboard .module-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 23px 25px;
+}
+
+.comptable-dashboard .module-heading {
+  min-width: 0;
+}
+
+.comptable-dashboard .module-title {
+  margin: 7px 0 5px;
+
+  color: var(--text-primary);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  line-height: 1.4;
+}
+
+.comptable-dashboard .module-description {
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.comptable-dashboard .back-btn {
+  min-height: 37px;
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 9px 13px;
+
+  color: var(--univ-primary);
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 7%,
+    white
+  );
+
+  border: 1px solid color-mix(
+    in srgb,
+    var(--univ-primary) 18%,
+    white
+  );
+
+  border-radius: 9px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.comptable-dashboard .back-btn:hover {
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 13%,
+    white
+  );
+
+  transform: translateY(-1px);
+}
+
+.comptable-dashboard .back-btn span {
+  font-size: 15px;
+}
+
+.comptable-dashboard .module-divider {
+  height: 1px;
+  background: var(--border);
+}
+
+.comptable-dashboard .comptable-module-content {
+  min-width: 0;
+  padding: 23px;
+}
+
+
+/* ============================================================
+   FONCTIONNALITÉ EN PRÉPARATION
 ============================================================ */
 
 .comptable-dashboard .coming-soon {
   width: 100%;
+  max-width: 680px;
 
-  max-width: 700px;
+  margin: 10px auto;
+  padding: 32px;
 
-  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  box-sizing: border-box;
+  text-align: center;
 
   background: #ffffff;
-
+  border: 1px solid var(--border);
   border-radius: 16px;
 
-  border: 1px solid #e5e7eb;
-
-  box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
 }
 
+.comptable-dashboard .coming-soon-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  color: var(--univ-primary);
+  background: color-mix(
+    in srgb,
+    var(--univ-primary) 8%,
+    white
+  );
+
+  border: 1px solid color-mix(
+    in srgb,
+    var(--univ-primary) 15%,
+    white
+  );
+
+  border-radius: 17px;
+
+  font-size: 30px;
+  font-weight: 800;
+}
 
 .comptable-dashboard .coming-soon h3 {
-  margin:
-    0 0 12px;
+  margin: 10px 0;
 
-  color: #0072ff;
-
-  font-size: 1.5rem;
+  color: var(--text-primary);
+  font-size: 21px;
+  font-weight: 800;
 }
 
-
 .comptable-dashboard .coming-soon p {
-  margin: 0 auto;
+  max-width: 480px;
 
-  color: #6b7280;
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.8;
 }
 
 
 /* ============================================================
-   FOOTER
+   PIED DE PAGE
 ============================================================ */
 
 .comptable-dashboard .dashboard-footer {
-  min-height: 90px;
-
-  background: #ffffff;
-
-  border-top: 1px solid #e5e7eb;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
   position: relative;
 
-  padding: 10px 25px;
-
-  box-sizing: border-box;
-
+  min-height: 90px;
   flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 25px;
+
+  background: var(--surface);
+  border-top: 1px solid var(--border);
 }
 
-
 .comptable-dashboard .footer-center {
-  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
 
-  color: #666;
+  padding: 0 300px;
 
-  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 550;
+  text-align: center;
+}
+
+.comptable-dashboard .footer-status-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+
+  background: #22c55e;
+  border-radius: 50%;
 }
 
 
 /* ============================================================
-   FOOTER USER CARD
+   CARTE UTILISATEUR
 ============================================================ */
 
 .comptable-dashboard .footer-user-card {
   position: absolute;
-
-  right: 25px;
-
   top: 50%;
+  right: 22px;
+
+  min-height: 72px;
+  max-width: calc(100% - 30px);
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  padding: 9px 13px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
 
   transform: translateY(-50%);
-
-  height: 70px;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  padding: 8px 14px;
-
-  background: #ffffff;
-
-  border-radius: 16px;
-
-  border: 1px solid #e5e7eb;
-
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.08);
-
-  box-sizing: border-box;
 }
 
-
-/* ============================================================
-   AVATAR
-============================================================ */
-
 .comptable-dashboard .footer-avatar {
-  width: 42px;
-
-  height: 42px;
-
-  border-radius: 50%;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
+  width: 43px;
+  height: 43px;
   flex-shrink: 0;
 
-  background:
-    linear-gradient(
-      135deg,
-      #0072ff,
-      #00c6ff
-    );
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   color: #ffffff;
 
-  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    var(--univ-primary),
+    var(--univ-secondary)
+  );
 
-  font-size: 0.9rem;
+  border-radius: 50%;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
 }
-
-
-/* ============================================================
-   INFORMATIONS UTILISATEUR
-============================================================ */
 
 .comptable-dashboard .footer-user-info {
+  min-width: 0;
+  max-width: 230px;
+
   display: flex;
-
   flex-direction: column;
-
   justify-content: center;
-
   gap: 3px;
-
-  min-width: 160px;
 }
-
-
-/* ============================================================
-   NOM
-============================================================ */
 
 .comptable-dashboard .footer-user-name {
-  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-  color: #1f2937;
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 800;
+}
 
-  font-size: 0.9rem;
+.comptable-dashboard .footer-user-detail {
+  overflow-wrap: anywhere;
+
+  color: var(--text-secondary);
+  font-size: 9px;
+  line-height: 1.5;
 }
 
 
 /* ============================================================
-   FACULTÉ / MENTION
+   SÉLECTEUR DE PROFIL
 ============================================================ */
 
-.comptable-dashboard .footer-user-detail {
-  font-size: 0.75rem;
+.comptable-dashboard .footer-role-row {
+  min-width: 0;
 
-  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 7px;
 
   margin-top: 3px;
 }
 
-
-/* ============================================================
-   PROFIL
-============================================================ */
-
-.comptable-dashboard .footer-role-row {
-  display: flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  margin-top: 4px;
-}
-
-
 .comptable-dashboard .role-label {
-  font-size: 0.75rem;
+  flex-shrink: 0;
 
-  color: #6b7280;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 600;
 }
-
 
 .comptable-dashboard .footer-role-row select {
-  width: 170px;
-
-  height: 26px;
-
-  border-radius: 14px;
-
-  border: 1px solid #d1d5db;
+  width: 155px;
+  min-width: 0;
+  height: 27px;
 
   padding: 3px 8px;
 
-  font-size: 0.72rem;
-
-  font-weight: 600;
-
+  color: var(--univ-primary);
   background: #f8fafc;
+
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+
+  font-size: 10px;
+  font-weight: 700;
 
   cursor: pointer;
 
-  color: #0072ff;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
-
-.comptable-dashboard .footer-role-row select:hover {
-  border-color: #0072ff;
+.comptable-dashboard .footer-role-row select:hover:not(:disabled) {
+  background: #ffffff;
+  border-color: var(--univ-primary);
 }
 
+.comptable-dashboard .footer-role-row select:disabled {
+  color: #94a3b8;
+  background: #f8fafc;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
 
-.comptable-dashboard .footer-role-row select:focus {
-  outline: none;
-
-  box-shadow:
-    0 0 0 3px
-    rgba(0, 114, 255, 0.15);
+.comptable-dashboard .role-loading {
+  color: var(--univ-primary);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 
 /* ============================================================
-   RESPONSIVE — TABLETTE
+   RESPONSIVE — ÉCRANS INTERMÉDIAIRES
+============================================================ */
+
+@media (max-width: 1200px) {
+  .comptable-dashboard .sidebar {
+    width: 275px;
+    min-width: 275px;
+    padding: 18px 12px;
+  }
+
+  .comptable-dashboard .dashboard-content {
+    padding: 22px;
+  }
+
+  .comptable-dashboard .welcome-panel {
+    padding: 24px;
+  }
+
+  .comptable-dashboard .footer-center {
+    padding: 0 275px 0 0;
+  }
+
+  .comptable-dashboard .footer-user-card {
+    right: 14px;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLETTES
 ============================================================ */
 
 @media (max-width: 900px) {
-
-  .comptable-dashboard .sidebar {
-    width: 250px;
-
-    padding: 15px;
-  }
-
-
-  .comptable-dashboard .menu-card {
-    padding: 15px;
-  }
-
-
-  .comptable-dashboard .menu-title {
-    font-size: 0.88rem;
-  }
-
-
-  .comptable-dashboard .sub-menu-item {
-    font-size: 0.8rem;
-  }
-
-}
-
-
-/* ============================================================
-   RESPONSIVE — MOBILE
-============================================================ */
-
-@media (max-width: 768px) {
-
   .comptable-dashboard .dashboard-body {
     flex-direction: column;
-
-    align-items: stretch;
   }
-
 
   .comptable-dashboard .sidebar {
     width: 100%;
+    min-width: 0;
 
-    padding: 15px;
+    padding: 18px;
 
     border-right: none;
-
-    border-bottom: 1px solid #e0e0e0;
-
-    box-sizing: border-box;
+    border-bottom: 1px solid var(--border);
   }
-
 
   .comptable-dashboard .menu-card {
-    width: 100%;
-
-    height: auto;
-
-    min-height: 0;
-
-    max-height: none;
-
-    overflow: visible;
-
-    margin-bottom: 0;
+    max-width: none;
   }
-
 
   .comptable-dashboard .dashboard-content {
-    width: 100%;
-
-    min-height: 400px;
-
+    min-height: 360px;
     padding: 20px;
-
-    box-sizing: border-box;
   }
 
+  .comptable-dashboard .footer-center {
+    padding: 0;
+  }
+
+  .comptable-dashboard .dashboard-footer {
+    min-height: 90px;
+  }
 
   .comptable-dashboard .footer-user-card {
     position: static;
 
+    max-width: 100%;
+    margin-left: auto;
+
     transform: none;
-
-    margin-top: 10px;
   }
-
-
-  .comptable-dashboard .dashboard-footer {
-    height: auto;
-
-    min-height: 90px;
-
-    flex-direction: column;
-
-    gap: 10px;
-  }
-
 }
 
 
 /* ============================================================
-   RESPONSIVE — PETITS ÉCRANS
+   RESPONSIVE — MOBILES
 ============================================================ */
 
-@media (max-width: 480px) {
-
+@media (max-width: 600px) {
   .comptable-dashboard .home-header {
-    height: auto;
-
-    min-height: 75px;
-
-    padding: 12px 15px;
+    min-height: 72px;
+    gap: 10px;
+    padding: 10px 13px;
   }
-
 
   .comptable-dashboard .header-left {
-    gap: 10px;
-
-    min-width: 0;
+    gap: 9px;
   }
 
-
-  .comptable-dashboard .logo {
-    width: 40px;
-
-    height: 40px;
+  .comptable-dashboard .header-logo-container {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
   }
-
-
-  .comptable-dashboard .university-info {
-    min-width: 0;
-  }
-
 
   .comptable-dashboard .university-info h1 {
-    font-size: 1rem;
+    max-width: 210px;
+    font-size: 13px;
   }
-
 
   .comptable-dashboard .subtitle {
-    font-size: 0.68rem;
+    font-size: 10px;
   }
 
+  .comptable-dashboard .university-meta {
+    font-size: 9px;
+  }
 
   .comptable-dashboard .quit-btn {
-    padding: 7px 14px;
-
-    font-size: 0.8rem;
+    min-height: 34px;
+    gap: 5px;
+    padding: 7px 10px;
+    font-size: 10px;
   }
 
+  .comptable-dashboard .quit-btn-icon {
+    font-size: 13px;
+  }
 
   .comptable-dashboard .sidebar {
-    padding: 10px;
+    padding: 14px 12px;
   }
-
-
-  .comptable-dashboard .menu-card {
-    padding: 15px;
-
-    border-radius: 12px;
-  }
-
-
-  .comptable-dashboard .menu-card-header {
-    font-size: 0.9rem;
-  }
-
-
-  .comptable-dashboard .menu-card-desc {
-    font-size: 0.7rem;
-  }
-
-
-  .comptable-dashboard .menu-title {
-    font-size: 0.88rem;
-
-    padding: 9px;
-  }
-
-
-  .comptable-dashboard .sub-menu {
-    padding-left: 10px;
-  }
-
-
-  .comptable-dashboard .sub-menu-item {
-    font-size: 0.78rem;
-
-    padding: 8px;
-  }
-
 
   .comptable-dashboard .dashboard-content {
-    padding: 15px;
+    min-height: 300px;
+    padding: 13px;
   }
 
-
-  .comptable-dashboard .dashboard-content h2 {
-    font-size: 1.5rem;
+  .comptable-dashboard .welcome-panel {
+    padding: 19px 15px;
+    border-radius: 14px;
   }
 
+  .comptable-dashboard .welcome-panel-top {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .comptable-dashboard .dashboard-title {
+    font-size: 21px;
+  }
+
+  .comptable-dashboard .dashboard-description {
+    font-size: 12px;
+  }
+
+  .comptable-dashboard .welcome-mark {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .comptable-dashboard .welcome-mark span {
+    font-size: 15px;
+  }
+
+  .comptable-dashboard .welcome-info-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .comptable-dashboard .welcome-info-card {
+    min-height: 92px;
+    padding: 14px;
+  }
+
+  .comptable-dashboard .welcome-divider {
+    margin: 18px 0;
+  }
+
+  .comptable-dashboard .module-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 13px;
+    padding: 18px 15px;
+  }
+
+  .comptable-dashboard .module-title {
+    font-size: 17px;
+  }
+
+  .comptable-dashboard .back-btn {
+    width: 100%;
+  }
+
+  .comptable-dashboard .comptable-module-content {
+    padding: 14px 10px;
+  }
+
+  .comptable-dashboard .coming-soon {
+    padding: 24px 16px;
+  }
+
+  .comptable-dashboard .coming-soon h3 {
+    font-size: 18px;
+  }
+
+  .comptable-dashboard .dashboard-footer {
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 13px;
+
+    padding: 15px 12px;
+  }
+
+  .comptable-dashboard .footer-center {
+    order: 1;
+    padding: 0;
+
+    font-size: 10px;
+    line-height: 1.6;
+  }
 
   .comptable-dashboard .footer-user-card {
-    position: static;
+    order: 2;
 
-    width: calc(100% - 20px);
+    width: 100%;
+    max-width: 360px;
+    min-height: 72px;
 
-    height: auto;
-
-    min-height: 70px;
-
-    margin-left: auto;
-
-    margin-right: auto;
+    margin: 0;
+    padding: 10px 12px;
   }
 
-
   .comptable-dashboard .footer-user-info {
-    min-width: 0;
-
+    max-width: none;
     flex: 1;
   }
 
+  .comptable-dashboard .footer-role-row select {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — TRÈS PETITS ÉCRANS
+============================================================ */
+
+@media (max-width: 380px) {
+  .comptable-dashboard .home-header {
+    padding: 9px;
+  }
+
+  .comptable-dashboard .header-logo-container {
+    width: 36px;
+    height: 36px;
+  }
+
+  .comptable-dashboard .university-info h1 {
+    max-width: 155px;
+    font-size: 12px;
+  }
+
+  .comptable-dashboard .quit-btn {
+    padding: 7px 8px;
+  }
+
+  .comptable-dashboard .welcome-panel-top {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .comptable-dashboard .welcome-mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .comptable-dashboard .footer-avatar {
+    width: 37px;
+    height: 37px;
+  }
 
   .comptable-dashboard .footer-role-row {
-    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
   }
-
 
   .comptable-dashboard .footer-role-row select {
-    width: 150px;
+    width: 100%;
+    max-width: 100%;
   }
-
 }
+
+
+/* ============================================================
+   ACCESSIBILITÉ — MOUVEMENTS RÉDUITS
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .comptable-dashboard *,
+  .comptable-dashboard *::before,
+  .comptable-dashboard *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
