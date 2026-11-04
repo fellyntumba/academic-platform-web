@@ -4273,7 +4273,7 @@ const SaisirCotes = ({
 
         if (result.success) {
 
-          showMessage(
+          showMessage( 
             result.message ||
             "Cote(s) envoyée(s) avec succès",
             "success"

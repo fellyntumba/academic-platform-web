@@ -70,7 +70,7 @@ const CreateUE = ({ code_mention }) => {
       setTimeout(() => {
         setMessage("");
         setMessageType("");
-      }, 4000);
+      }, 6000);
 
     };
 

@@ -1,0 +1,675 @@
+
+/* =========================================================
+   CONTENEUR PRINCIPAL
+========================================================= */
+
+.lra-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 25px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.lra-title {
+  margin-bottom: 22px;
+  color: #2563eb;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* =========================================================
+   FILTRE ANNÉE ACADÉMIQUE
+========================================================= */
+
+.lra-annee-filter {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 560px;
+  margin: 0 auto 18px;
+  padding: 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.lra-annee-filter-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 23px;
+  border-radius: 11px;
+}
+
+.lra-annee-filter-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.lra-annee-filter-content label {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lra-annee-filter-content select {
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 35px 10px 12px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #334155;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.lra-annee-filter-content select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.lra-annee-filter-content select:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   ANNÉE ACADÉMIQUE SÉLECTIONNÉE
+========================================================= */
+
+.lra-annee-selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  max-width: 560px;
+  margin: 0 auto 18px;
+  padding: 12px 16px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 9px;
+  color: #1d4ed8;
+  font-size: 14px;
+  text-align: left;
+}
+
+.lra-annee-selected strong {
+  font-weight: 700;
+}
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+.lra-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  z-index: 1000;
+  max-width: calc(100vw - 32px);
+  padding: 14px 22px;
+  color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  transform: translateX(-50%);
+  animation: lra-slide-up 0.3s ease;
+}
+
+.lra-notification-success {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+.lra-notification-error {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+@keyframes lra-slide-up {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* =========================================================
+   CHARGEMENT
+========================================================= */
+
+.lra-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 28px 15px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.lra-spinner {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: 3px solid #dbeafe;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: lra-spin 0.8s linear infinite;
+}
+
+@keyframes lra-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   ZONE DES RÉSULTATS
+========================================================= */
+
+.lra-results {
+  max-height: 350px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.lra-results::-webkit-scrollbar {
+  width: 7px;
+}
+
+.lra-results::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.lra-results::-webkit-scrollbar-thumb {
+  background: #93c5fd;
+  border-radius: 10px;
+}
+
+.lra-results::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* =========================================================
+   CARTE PROMOTION
+========================================================= */
+
+.lra-promotion-card {
+  margin-bottom: 16px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 5px solid #2563eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  text-align: left;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.lra-promotion-card:last-child {
+  margin-bottom: 0;
+}
+
+.lra-promotion-card:hover {
+  border-left-color: #f97316;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+   EN-TÊTE PROMOTION
+========================================================= */
+
+.lra-promotion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.lra-promotion-header-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+}
+
+.lra-promotion-header-info h3 {
+  margin: 0;
+  color: #1d4ed8;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.lra-promotion-niveau {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 25px;
+  padding: 4px 9px;
+  background: #eff6ff;
+  border-radius: 20px;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.lra-promotion-ressources-count {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   PARCOURS
+========================================================= */
+
+.lra-promotion-parcours {
+  margin: -5px 0 15px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   LISTE DES RESSOURCES
+========================================================= */
+
+.lra-ressources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 0 0 12px;
+  padding-left: 12px;
+  border-left: 2px solid #e2e8f0;
+}
+
+.lra-ressource-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.lra-ressource-item:hover {
+  background: #f8fafc;
+  border-color: #bfdbfe;
+}
+
+.lra-ressource-item-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  background: #eff6ff;
+  border-radius: 8px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.lra-ressource-item-info {
+  flex: 1;
+  min-width: 0;
+  color: #475569;
+  font-size: 14px;
+}
+
+.lra-ressource-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.lra-ressource-item-header h4 {
+  margin: 0;
+  color: #334155;
+  font-size: 15px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.lra-ressource-item-info p {
+  margin: 5px 0 12px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.lra-ressource-tranches-count {
+  padding: 4px 8px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   TRANCHES ASSOCIÉES AUX RESSOURCES
+========================================================= */
+
+.lra-ressource-tranches {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.lra-ressource-tranches h5 {
+  margin: 0 0 10px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lra-ressource-tranches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.lra-ressource-tranche-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.lra-ressource-tranche-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.lra-ressource-tranche-info strong {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lra-ressource-tranche-info span {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.lra-ressource-tranche-montant {
+  flex-shrink: 0;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* =========================================================
+   RESSOURCE SANS TRANCHE
+========================================================= */
+
+.lra-empty-ressource-tranches {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #94a3b8;
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* =========================================================
+   PROMOTION SANS RESSOURCE
+========================================================= */
+
+.lra-empty-promotion-ressources {
+  padding: 15px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #94a3b8;
+  font-size: 13px;
+  font-style: italic;
+  text-align: center;
+}
+
+/* =========================================================
+   LISTE VIDE
+========================================================= */
+
+.lra-empty-list {
+  padding: 30px 18px;
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* =========================================================
+   ANIMATION D'APPARITION
+========================================================= */
+
+.lra-fade-in {
+  animation: lra-fade-in-up 0.4s ease;
+}
+
+@keyframes lra-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE : TABLETTES
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .lra-container {
+    padding: 20px;
+  }
+
+  .lra-title {
+    font-size: 20px;
+  }
+
+  .lra-annee-filter {
+    padding: 15px;
+  }
+
+  .lra-results {
+    max-height: 350px;
+  }
+
+  .lra-promotion-card {
+    padding: 15px;
+  }
+
+  .lra-promotion-header-info h3 {
+    font-size: 16px;
+  }
+
+  .lra-ressource-item {
+    padding: 10px;
+  }
+
+}
+
+/* =========================================================
+   RESPONSIVE : MOBILES
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .lra-container {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .lra-title {
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+
+  .lra-annee-filter {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .lra-annee-filter-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    font-size: 20px;
+  }
+
+  .lra-annee-filter-content select {
+    font-size: 13px;
+  }
+
+  .lra-annee-selected {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .lra-promotion-card {
+    padding: 12px;
+  }
+
+  .lra-promotion-header {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .lra-promotion-header-info h3 {
+    font-size: 15px;
+  }
+
+  .lra-promotion-ressources-count {
+    font-size: 11px;
+  }
+
+  .lra-ressources-list {
+    margin-left: 5px;
+    padding-left: 8px;
+  }
+
+  .lra-ressource-item {
+    gap: 8px;
+    padding: 9px 7px;
+  }
+
+  .lra-ressource-item-number {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    font-size: 12px;
+  }
+
+  .lra-ressource-item-header h4 {
+    font-size: 14px;
+  }
+
+  .lra-ressource-item-info {
+    font-size: 13px;
+  }
+
+  .lra-ressource-tranche-item {
+    align-items: flex-start;
+    gap: 8px;
+    padding: 9px;
+  }
+
+  .lra-ressource-tranche-info strong {
+    font-size: 12px;
+  }
+
+  .lra-ressource-tranche-info span {
+    font-size: 11px;
+  }
+
+  .lra-ressource-tranche-montant {
+    font-size: 12px;
+  }
+
+  .lra-notification {
+    bottom: 15px;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+}
+
+/* =========================================================
+   ACCESSIBILITÉ
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .lra-fade-in,
+  .lra-notification,
+  .lra-spinner {
+    animation: none;
+  }
+
+  .lra-promotion-card,
+  .lra-ressource-item {
+    transition: none;
+  }
+
+}
+

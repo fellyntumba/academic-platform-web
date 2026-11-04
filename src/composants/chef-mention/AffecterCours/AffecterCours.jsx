@@ -7,7 +7,7 @@ import {
   getCoursByMentionService,
   reconduireAffectationsService
 } from "./affecterService";  
-import { data } from "react-router-dom";
+
 
 
 const AffecterCours = ({ code_mention }) => {
@@ -35,7 +35,7 @@ const AffecterCours = ({ code_mention }) => {
     setTimeout(() => {
       setMessage("");
       setMessageType(""); 
-    }, 4000);
+    }, 6000);
 
   };
 
@@ -148,17 +148,18 @@ const AffecterCours = ({ code_mention }) => {
   };
 
 
+  
   /* =========================
     Reconduire affectations
   ========================= */
-  const handleReconduireAffectations = async () => {
-    if (!code_mention) {
 
+  const handleReconduireAffectations = async () => {
+
+    if (!code_mention) {
       return showMessage(
         "Code mention introuvable.",
         "error"
       );
-
     }
 
     const confirmation = window.confirm(
@@ -175,29 +176,23 @@ const AffecterCours = ({ code_mention }) => {
         code_mention
       });
 
+      // Le contrôleur fournit directement le message et son type.
       showMessage(
-        `Reconduction terminée :
-
-        ${res.data.inserts || 0} affectation(s) maintenue(s),
-        ${res.data.updates || 0} affectation(s) mise(s) à jour,
-        ${res.data.ignores || 0} affectation(s) ignorée(s).
-        `,
-
-        "success"
-
+        res.message || "Opération terminée.",
+        res.type || (res.success ? "success" : "error")
       );
 
-    } catch(error) {
+    } catch (error) {
+
       showMessage(
+        error.response?.data?.message ||
         error.message ||
-        "Erreur lors de la reconduction des affectations.",
+        "Une erreur est survenue lors de la reconduction des affectations.",
         "error"
       );
+
     }
   };
-
-  // console.log("Cours disponibles :", cours);
-
 
 
   return (

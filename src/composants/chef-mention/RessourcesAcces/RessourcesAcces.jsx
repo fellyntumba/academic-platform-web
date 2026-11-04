@@ -1986,11 +1986,13 @@ import {
   createRessourceAccesAvecRegleService,
   getRessourcesAccesByPromotionVersionService,
   deleteRessourceAccesByPromotionService,
-} from "./ressourcesAccesService";
+} from "./ressourcesAccesService"; 
 
 /* =========================================================
    CODES DES RESSOURCES
 ========================================================= */
+
+
 
 const CODES_RESSOURCES = [
   {
@@ -2002,20 +2004,17 @@ const CODES_RESSOURCES = [
     code: "RESULTAT_ANNUEL",
     libelle: "Résultat annuel",
   },
-  {
-    code: "INSCRIPTION_MASTER",
-    libelle: "Inscription en master",
-  },
-  {
+ 
+  { 
     code: "RELEVE_DE_NOTES",
     libelle: "Relevé de notes",
   },
   {
-    code: "ATTESTATION_DE_REUSSITE_LICENCE",
+    code: "ATTESTATION_LICENCE",
     libelle: "Attestation de réussite licence",
   },
   {
-    code: "ATTESTATION_DE_REUSSITE_MASTER",
+    code: "ATTESTATION_MASTER",
     libelle: "Attestation de réussite master",
   },
   {
@@ -2034,10 +2033,7 @@ const CODES_RESSOURCES = [
     code: "LETTRE_DE_STAGE_MASTER",
     libelle: "Lettre de stage master",
   },
-  { 
-    code: "AUTRES",
-    libelle: "Autres",
-  },
+
 ];
 
 /* =========================================================

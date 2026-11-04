@@ -3,7 +3,7 @@
 ========================================================= */
 .liste-dropdown {
   width: 100%;
-  max-width: 900px;
+  max-width: 900px; 
   margin: 0 auto;
   padding: 25px;
   box-sizing: border-box;
@@ -13,7 +13,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
-
+ 
 .liste-dropdown h2 {
   color: #2563eb;
   font-size: 22px;

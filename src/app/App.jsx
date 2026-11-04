@@ -527,7 +527,6 @@ function App() {
     try {
       const data = await checkSetupStatus();
 
-      console.log("[APP] Setup status :", data);
 
       setSetupStatus(data);
 
@@ -549,8 +548,6 @@ function App() {
   const loadAuth = async () => {
     try {
       const auth = await isAuthenticated();
-
-      console.log("[APP] Authentification :", auth);
 
       const authenticatedUser = auth?.authenticated
         ? auth.user
@@ -659,7 +656,6 @@ function App() {
 
   const setupFinished = status.facultes === true;
 
-  console.log("[APP] setupFinished :", setupFinished);
 
   // ============================================================
   // ROUTES

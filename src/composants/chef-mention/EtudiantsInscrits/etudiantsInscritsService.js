@@ -123,3 +123,111 @@ export const inscrireEtudiantService = async ({
 
   return data;
 };
+
+
+// RÉCUPÉRER LA LISTE DES ETUDIANTS permettant  l'activation de leurs comptes,
+//  pour une mention spécifiée
+export const listeEtudiantsInscritsParMentionService = async ({
+  codeMention
+}) => {
+
+  try {
+
+    // ===============================
+    // 1. Appeler le backend
+    // ===============================
+
+    const response = await apiFetch(
+      "/administration/list-etudiants-inscrits-by-mention-by-annee-encours/get",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          codeMention
+        })
+      }
+    );
+
+    // ===============================
+    // 2. Vérifier la réponse
+    // ===============================
+
+    if (!response.ok) {
+
+      let message =
+        "Erreur lors de la génération de la liste des étudiants inscrits.";
+
+      try {
+        const data = await response.json();
+
+        message = data.message || message;
+
+      } catch {
+        // Réponse d'erreur non JSON
+      }
+
+      throw new Error(message);
+
+    }
+
+    // ===============================
+    // 3. Récupérer le PDF
+    // ===============================
+
+    const blob = await response.blob();
+
+    if (!blob.size) {
+      throw new Error("Le fichier PDF généré est vide.");
+    }
+
+    // ===============================
+    // 4. Créer l'URL temporaire
+    // ===============================
+
+    const url = window.URL.createObjectURL(blob);
+
+    // ===============================
+    // 5. Télécharger le PDF
+    // ===============================
+
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = `liste-etudiants-inscrits-${codeMention}.pdf`;
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    // ===============================
+    // 6. Nettoyer l'URL temporaire
+    // ===============================
+
+    window.setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+    }, 1000);
+
+    return {
+      ok: true,
+      message: "Liste des étudiants inscrits téléchargée avec succès."
+    };
+
+  } catch (error) {
+
+    console.error(
+      "Erreur service liste étudiants inscrits par mention :",
+      error
+    );
+
+    throw error;
+
+  }
+
+};

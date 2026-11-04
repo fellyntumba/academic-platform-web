@@ -44,7 +44,7 @@ export async function getAnneesAcademiques() {
   }
 } 
 
-
+  
 /* =========================================================
    Récupérer les affectations des cours d'une mention
    pour une année académique spécifiée
@@ -97,5 +97,118 @@ export async function getAffectationsCoursByMention({
     };
   }
 }
+
+
+
+ // ===============================
+ // LISTE DES AFFECTATIONS DES COURS
+ // Génération et téléchargement PDF
+ // ===============================
+
+export const listeAffectationCoursService = async ({
+  code_mention,
+  libelle_annee
+}) => {
+ 
+  try {
+
+    // ===============================
+    // 1. Appeler le backend
+    // ===============================
+
+    const response = await apiFetch(
+      `${BASE_URL}/list-affectations-cours-enseign-by-mention/get`,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          code_mention,
+          libelle_annee
+        })
+      }
+    );
+
+    // ===============================
+    // 2. Vérifier la réponse
+    // ===============================
+
+    if (!response.ok) {
+
+      let message = "Erreur lors de la génération de la liste des affectations.";
+
+      try {
+        const data = await response.json();
+
+        message = data.message || message;
+
+      } catch {
+        // Réponse d'erreur non JSON
+      }
+
+      throw new Error(message);
+
+    }
+
+    // ===============================
+    // 3. Récupérer le PDF
+    // ===============================
+
+    const blob = await response.blob();
+
+    if (!blob.size) {
+      throw new Error("Le fichier PDF généré est vide.");
+    }
+
+    // ===============================
+    // 4. Créer l'URL temporaire
+    // ===============================
+
+    const url = window.URL.createObjectURL(blob);
+
+    // ===============================
+    // 5. Télécharger le PDF
+    // ===============================
+
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = `liste-affectations-cours-${libelle_annee}.pdf`;
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    // ===============================
+    // 6. Nettoyer l'URL temporaire
+    // ===============================
+
+    window.setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+    }, 1000);
+
+    return {
+      ok: true,
+      message: "Liste des affectations téléchargée avec succès."
+    };
+
+  } catch (error) {
+
+    console.error(
+      "Erreur service liste affectations cours :",
+      error
+    );
+
+    throw error;
+
+  }
+
+};
 
 
